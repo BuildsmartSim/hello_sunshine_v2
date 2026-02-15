@@ -1,65 +1,95 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Logo from "@/components/Logo";
+import SanctuarySection from "@/components/SanctuarySection";
+import HeroSection from "@/components/HeroSection";
+import TicketingSection from "@/components/TicketingSection";
+import Guestbook from "@/components/Guestbook";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { fonts } from "@/design-system/tokens";
+import { Polaroid } from "@/components/Polaroid";
 
 export default function Home() {
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="min-h-screen bg-[#FDFCF9]">
+      <Header />
+
+      <main>
+        {/* HERO SECTION */}
+        <HeroSection />
+
+
+        {/* SANCTUARY SECTION */}
+        <SanctuarySection />
+
+        {/* GUESTBOOK SECTION */}
+        <section className="py-24 md:py-40 bg-[#F3EFE6] relative overflow-hidden border-y border-charcoal/5">
+          <div className="absolute inset-0 bg-canvas-texture opacity-5 pointer-events-none"></div>
+
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+
+              {/* Left Column: Polaroid Stack (Desktop Only) */}
+              <div className="hidden lg:flex lg:col-span-4 flex-col gap-12 items-center justify-center -mt-10">
+                <Polaroid
+                  src="/optimized/polaroids/sauna-garden.webp"
+                  label="Morning Mist"
+                  rotation="rotate-[-6deg]"
+                  size="w-64"
+                  className="hover:z-50 transition-all"
+                />
+                <Polaroid
+                  src="/optimized/polaroids/caravan-fire-chairs-heart.webp"
+                  label="Nightfall"
+                  rotation="rotate-[4deg]"
+                  size="w-64"
+                  className="hover:z-50 transition-all -mt-4 translate-x-4"
+                />
+                <Polaroid
+                  src="/optimized/polaroids/interior-fire.webp"
+                  label="The Hearth"
+                  rotation="rotate-[-2deg]"
+                  size="w-64"
+                  className="hover:z-50 transition-all -mt-4 -translate-x-2"
+                />
+              </div>
+
+              {/* Right Column: Title + Guestbook */}
+              <div className="lg:col-span-8 flex flex-col items-center lg:items-start text-center lg:text-left">
+                <div className="mb-16">
+                  <span className="font-handwriting text-3xl text-primary mb-4 block">Our Shared Story</span>
+                  <h2 className="text-6xl md:text-8xl text-wood-dark mb-6" style={{ fontFamily: fonts.accent }}>The Guestbook</h2>
+                  <p className="text-xl font-display italic text-charcoal/40 max-w-xl">
+                    Voices from the steam. Moments captured in the wild. Flip through the memories of those who came before.
+                  </p>
+                </div>
+
+                <div className="relative w-full py-8 md:py-12 flex justify-center lg:justify-start">
+                  <div className="lg:pl-12">
+                    <Guestbook />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Decorative elements */}
+          <div className="absolute top-20 -left-20 opacity-5 rotate-12 pointer-events-none">
+            <Image src="/icons/heart.png" alt="" width={300} height={300} />
+          </div>
+        </section>
+
+        {/* TICKETING SECTION */}
+        <TicketingSection />
       </main>
+
+      <Footer />
     </div>
   );
 }
+

@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.legacy_backup
+_legacy_backup
+
+# Raw source images (too large for git — use npm run optimize)
+/images/
+
+# Image optimization cache
+scripts/.optimize-cache.json
+
+# Generated optimized images
+/public/optimized/

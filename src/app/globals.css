@@ -1,15 +1,53 @@
 @import "tailwindcss";
 
+/* Forced @font-face fallback to ensure Chicle loads no matter what */
+@font-face {
+  font-family: 'ChicleForce';
+  src: url('/fonts/Chicle-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* Fonts - mapping layout.tsx variables to Tailwind utilities */
+  --font-display: var(--font-playfair), serif;
+  --font-body: var(--font-dm-sans), sans-serif;
+  --font-handwriting: var(--font-caveat), cursive;
+  --font-accent: var(--font-chicle), 'ChicleForce', cursive;
+  --font-cormorant: var(--font-cormorant), serif;
+  --font-fraunces: var(--font-fraunces), serif;
+
+  /* Colors */
+  --color-primary: #F8C630;
+  /* Sun-faded yellow */
+  --color-secondary: #D4A32A;
+  /* Darker Ochre */
+  --color-charcoal: #2C2C2C;
+  --color-wood-light: #E0D5C1;
+  /* Paper/canvas tone */
+  --color-wood-dark: #3E2723;
+  /* Deep cedar brown */
+  --color-background-light: #F3EFE6;
+  /* Warm off-white */
+  --color-background-dark: #1F1A17;
+  /* Very dark brown/black */
+
+  /* Background Images */
+  --background-image-cedar-texture: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+  --background-image-paper-texture: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+  --background-image-canvas-texture: url('/canvas-background.png');
+
+  /* Box Shadows */
+  --shadow-ticket: 2px 2px 0px 1px rgba(0, 0, 0, 0.2);
+  --shadow-polaroid: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 8px #fff;
+  --shadow-polaroid-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 8px #fff;
+}
+
+/* Root Vars */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +58,213 @@
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'ChicleForce', var(--font-accent);
+  color: var(--color-wood-dark);
+}
+
+h1 {
+  font-family: var(--font-accent);
+  color: var(--color-wood-dark);
+  /* REMOVED GLOBAL FILTER - OPTIMIZATION */
+}
+
+/* OPT-IN SKETCH EFFECT (Use wisely!) */
+.sketch-effect {
+  filter: url('#hand-drawn');
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.8);
+  filter: url('#hand-drawn') drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.2));
+}
+
+/* CRITICAL: PREVENT FILTERS FROM BLEEDING ONTO IMAGES */
+img,
+.placeholder,
+.no-filter {
+  filter: none !important;
+}
+
+/* Utilities */
+@layer utilities {
+  .torn-paper {
+    mask-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><filter id="displacement" x="0%" y="0%" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="5" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter></defs><rect width="100%" height="100%" fill="white" filter="url(%23displacement)"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><filter id="displacement" x="0%" y="0%" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="5" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter></defs><rect width="100%" height="100%" fill="white" filter="url(%23displacement)"/></svg>');
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .style-filter-sketch {
+    filter: url('#hand-drawn');
+    -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.8);
+    filter: url('#hand-drawn') drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.2));
+  }
+
+  /* Pencil Shaded Fill Utilities - Optimized for combination with -webkit-text-stroke */
+  .pencil-fill-standard {
+    background-image: url('/textures/pencil-hatch.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  /* Premium Pencil Hatch (Using Color-Specific PNGs) */
+  .hatch-aesthetic-yellow {
+    background-image: url('/textures/aesthetic-hatch-yellow.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  .hatch-aesthetic-yellow-bold {
+    background-image: url('/textures/aesthetic-hatch-bold-yellow.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  .hatch-aesthetic-cream {
+    background-image: url('/textures/aesthetic-hatch-cream.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  .hatch-aesthetic-cream-bold {
+    background-image: url('/textures/aesthetic-hatch-bold-cream.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  .hatch-aesthetic-charcoal {
+    background-image: url('/textures/charcoal-hatch.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  .hatch-pencil-grey {
+    background-image: url('/textures/pencil-hatch.png');
+    background-repeat: repeat;
+    background-size: 150px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  /* Blending for Desk Editorial Feel */
+  .pencil-blend-multiply {
+    mix-blend-mode: multiply;
+  }
+
+  .pencil-blend-screen {
+    mix-blend-mode: screen;
+  }
+
+  .pencil-blend-overlay {
+    mix-blend-mode: overlay;
+  }
+
+  /* Softness Utilities */
+  .pencil-soft {
+    opacity: 0.65;
+  }
+
+  .pencil-extra-soft {
+    opacity: 0.45;
+  }
+
+  /* Layered Rendering Utilities */
+  .pencil-stroke-only {
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  /* Color-adaptable pencil fill (Uses currentColor for the fill color) */
+  .pencil-fill-custom {
+    background-color: currentColor;
+    -webkit-mask-image: url('/textures/pencil-hatch.png');
+    mask-image: url('/textures/pencil-hatch.png');
+    -webkit-mask-size: 150px;
+    mask-size: 150px;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+    display: inline-block;
+    color: inherit;
+  }
+
+  .pencil-fill-organic {
+    background-image: url('/textures/organic-pencil.png');
+    background-repeat: repeat;
+    background-size: 200px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  .pencil-fill-charcoal {
+    background-image: url('/textures/charcoal-hatch.png');
+    background-repeat: repeat;
+    background-size: 100px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+  .pencil-fill-scribble {
+    background-image: url('/textures/scribble-fill.png');
+    background-repeat: repeat;
+    background-size: 300px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    display: inline-block;
+  }
+
+
+
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

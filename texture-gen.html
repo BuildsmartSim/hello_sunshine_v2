@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { background: #333; display: flex; gap: 20px; padding: 20px; margin: 0; }
+        canvas { background: white; border: 2px solid #000; }
+    </style>
+</head>
+<body>
+    <canvas id="yellow" width="512" height="512"></canvas>
+    <canvas id="charcoal" width="512" height="512"></canvas>
+    <canvas id="cream" width="512" height="512"></canvas>
+
+    <script>
+        function drawHatch(id, color) {
+            const canvas = document.getElementById(id);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 512, 512);
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.8;
+            ctx.lineCap = 'round';
+
+            // High-quality parallel hatching
+            const spacing = 12;
+            const wobble = 1.5;
+
+            for (let i = -512; i < 1024; i += spacing) {
+                ctx.beginPath();
+                ctx.moveTo(i, -10);
+                
+                // Draw with slight organic wobble
+                for (let y = 0; y < 512; y += 20) {
+                    const x = i + y + (Math.random() - 0.5) * wobble;
+                    ctx.lineTo(x, y);
+                }
+                
+                ctx.stroke();
+
+                // Add some lighter secondary strokes for "texture"
+                ctx.globalAlpha = 0.4;
+                ctx.beginPath();
+                ctx.moveTo(i + spacing/3, -10);
+                for (let y = 0; y < 512; y += 20) {
+                    const x = i + spacing/3 + y + (Math.random() - 0.5) * (wobble * 2);
+                    ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        drawHatch('yellow', '#f9cb40');
+        drawHatch('charcoal', '#2C2C2C');
+        drawHatch('cream', '#F3EFE6');
+    </script>
+</body>
+</html>

@@ -34,3 +34,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Performance & Troubleshooting
+
+### Agent/IDE Performance
+Running the Next.js development server (`npm run dev`) consumes significant CPU and memory, which can impact the performance of AI agents and the IDE.
+
+**Known Issues:**
+*   **High CPU Usage:** The `node.exe` process for Next.js can use 100% of a CPU core during compilation.
+*   **File Watcher Contention:** Both the AI agent and Next.js watch thousands of files. If build artifacts (like `.next/`) are not ignored, the agent may try to index them, causing extreme lag.
+*   **Infinite Loops:** Sometimes the `.next` cache gets corrupted, causing the dev server to loop indefinitely.
+
+**Fixes:**
+1.  **Stop the Dev Server:** If the agent is unresponsive, kill the terminal running `npm run dev`.
+2.  **Clean the Cache:** Run the following command to safely remove the `.next` build directory:
+    ```bash
+    npm run clean
+    ```
+3.  **Restart:** Run `npm run dev` again.
+4.  **Verify .gitignore:** Ensure `.next/` and `node_modules/` are present in your `.gitignore` file.
+5.  **Nuclear Option:** If issues persist, delete `node_modules` and run `npm install` again.
