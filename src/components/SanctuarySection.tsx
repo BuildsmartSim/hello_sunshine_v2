@@ -87,10 +87,11 @@ function LeftColumnContent() {
                         A garden of elemental rituals.
                     </p>
                     <div className="h-[2px] w-12 bg-primary"></div>
-                    <p className="text-sm leading-7 opacity-60 font-body text-justify">
-                        Our wood-fired sauna sits in a wildflower meadow, surrounded by cold plunge pools
-                        and fire pits. Strip back, slow down, and let the cycle of heat and cold reset
-                        your nervous system.
+                    <p className="text-sm leading-7 text-[#2C2C2C] font-body text-justify">
+                        Safely ensconced within the privacy fencing, sauna guests are liberated to pursue their sauna rituals as comfortably as they feel, whether they be naked or wearing a bathing suit, all are welcome & there is no judgement.
+                    </p>
+                    <p className="text-sm leading-7 text-[#2C2C2C] font-body text-justify">
+                        We are focused that the plunge pool is full of icy cold water, the showers have strong water pressure, the changing tent is clean and dry, the firebowl is roaring, and there is plenty of filtered drinking water for all guests.
                     </p>
                 </div>
 
@@ -152,8 +153,14 @@ export default function SanctuarySection() {
     };
 
     return (
-        <section className="py-24 px-6 relative" style={{ backgroundColor: colors.bgLight }}>
-            <div className="max-w-7xl mx-auto">
+        <section className="py-24 px-6 relative overflow-hidden" style={{ backgroundColor: colors.bgLight }}>
+            {/* Paper Texture Overlay */}
+            <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply"
+                style={{
+                    backgroundImage: `url('${textures.paper}')`,
+                    backgroundSize: '400px',
+                }}></div>
+            <div className="max-w-7xl mx-auto relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
                     <div className="col-span-1 md:col-span-5"><LeftColumnContent /></div>
 

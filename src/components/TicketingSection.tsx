@@ -49,7 +49,13 @@ function TicketYellowStripe({ title, price, description, variant = 'standard', c
 
 export default function TicketingSection() {
     return (
-        <section className="py-32 overflow-hidden bg-canvas-texture bg-repeat relative">
+        <section className="py-32 overflow-hidden bg-[#F3EFE6] relative">
+            {/* Paper Texture Overlay */}
+            <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply"
+                style={{
+                    backgroundImage: `url('${textures.paper}')`,
+                    backgroundSize: '400px',
+                }}></div>
             <div className="max-w-7xl mx-auto px-6 mb-20 text-center">
                 <h2 className="text-5xl md:text-7xl text-wood-dark mb-4" style={{ fontFamily: fonts.accent }}>Festival Passes</h2>
                 <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>

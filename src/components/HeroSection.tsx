@@ -51,7 +51,13 @@ function LandscapePhoto({ src, alt, className = "", tilt = "rotate-0", shadowSty
 
 export default function HeroSection() {
     return (
-        <section className="relative bg-[#F3EFE6] pt-48 pb-32 px-6">
+        <section className="relative bg-[#F3EFE6] pt-48 pb-32 px-6 overflow-hidden">
+            {/* Paper Texture Overlay */}
+            <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply"
+                style={{
+                    backgroundImage: `url('${textures.paper}')`,
+                    backgroundSize: '400px',
+                }}></div>
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-0 items-center">
 

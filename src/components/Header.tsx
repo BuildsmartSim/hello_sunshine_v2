@@ -30,16 +30,8 @@ export default function Header() {
                     <div className="relative w-12 h-12 md:w-16 md:h-16 transform -rotate-3 hover:rotate-0 transition-transform duration-500 shrink-0">
                         <Image src={LOGO_SRC} alt="Hello Sunshine" fill className="object-contain" />
                     </div>
-                    <div className="flex flex-col border-l border-charcoal/10 pl-6 md:pl-10">
-                        <LayeredPencil
-                            text="Hello Sunshine"
-                            size="clamp(1.8rem, 4vw, 3rem)"
-                            hatchClass={pencil.hatch.yellowBold}
-                            strokeColor={colors.charcoal}
-                            strokeWidth="1.2px"
-                            blendClass="pencil-blend-multiply"
-                        />
-                        <span className="text-[8px] md:text-[10px] font-mono tracking-[0.5em] text-charcoal opacity-40 uppercase font-bold mt-1">
+                    <div className="flex flex-col border-l border-charcoal/10 pl-6 md:pl-10 h-12 md:h-16 justify-center">
+                        <span className="text-[10px] md:text-[12px] font-mono tracking-[0.5em] text-charcoal opacity-40 uppercase font-bold">
                             Est. 2019
                         </span>
                     </div>

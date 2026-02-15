@@ -28,7 +28,12 @@ export default function Home() {
 
         {/* GUESTBOOK SECTION */}
         <section className="py-24 md:py-40 bg-[#F3EFE6] relative overflow-hidden border-y border-charcoal/5">
-          <div className="absolute inset-0 bg-canvas-texture opacity-5 pointer-events-none"></div>
+          {/* Paper Texture Overlay */}
+          <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply"
+            style={{
+              backgroundImage: `url('https://www.transparenttextures.com/patterns/natural-paper.png')`,
+              backgroundSize: '400px',
+            }}></div>
 
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
