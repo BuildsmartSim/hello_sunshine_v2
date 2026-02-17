@@ -28,6 +28,7 @@ export interface LayeredPencilProps {
     strokeOpacity?: string;
     blendClass?: string;
     className?: string;
+    style?: React.CSSProperties;
     as?: 'h1' | 'h2' | 'h3' | 'h4' | 'span';
 }
 
@@ -41,10 +42,11 @@ export function LayeredPencil({
     strokeOpacity = "1",
     blendClass = pencil.blend.multiply,
     className = "",
+    style = {},
     as: Tag = "h2",
 }: LayeredPencilProps) {
     return (
-        <div className={`grid place-items-start relative ${blendClass} ${className}`}>
+        <div className={`grid place-items-start relative ${blendClass} ${className}`} style={style}>
             {/* Fill Layer — hatch texture clipped to text */}
             <Tag
                 className={`${hatchClass} ${fillOpacity === '0.65' ? 'pencil-soft' : fillOpacity === '0.45' ? 'pencil-extra-soft' : ''}`}

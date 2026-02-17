@@ -111,6 +111,8 @@ function LeftColumnContent() {
     );
 }
 
+import { StandardSection } from '@/components/StandardSection';
+
 export default function SanctuarySection() {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -160,58 +162,50 @@ export default function SanctuarySection() {
     };
 
     return (
-        <section className="py-24 lg:py-32 px-6 relative overflow-hidden" style={{ backgroundColor: colors.bgLight }}>
-            {/* Paper Texture Overlay */}
-            <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply"
-                style={{
-                    backgroundImage: `url('${textures.paper}')`,
-                    backgroundSize: '400px',
-                }}></div>
-            <div className="max-w-7xl mx-auto relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
-                    <div className="col-span-1 md:col-span-5"><LeftColumnContent /></div>
+        <StandardSection id="sanctuary" variant="naturalPaper">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+                <div className="col-span-1 md:col-span-5"><LeftColumnContent /></div>
 
-                    <div className="col-span-1 md:col-span-7 relative min-h-[500px]" onMouseLeave={() => setHoveredId(null)}>
+                <div className="col-span-1 md:col-span-7 relative min-h-[500px]" onMouseLeave={() => setHoveredId(null)}>
 
-                        {/* Layer 1: Top Left */}
-                        <div
-                            className="absolute top-0 left-0 w-[60%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
-                            style={getTransform('1', '-2deg', 'top-left')}
-                            onMouseEnter={() => setHoveredId('1')}
-                        >
-                            <Photo src="/optimized/polaroids/door.webp" className="aspect-[4/3] w-full" alt="1. Detail Shot" />
-                        </div>
-
-                        {/* Layer 2: Middle Right */}
-                        <div
-                            className="absolute top-24 right-0 w-[65%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
-                            style={getTransform('2', '1deg', 'mid-right')}
-                            onMouseEnter={() => setHoveredId('2')}
-                        >
-                            <Photo src="/optimized/polaroids/saunagarden.webp" className="aspect-video w-full" alt="2. Wide Landscape" />
-                        </div>
-
-                        {/* Layer 3: Bottom Left */}
-                        <div
-                            className="absolute top-[280px] left-12 w-[55%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
-                            style={getTransform('3', '-1deg', 'bottom-left')}
-                            onMouseEnter={() => setHoveredId('3')}
-                        >
-                            <Photo src="/optimized/polaroids/showers_outdoor_square.webp" className="aspect-square w-full" alt="3. Texture/Macro" />
-                        </div>
-
-                        {/* Polaroid: Anchored Bottom Right */}
-                        <div
-                            className="absolute bottom-[-20px] right-12 transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
-                            style={getTransform('4', '3deg', 'polaroid')}
-                            onMouseEnter={() => setHoveredId('4')}
-                        >
-                            <Polaroid src="/optimized/polaroids/interior-fire.webp" label="The Ritual" rotation="rotate-0" size="w-48" forcePlaceholder={false} />
-                        </div>
-
+                    {/* Layer 1: Top Left */}
+                    <div
+                        className="absolute top-0 left-0 w-[60%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                        style={getTransform('1', '-2deg', 'top-left')}
+                        onMouseEnter={() => setHoveredId('1')}
+                    >
+                        <Photo src="/optimized/polaroids/door.webp" className="aspect-[4/3] w-full" alt="1. Detail Shot" />
                     </div>
+
+                    {/* Layer 2: Middle Right */}
+                    <div
+                        className="absolute top-24 right-0 w-[65%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                        style={getTransform('2', '1deg', 'mid-right')}
+                        onMouseEnter={() => setHoveredId('2')}
+                    >
+                        <Photo src="/optimized/polaroids/saunagarden.webp" className="aspect-video w-full" alt="2. Wide Landscape" />
+                    </div>
+
+                    {/* Layer 3: Bottom Left */}
+                    <div
+                        className="absolute top-[280px] left-12 w-[55%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                        style={getTransform('3', '-1deg', 'bottom-left')}
+                        onMouseEnter={() => setHoveredId('3')}
+                    >
+                        <Photo src="/optimized/polaroids/showers_outdoor_square.webp" className="aspect-square w-full" alt="3. Texture/Macro" />
+                    </div>
+
+                    {/* Polaroid: Anchored Bottom Right */}
+                    <div
+                        className="absolute bottom-[-20px] right-12 transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                        style={getTransform('4', '3deg', 'polaroid')}
+                        onMouseEnter={() => setHoveredId('4')}
+                    >
+                        <Polaroid src="/optimized/polaroids/interior-fire.webp" label="The Ritual" rotation="rotate-0" size="w-48" forcePlaceholder={false} />
+                    </div>
+
                 </div>
             </div>
-        </section>
+        </StandardSection>
     );
 }

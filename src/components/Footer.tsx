@@ -16,7 +16,10 @@ export default function Footer() {
                     backgroundRepeat: 'repeat'
                 }}></div>
 
-            <div className="max-w-7xl mx-auto relative z-10">
+            <div
+                className="mx-auto relative z-10"
+                style={{ maxWidth: 'var(--hss-site-width)' }}
+            >
                 {/* Top Row: Brand & Nav Header */}
                 <div className="flex flex-col md:flex-row justify-between items-center border-b border-[#EBE5CE]/10 pb-12 mb-12">
                     <div className="text-center md:text-left mb-8 md:mb-0">

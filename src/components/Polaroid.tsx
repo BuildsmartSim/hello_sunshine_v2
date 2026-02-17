@@ -110,8 +110,9 @@ export const Polaroid = React.memo(function Polaroid({
     const v = useMemo(() => variant ?? hashToVariant(label), [variant, label]);
     const r = RECIPES[v];
 
-    /* Compose the box-shadow: hero shadow + emboss highlight + emboss lowlight */
-    const composedShadow = `${CHAMPION_SHADOW}, ${r.embossHighlight}, ${r.embossLowlight}`;
+    /* Compose the box-shadow: reactive wood shadow + emboss highlight + emboss lowlight */
+    const woodShadow = `0 calc(15px * var(--shadow-intensity, 1)) 25px -5px rgba(50, 43, 40, 0.45)`;
+    const composedShadow = `${woodShadow}, ${r.embossHighlight}, ${r.embossLowlight}`;
 
     return (
         <div className={`relative ${size} ${rotation} ${className} group`}>

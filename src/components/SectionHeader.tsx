@@ -8,8 +8,9 @@ interface SectionHeaderProps {
     line1: string;
     line2: string;
     subtitle?: string;
-    description?: React.ReactNode;
+    description?: string;
     className?: string;
+    style?: React.CSSProperties;
 }
 
 /**
@@ -23,38 +24,53 @@ interface SectionHeaderProps {
  * Includes the specific charcoal hatch fill (faded) and 
  * fixed line-interlock spacing to prevent overlap.
  */
+import { useDesign } from '@/design-system/DesignContext';
+
 export function SectionHeader({ line1, line2, subtitle, description, className = "" }: SectionHeaderProps) {
+    const { state } = useDesign();
+
     return (
-        <div className={`space-y-4 ${className}`}>
+        <div
+            className={`${className}`}
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'var(--hss-header-subtitle-gap, 16px)'
+            }}
+        >
             <div className="relative">
                 {/* Line 1: 50px Standard */}
                 <LayeredPencil
                     text={line1}
                     size="50px"
                     hatchClass={pencil.hatch.charcoalShaded}
-                    strokeColor={colors.charcoal}
-                    fillOpacity="1" // Opacity handled via CSS filter in globals.css
+                    strokeColor="var(--hss-charcoal, #2C2C2C)"
+                    fillOpacity="1"
                 />
 
-                {/* Line 2: 85px with NO overlap to prevent frustration */}
+                {/* Line 2: 85px with dynamic interlock */}
                 <LayeredPencil
                     text={line2}
                     size="85px"
                     hatchClass={pencil.hatch.charcoalShaded}
-                    strokeColor={colors.charcoal}
-                    className="mt-0" // Removed negative margin to prevent overlap
+                    strokeColor="var(--hss-charcoal, #2C2C2C)"
+                    className="block"
+                    style={{ marginTop: 'var(--hss-header-interlock, 0px)' }}
                     fillOpacity="1"
                 />
             </div>
 
             {(subtitle || description) && (
-                <div className="flex flex-col gap-6 border-t border-charcoal/10 pt-8 mt-8">
+                <div
+                    className="flex flex-col border-t border-charcoal/10 pt-8"
+                    style={{ gap: 'calc(var(--hss-header-subtitle-gap, 16px) * 1.5)' }}
+                >
                     {subtitle && (
                         <div className="space-y-6">
                             <p style={{ fontFamily: fonts.handwriting }} className="text-2xl text-charcoal/50 leading-snug">
                                 {subtitle}
                             </p>
-                            <div className="h-[2px] w-12 bg-primary"></div>
+                            <div className="h-[2px] w-12" style={{ backgroundColor: 'var(--hss-primary, #F8C630)' }}></div>
                         </div>
                     )}
                     {description && (

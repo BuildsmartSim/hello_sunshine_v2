@@ -67,6 +67,8 @@ export const metadata: Metadata = {
   description: "Hand-built saunas for the wandering soul.",
 };
 
+import { DesignProvider } from "@/design-system/DesignContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -80,7 +82,9 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${dmSans.variable} ${caveat.variable} ${chicle.variable} ${cormorantGaramond.variable} ${fraunces.variable} ${plexMono.variable} ${lora.variable} ${handlee.variable} ${patrickHand.variable} antialiased font-body bg-background-light dark:bg-background-dark text-black dark:text-wood-light transition-colors duration-500 overflow-x-hidden`}
       >
-        {children}
+        <DesignProvider>
+          {children}
+        </DesignProvider>
         <GlobalFilters />
       </body>
     </html>

@@ -39,7 +39,7 @@ export default function DesignSystemPage() {
             {/* HERO HEADER */}
             <header className="py-32 px-12 md:px-24 border-b border-charcoal/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/2"></div>
-                <div className="max-w-7xl mx-auto relative z-10">
+                <div className="mx-auto relative z-10" style={{ maxWidth: 'var(--hss-site-width)' }}>
                     <div className="flex items-center gap-6 mb-12">
                         <div className="w-16 h-20 relative">
                             <Logo className="w-full h-full" />
@@ -68,7 +68,7 @@ export default function DesignSystemPage() {
             <main className="px-12 md:px-24 py-32 space-y-48">
 
                 {/* 1. PHILOSOPHY */}
-                <section className="max-w-7xl mx-auto">
+                <section className="mx-auto" style={{ maxWidth: 'var(--hss-site-width)' }}>
                     <SectionHeader title="Design Philosophy" subtitle="The core principles that govern our aesthetic decisions." />
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -94,7 +94,7 @@ export default function DesignSystemPage() {
                 </section>
 
                 {/* 2. TYPOGRAPHY */}
-                <section className="max-w-7xl mx-auto">
+                <section className="mx-auto" style={{ maxWidth: 'var(--hss-site-width)' }}>
                     <SectionHeader title="Typography" subtitle="A hierarchy built for command and intimacy." />
 
                     <div className="space-y-32">
@@ -169,7 +169,7 @@ export default function DesignSystemPage() {
                 </section>
 
                 {/* 3. COLORS & TEXTURES */}
-                <section className="max-w-7xl mx-auto">
+                <section className="mx-auto" style={{ maxWidth: 'var(--hss-site-width)' }}>
                     <SectionHeader title="Atmosphere" subtitle="The palette and textures of the wild." />
 
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-32">
@@ -223,7 +223,7 @@ export default function DesignSystemPage() {
                 </section>
 
                 {/* 4. ELEMENTS */}
-                <section className="max-w-7xl mx-auto">
+                <section className="mx-auto" style={{ maxWidth: 'var(--hss-site-width)' }}>
                     <SectionHeader title="Key Elements" subtitle="Tactile components that build the world." />
 
                     <div className="bg-[#F3EFE6] p-24 rounded-[120px] border-8 border-charcoal/5 shadow-section relative overflow-hidden">

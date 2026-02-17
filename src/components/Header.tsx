@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { textures, fonts, colors, icons, pencil } from '@/design-system/tokens';
+import Link from 'next/link';
 import { LayeredPencil } from '@/components/LayeredPencil';
 
 const LOGO_SRC = "/HSSLOGO black YELLOW.png";
@@ -23,7 +24,10 @@ export default function Header() {
                     backgroundSize: '400px',
                 }}></div>
 
-            <div className="max-w-7xl mx-auto py-3 md:py-4 flex items-center justify-between relative z-10 transition-all duration-500">
+            <div
+                className="mx-auto py-3 md:py-4 flex items-center justify-between relative z-10 transition-all duration-500"
+                style={{ maxWidth: 'var(--hss-site-width)' }}
+            >
 
                 {/* Identity Column */}
                 <div className="flex items-center gap-6 md:gap-10">
@@ -57,9 +61,11 @@ export default function Header() {
                             <Image src={icons.mail} alt="Email" width={24} height={24} className="md:w-[26px] md:h-[26px] opacity-80 group-hover:opacity-100 transition-opacity" />
                         </button>
                     </div>
-                    <button className="bg-charcoal text-white px-6 md:px-10 py-3 md:py-4 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-primary hover:text-charcoal transition-all shadow-xl border border-white/10 active:scale-95 whitespace-nowrap">
-                        Join the Warmth
-                    </button>
+                    <Link href="/tickets">
+                        <button className="bg-charcoal text-white px-6 md:px-10 py-3 md:py-4 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-primary hover:text-charcoal transition-all shadow-xl border border-white/10 active:scale-95 whitespace-nowrap">
+                            Join the Warmth
+                        </button>
+                    </Link>
                 </div>
             </div>
         </header>

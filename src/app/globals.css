@@ -11,29 +11,16 @@
   --font-fraunces: var(--font-fraunces), serif;
 
   /* Colors */
-  --color-primary: #F8C630;
-  /* Sun-faded yellow */
-  --color-secondary: #D4A32A;
-  /* Darker Ochre */
-  --color-charcoal: #2C2C2C;
-  --color-wood-light: #E0D5C1;
-  /* Paper/canvas tone */
-  --color-wood-dark: #3E2723;
-  /* Deep cedar brown */
-  --color-background-light: #F3EFE6;
-  /* Warm off-white */
-  --color-background-dark: #1F1A17;
-  /* Very dark brown/black */
+  --color-primary: var(--hss-primary, #F8C630);
+  --color-charcoal: var(--hss-charcoal, #2C2C2C);
 
-  /* Background Images */
-  --background-image-cedar-texture: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-  --background-image-paper-texture: url('https://www.transparenttextures.com/patterns/natural-paper.png');
-  --background-image-canvas-texture: url('/canvas-background.png');
+  /* Dynamic Design Engine Variables */
+  --shadow-intensity: var(--hss-shadow-intensity, 1);
+  --card-tilt: var(--hss-card-tilt, 1.5deg);
 
-  /* Box Shadows */
-  --shadow-ticket: 2px 2px 0px 1px rgba(0, 0, 0, 0.2);
-  --shadow-polaroid: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 8px #fff;
-  --shadow-polaroid-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 8px #fff;
+  /* Box Shadows (Baked into the Engine) */
+  --shadow-ticket: 2px 2px 0px 1px rgba(0, 0, 0, calc(0.2 * var(--shadow-intensity)));
+  --shadow-polaroid: 0 calc(4px * var(--shadow-intensity)) calc(6px * var(--shadow-intensity)) -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 8px #fff;
 }
 
 /* Root Vars */
@@ -252,8 +239,18 @@ img,
     display: inline-block;
   }
 
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
 }
 
 @keyframes fadeInUp {
