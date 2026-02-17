@@ -1,8 +1,9 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
-import { fonts, textures, colors } from '@/design-system/tokens';
+
+
+import { fonts, textures } from '@/design-system/tokens';
 import { LayeredPencil, HandDrawnFilter } from '@/components/LayeredPencil';
 import { Polaroid } from '@/components/Polaroid';
 import Logo from '@/components/Logo';
@@ -81,7 +82,7 @@ export default function DesignSystemPage() {
                         <div className="p-10 bg-charcoal text-wood-light shadow-photo rounded-[40px] rotate-[1deg]">
                             <h3 className="text-3xl mb-6 text-primary" style={{ fontFamily: fonts.accent }}>Tactile Depth</h3>
                             <p className="font-display italic text-xl opacity-60 text-white/50">
-                                Surfaces have weight. We use "Smoked Wood" shadows and paper textures to bridge the uncancny valley between screen and shelf.
+                                Surfaces have weight. We use &quot;Smoked Wood&quot; shadows and paper textures to bridge the uncancny valley between screen and shelf.
                             </p>
                         </div>
                         <div className="p-10 bg-white shadow-photo rounded-[40px] rotate-[-2deg] border border-charcoal/5">
@@ -138,7 +139,7 @@ export default function DesignSystemPage() {
                             </div>
                             <div className="md:col-span-8 py-8">
                                 <p className="text-6xl text-charcoal/70 leading-tighter" style={{ fontFamily: 'var(--font-caveat)' }}>
-                                    "Into the warmth, away from the noise."
+                                    &quot;Into the warmth, away from the noise.&quot;
                                 </p>
                                 <div className="flex gap-12 mt-8">
                                     <span className="text-3xl text-primary -rotate-2" style={{ fontFamily: 'var(--font-caveat)' }}>Verified Soul</span>

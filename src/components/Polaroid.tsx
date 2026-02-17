@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from 'react';
+import Image from 'next/image';
 import { shadows, textures } from '@/design-system/tokens';
 
 /* ─────────────────────────────────────────────────────
@@ -158,11 +159,13 @@ export const Polaroid = React.memo(function Polaroid({
                                 <span className="text-charcoal/20 text-xs font-mono">IMG</span>
                             </div>
                         ) : (
-                            <img
+                            <Image
                                 src={src}
                                 alt={label}
-                                className="w-full h-full object-cover"
+                                fill
+                                className="object-cover"
                                 style={{ filter: r.photoFilter }}
+                                sizes="(max-width: 768px) 100vw, 33vw"
                             />
                         )}
 

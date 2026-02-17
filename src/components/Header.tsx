@@ -2,9 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { textures, fonts, colors, icons, pencil } from '@/design-system/tokens';
+import { textures, icons } from '@/design-system/tokens';
 import Link from 'next/link';
-import { LayeredPencil } from '@/components/LayeredPencil';
 import { useScroll, useMotionValueEvent } from 'framer-motion';
 import { useState } from 'react';
 

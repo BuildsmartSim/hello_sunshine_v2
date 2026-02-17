@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { textures, fonts, colors, icons, pencil } from '@/design-system/tokens';
+import { textures, icons, pencil } from '@/design-system/tokens';
 import { LayeredPencil } from '@/components/LayeredPencil';
 
 export default function Footer() {

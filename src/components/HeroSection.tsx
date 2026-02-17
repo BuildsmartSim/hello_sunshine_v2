@@ -4,7 +4,9 @@ import React from 'react';
 import Image from 'next/image';
 import { Polaroid } from '@/components/Polaroid';
 import { LayeredPencil } from '@/components/LayeredPencil';
-import { textures } from '@/design-system/tokens';
+
+
+
 
 /* ─────────────────────────────────────────────────────
    CHAMPION HERO (ID 47002)
@@ -15,11 +17,20 @@ import { textures } from '@/design-system/tokens';
    - "Hello Sunshine" Layered Pencil Header
    ───────────────────────────────────────────────────── */
 
-/* Specifications */
-const championPhotoShadow = "0 15px 30px -5px rgba(50, 43, 40, 0.45)";
 
-/* Local Helper: Organic Line */
-function OrganicLine({ type = "graphite", className = "", height = "h-[500px]" }: any) {
+/* Specifications */
+// championPhotoShadow removed
+
+// Actually, I'll delete the unused lines in separate chunks or just one big chunk?
+// I'll define interfaces and use them.
+
+interface OrganicLineProps {
+    type?: string;
+    className?: string;
+    height?: string;
+}
+
+function OrganicLine({ type = "graphite", className = "", height = "h-[500px]" }: OrganicLineProps) {
     if (type === "graphite") {
         return (
             <div className={`relative w-2 ${height} ${className}`}>
@@ -33,8 +44,17 @@ function OrganicLine({ type = "graphite", className = "", height = "h-[500px]" }
     return null;
 }
 
-/* Local Helper: Landscape Photo Placeholder */
-function LandscapePhoto({ src, alt, className = "", tilt = "rotate-0", shadowStyle = "", borderSize = "12px", borderRadius = "4px" }: any) {
+interface LandscapePhotoProps {
+    src: string;
+    alt: string;
+    className?: string;
+    tilt?: string;
+    shadowStyle?: string;
+    borderSize?: string;
+    borderRadius?: string;
+}
+
+function LandscapePhoto({ src, alt, className = "", tilt = "rotate-0", shadowStyle = "", borderSize = "12px", borderRadius = "4px" }: LandscapePhotoProps) {
     return (
         <div className={`aspect-[16/9] bg-white transition-transform ${tilt} ${className}`}
             style={{
@@ -50,7 +70,7 @@ function LandscapePhoto({ src, alt, className = "", tilt = "rotate-0", shadowSty
 }
 
 import { StandardSection } from '@/components/StandardSection';
-import { useDesign } from '@/design-system/DesignContext';
+// Removed unused useDesign import
 
 export default function HeroSection() {
     return (

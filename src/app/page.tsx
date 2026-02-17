@@ -1,23 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import Logo from "@/components/Logo";
 import SanctuarySection from "@/components/SanctuarySection";
 import HeroSection from "@/components/HeroSection";
 import TicketingSection from "@/components/TicketingSection";
 import Guestbook from "@/components/Guestbook";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { fonts, colors, pencil } from "@/design-system/tokens";
 import { Polaroid } from "@/components/Polaroid";
-import { LayeredPencil } from "@/components/LayeredPencil";
 import { SectionHeader } from "@/components/SectionHeader";
 import { StandardSection } from "@/components/StandardSection";
-import { useDesign } from "@/design-system/DesignContext";
+
 
 export default function Home() {
-  const { state } = useDesign();
+
+
 
   return (
     <div className="min-h-screen bg-[#FDFCF9]">

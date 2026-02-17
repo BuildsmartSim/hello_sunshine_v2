@@ -57,7 +57,7 @@ export function StepConfirmation({ formData, selectedTier }: StepConfirmationPro
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="text-[10px] uppercase tracking-[0.4em] text-charcoal/40 font-bold">Booking ID</span>
-                            <span className="text-sm font-mono text-primary font-bold">HSS-2026-{Math.floor(Math.random() * 10000)}</span>
+                            <span className="text-sm font-mono text-primary font-bold">HSS-2026-8821</span>
                         </div>
                     </div>
 

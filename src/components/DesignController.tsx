@@ -3,36 +3,44 @@
 import React from 'react';
 import { useDesign, DesignValues } from '@/design-system/DesignContext';
 
+const ControllerGroup = ({ title, children }: { title: string, children: React.ReactNode }) => (
+    <div className="space-y-4 pb-6 border-b border-charcoal/10 last:border-0 last:pb-0">
+        <h3 className="text-[10px] uppercase tracking-[0.2em] font-mono font-bold text-charcoal/40">{title}</h3>
+        <div className="space-y-4">
+            {children}
+        </div>
+    </div>
+);
+
+const Slider = ({ label, value, min, max, unit = "px", field, onUpdate }: {
+    label: string,
+    value: number,
+    min: number,
+    max: number,
+    unit?: string,
+    field: keyof DesignValues,
+    onUpdate: (updates: Partial<DesignValues>) => void
+}) => (
+    <div className="space-y-2">
+        <div className="flex justify-between text-[11px] font-mono font-medium">
+            <span className="text-charcoal/60">{label}</span>
+            <span className="text-charcoal">{value}{unit}</span>
+        </div>
+        <input
+            type="range"
+            min={min}
+            max={max}
+            step={unit === "x" ? 0.1 : 1}
+            value={value}
+            onChange={(e) => onUpdate({ [field]: parseFloat(e.target.value) })}
+            className="w-full accent-primary h-1 bg-charcoal/5 rounded-full appearance-none cursor-pointer"
+        />
+    </div>
+);
+
 export function DesignController() {
     const { state, updateDesign, selectSection, getEffectiveDesign, resetDesign } = useDesign();
     const currentValues = getEffectiveDesign(state.selectedSectionId);
-
-    const ControllerGroup = ({ title, children }: { title: string, children: React.ReactNode }) => (
-        <div className="space-y-4 pb-6 border-b border-charcoal/10 last:border-0 last:pb-0">
-            <h3 className="text-[10px] uppercase tracking-[0.2em] font-mono font-bold text-charcoal/40">{title}</h3>
-            <div className="space-y-4">
-                {children}
-            </div>
-        </div>
-    );
-
-    const Slider = ({ label, value, min, max, unit = "px", field }: { label: string, value: number, min: number, max: number, unit?: string, field: keyof DesignValues }) => (
-        <div className="space-y-2">
-            <div className="flex justify-between text-[11px] font-mono font-medium">
-                <span className="text-charcoal/60">{label}</span>
-                <span className="text-charcoal">{value}{unit}</span>
-            </div>
-            <input
-                type="range"
-                min={min}
-                max={max}
-                step={unit === "x" ? 0.1 : 1}
-                value={value}
-                onChange={(e) => updateDesign({ [field]: parseFloat(e.target.value) })}
-                className="w-full accent-primary h-1 bg-charcoal/5 rounded-full appearance-none cursor-pointer"
-            />
-        </div>
-    );
 
     const sections = [
         { id: 'global', label: 'Global Defaults' },
@@ -73,22 +81,22 @@ export function DesignController() {
 
             {/* 1. Vertical Rhythm */}
             <ControllerGroup title="Vertical Rhythm">
-                <Slider label="Section Padding (Desktop)" field="sectionPaddingDesktop" value={currentValues.sectionPaddingDesktop} min={0} max={256} />
-                <Slider label="Section Padding (Mobile)" field="sectionPaddingMobile" value={currentValues.sectionPaddingMobile} min={0} max={128} />
-                <Slider label="Header -> Content Gap" field="headerGapDesktop" value={currentValues.headerGapDesktop} min={0} max={128} />
-                <Slider label="Section Overlap (Pull)" field="sectionOverlap" value={currentValues.sectionOverlap} min={0} max={200} />
+                <Slider label="Section Padding (Desktop)" field="sectionPaddingDesktop" value={currentValues.sectionPaddingDesktop} min={0} max={256} onUpdate={updateDesign} />
+                <Slider label="Section Padding (Mobile)" field="sectionPaddingMobile" value={currentValues.sectionPaddingMobile} min={0} max={128} onUpdate={updateDesign} />
+                <Slider label="Header -> Content Gap" field="headerGapDesktop" value={currentValues.headerGapDesktop} min={0} max={128} onUpdate={updateDesign} />
+                <Slider label="Section Overlap (Pull)" field="sectionOverlap" value={currentValues.sectionOverlap} min={0} max={200} onUpdate={updateDesign} />
             </ControllerGroup>
 
             {/* 2. Typography Lockup */}
             <ControllerGroup title="Typography Lockup">
-                <Slider label="Header Line Interlock" field="headerInterlock" value={currentValues.headerInterlock} min={-40} max={40} />
-                <Slider label="Title -> Subtitle Gap" field="headerSubtitleGap" value={currentValues.headerSubtitleGap} min={0} max={64} />
+                <Slider label="Header Line Interlock" field="headerInterlock" value={currentValues.headerInterlock} min={-40} max={40} onUpdate={updateDesign} />
+                <Slider label="Title -> Subtitle Gap" field="headerSubtitleGap" value={currentValues.headerSubtitleGap} min={0} max={64} onUpdate={updateDesign} />
             </ControllerGroup>
 
             {/* 3. Deep Detail */}
             <ControllerGroup title="Deep Detail">
-                <Slider label="Shadow Intensity" field="shadowIntensity" value={currentValues.shadowIntensity} min={0} max={2} unit="x" />
-                <Slider label="Card Tilt" field="cardTilt" value={currentValues.cardTilt} min={-5} max={5} unit="deg" />
+                <Slider label="Shadow Intensity" field="shadowIntensity" value={currentValues.shadowIntensity} min={0} max={2} unit="x" onUpdate={updateDesign} />
+                <Slider label="Card Tilt" field="cardTilt" value={currentValues.cardTilt} min={-5} max={5} unit="deg" onUpdate={updateDesign} />
             </ControllerGroup>
 
             {/* 4. Global Colors */}
@@ -118,6 +126,7 @@ export function DesignController() {
                     min={1000}
                     max={1920}
                     unit="px"
+                    onUpdate={updateDesign}
                 />
             </ControllerGroup>
 
@@ -125,7 +134,7 @@ export function DesignController() {
             <ControllerGroup title="Permanent Configuration">
                 <div className="space-y-4">
                     <p className="text-[10px] text-charcoal/50 leading-relaxed italic">
-                        Send this JSON to me to "bake" these settings as the new permanent defaults.
+                        Send this JSON to me to &quot;bake&quot; these settings as the new permanent defaults.
                     </p>
 
                     <div className="flex flex-col gap-2">

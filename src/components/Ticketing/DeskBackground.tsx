@@ -3,7 +3,7 @@
 import React from 'react';
 import { Polaroid } from '@/components/Polaroid';
 import Image from 'next/image';
-import { textures, shadows, icons } from '@/design-system/tokens';
+import { textures, icons } from '@/design-system/tokens';
 
 /* ── Local Helper: Standard Photograph (Sanctuary style) ── */
 function Photo({ src, label, tilt = "0deg", className = "", size = "w-64 h-80" }: { src: string; label?: string; tilt?: string; className?: string; size?: string }) {

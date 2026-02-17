@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import NextImage from 'next/image';
-import { fonts } from '@/design-system/tokens';
 
 /* ─────────────────────────────────────────────────────
    AUTHENTIC LEGACY GUESTBOOK

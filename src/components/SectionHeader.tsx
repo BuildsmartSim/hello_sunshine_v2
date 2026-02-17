@@ -1,16 +1,15 @@
 "use client";
 
-import React from 'react';
-import { LayeredPencil } from './LayeredPencil';
-import { pencil, colors, fonts } from '@/design-system/tokens';
+import { fonts, pencil } from '@/design-system/tokens';
+import { LayeredPencil } from '@/components/LayeredPencil';
 
 interface SectionHeaderProps {
     line1: string;
-    line2: string;
-    subtitle?: string;
+    line2?: string;
+    subtitle?: string; // e.g. "EST. 2024"
     description?: string;
     className?: string;
-    style?: React.CSSProperties;
+    centered?: boolean;
 }
 
 /**
@@ -24,14 +23,11 @@ interface SectionHeaderProps {
  * Includes the specific charcoal hatch fill (faded) and 
  * fixed line-interlock spacing to prevent overlap.
  */
-import { useDesign } from '@/design-system/DesignContext';
 
-export function SectionHeader({ line1, line2, subtitle, description, className = "" }: SectionHeaderProps) {
-    const { state } = useDesign();
-
+export function SectionHeader({ line1, line2 = "", subtitle, description, className = "", centered = false }: SectionHeaderProps) {
     return (
         <div
-            className={`${className}`}
+            className={`${className} ${centered ? 'items-center text-center' : ''}`}
             style={{
                 display: 'flex',
                 flexDirection: 'column',

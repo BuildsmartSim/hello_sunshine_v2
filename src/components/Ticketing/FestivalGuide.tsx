@@ -1,5 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
+
 import { EventData } from './FestivalPass';
 import { fonts, textures } from '@/design-system/tokens';
 import { Button } from '@/components/Button';
@@ -45,7 +46,7 @@ export function FestivalGuide({ event, onContinue, onBack }: FestivalGuideProps)
                         <div className="mb-10">
                             <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-charcoal/30 mb-4 block">The Experience</span>
                             <p className="text-lg text-charcoal/70 leading-relaxed italic" style={{ fontFamily: fonts.body }}>
-                                "{event.description}"
+                                &quot;{event.description}&quot;
                             </p>
                             <a
                                 href={event.externalUrl}

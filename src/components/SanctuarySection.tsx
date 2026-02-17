@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { colors, shadows, fonts, icons, textures, pencil } from '@/design-system/tokens';
+import { shadows, fonts, icons } from '@/design-system/tokens';
+import Image from 'next/image';
 import { Polaroid } from '@/components/Polaroid';
-import { LayeredPencil } from '@/components/LayeredPencil';
 import { SectionHeader } from '@/components/SectionHeader';
 import { StandardSection } from '@/components/StandardSection';
 
@@ -114,7 +114,7 @@ function Photo({
             onMouseLeave={onMouseLeave}
         >
             <div className="w-full h-full bg-charcoal/5 relative overflow-hidden border border-charcoal/5" style={{ borderRadius: "2px" }}>
-                <img src={src} alt={alt} className="w-full h-full object-cover transition-opacity duration-500" />
+                <Image src={src} alt={alt} fill className="object-cover transition-opacity duration-500" sizes="(max-width: 768px) 100vw, 33vw" />
             </div>
         </div>
     );
@@ -141,9 +141,11 @@ function IconColumn({ services, activeService, onServiceClick }: {
                             ? 'bg-primary shadow-md scale-110'
                             : 'bg-charcoal/[0.04] hover:bg-primary/20'
                             }`}>
-                            <img
+                            <Image
                                 src={s.icon}
                                 alt={s.label}
+                                width={28}
+                                height={28}
                                 className={`w-7 h-7 object-contain transition-all duration-300 ${isActive ? 'opacity-100 brightness-0 invert' : 'opacity-60'
                                     }`}
                             />

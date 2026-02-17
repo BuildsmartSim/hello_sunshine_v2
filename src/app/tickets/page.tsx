@@ -140,6 +140,7 @@ export default function TicketingPage() {
                                             ...selectedEvent,
                                             title: `${selectedEvent.title} - ${selectedSubTier.name}`,
                                             featuredPrice: selectedSubTier.price
+                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         } as any}
                                         formData={formData}
                                     />

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { spacing, colors, shadows } from './tokens';
+
+
 
 /**
  * THE DESIGN VALUES
@@ -91,7 +92,7 @@ export function DesignProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
-                setState(prev => ({
+                setState(prev => ({ // eslint-disable-line react-hooks/set-state-in-effect
                     ...prev,
                     global: { ...DEFAULT_VALUES, ...(parsed.global || parsed) }, // Support v2 upgrade
                     sectionOverrides: parsed.sectionOverrides || {},

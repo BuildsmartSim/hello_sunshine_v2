@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
+
+
 import { FESTIVAL_DATA, FestivalPass, TicketTier } from './FestivalPass';
 import { SectionHeader } from '@/components/SectionHeader';
 
