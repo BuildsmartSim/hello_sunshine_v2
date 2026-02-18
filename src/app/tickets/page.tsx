@@ -23,7 +23,12 @@ export default function TicketingPage() {
         name: '',
         email: '',
         phone: '',
+        age: '',
+        gender: '',
+        waiverAccepted: false,
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleEventSelect = (event: TicketTier) => {
         setSelectedEvent(event);
@@ -37,13 +42,53 @@ export default function TicketingPage() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleFormChange = (field: string, value: string) => {
+    const handleFormChange = (field: string, value: string | boolean) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleConfirm = () => {
-        setCurrentStep('confirmation');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    const handleConfirm = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            // 1. Trigger Stripe Checkout
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    priceId: selectedSubTier?.id, // In a real app, this would be a Stripe Price ID
+                    email: formData.email,
+                    name: formData.name,
+                    metadata: {
+                        event_id: selectedEvent?.id,
+                        age: formData.age,
+                        gender: formData.gender,
+                        phone: formData.phone,
+                        waiver_accepted: formData.waiverAccepted.toString(),
+                        waiver_accepted_at: new Date().toISOString()
+                    }
+                }),
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                try {
+                    const data = JSON.parse(text);
+                    throw new Error(data.error || 'Something went wrong');
+                } catch {
+                    throw new Error(`Server returned an error (${response.status})`);
+                }
+            }
+
+            const data = await response.json();
+            // Redirect to Stripe
+            window.location.href = data.url;
+        } catch (err: any) {
+            console.error('Checkout failed:', err);
+            setError(err.message || 'Payment system unreachable');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -118,6 +163,11 @@ export default function TicketingPage() {
                                     exit={{ opacity: 0, x: -20 }}
                                     transition={{ duration: 0.5, ease: "anticipate" }}
                                 >
+                                    {error && (
+                                        <div className="max-w-2xl mx-auto mb-8 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 font-mono text-sm">
+                                            {error}
+                                        </div>
+                                    )}
                                     <StepDetails
                                         formData={formData}
                                         onChange={handleFormChange}

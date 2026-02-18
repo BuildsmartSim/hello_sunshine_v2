@@ -11,6 +11,9 @@ interface StepConfirmationProps {
     formData: {
         name: string;
         email: string;
+        phone: string;
+        age?: string;
+        gender?: string;
     };
     selectedTier: TicketTier | null;
 }

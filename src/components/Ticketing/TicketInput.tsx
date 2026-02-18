@@ -16,6 +16,7 @@ export function TicketInput({ label, ...props }: TicketInputProps) {
             <div className="relative">
                 <input
                     {...props}
+                    autoComplete="off" // Added autoComplete prop
                     className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30"
                     style={{ fontFamily: fonts.handwriting }}
                 />
