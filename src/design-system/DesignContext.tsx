@@ -66,7 +66,7 @@ const DEFAULT_STATE: DesignState = {
             sectionPaddingDesktop: 148
         },
         guestbook: {
-            sectionPaddingDesktop: 0,
+            sectionPaddingDesktop: 64,
             sectionOverlap: 45,
             siteWidth: 1296
         },
@@ -74,9 +74,9 @@ const DEFAULT_STATE: DesignState = {
             shadowIntensity: 1
         },
         ticketing: {
-            sectionPaddingDesktop: 128,
-            sectionPaddingMobile: 96,
-            sectionOverlap: 120
+            sectionPaddingDesktop: 160,
+            sectionPaddingMobile: 120,
+            sectionOverlap: 60
         }
     },
     selectedSectionId: 'global',

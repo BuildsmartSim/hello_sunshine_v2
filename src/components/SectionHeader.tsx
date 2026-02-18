@@ -58,11 +58,11 @@ export function SectionHeader({ line1, line2 = "", subtitle, description, classN
 
             {(subtitle || description) && (
                 <div
-                    className="flex flex-col border-t border-charcoal/10 pt-4"
-                    style={{ gap: 'calc(var(--hss-header-subtitle-gap, 16px) * 1.5)' }}
+                    className="flex flex-col border-t border-charcoal/10"
+                    style={{ gap: 'calc(var(--hss-header-subtitle-gap, 16px) * 1.5)', paddingTop: 'calc(var(--hss-header-subtitle-gap, 16px) * 0.75)' }}
                 >
                     {subtitle && (
-                        <div className="space-y-6">
+                        <div className="space-y-3">
                             <p style={{ fontFamily: fonts.handwriting }} className="text-2xl text-charcoal/50 leading-snug">
                                 {subtitle}
                             </p>
