@@ -59,3 +59,28 @@ export async function deleteDiscoveryLeadAction(id: string) {
         return { success: false };
     }
 }
+
+export async function triggerDiscoveryAgentAction(origin: string) {
+    try {
+        const auth = await requireAdminOrPin();
+        if (!auth.authorized) throw new Error(auth.error);
+
+        const secret = process.env.CRON_SECRET;
+        if (!secret) throw new Error("CRON_SECRET is not configured");
+
+        const res = await fetch(`${origin}/api/cron/discovery?key=${secret}`, {
+            method: 'GET',
+            cache: 'no-store'
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+            return { success: false, error: data.error || data.message || 'API request failed' };
+        }
+
+        return { success: true, data };
+    } catch (error: any) {
+        console.error('Failed to run agent:', error);
+        return { success: false, error: error.message };
+    }
+}

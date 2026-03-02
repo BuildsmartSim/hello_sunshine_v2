@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { getDiscoveryLeadsAction, updateDiscoveryLeadStatusAction, deleteDiscoveryLeadAction } from '@/app/actions/discovery';
+import { getDiscoveryLeadsAction, updateDiscoveryLeadStatusAction, deleteDiscoveryLeadAction, triggerDiscoveryAgentAction } from '@/app/actions/discovery';
 
 interface Lead {
     id: string;
@@ -38,14 +38,13 @@ export default function DiscoveryPage() {
     const runDiscoveryAgent = async () => {
         setRunningAgent(true);
         try {
-            const res = await fetch('/api/cron/discovery');
-            const data = await res.json();
+            const res = await triggerDiscoveryAgentAction(window.location.origin);
 
-            if (res.ok) {
-                alert(`Success! Query: ${data.query}\nProcessed: ${data.processed}\nAdded: ${data.added}`);
+            if (res.success && res.data) {
+                alert(`Success! Query: ${res.data.query}\nProcessed: ${res.data.processed}\nAdded: ${res.data.added}`);
                 fetchLeads();
             } else {
-                alert(`Error: ${data.error || 'Failed to run agent'}`);
+                alert(`Error: ${res.error || 'Failed to run agent'}`);
             }
         } catch (err) {
             console.error(err);
