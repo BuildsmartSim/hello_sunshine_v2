@@ -85,7 +85,7 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
     },
     'Sauna': {
         img1: "/optimized/photographs/webp/Sauna/IMG-20230727-WA0006.webp",
-        img2: "/optimized/polaroids/webp/TIM+STOVE.webp",
+        img2: "/optimized/polaroids/webp/TIM+STOVE.jpg",
         img3: "/optimized/photographs/webp/Sauna/CARAVAN LEAVES OUTDOORS.webp",
         polaroid: "/optimized/photographs/webp/Sauna/woman-doing-face-paint.webp",
         polaroidLabel: "The sign says it all.",
@@ -292,13 +292,13 @@ export default function SanctuarySection() {
                 {/* Right column — photo cascade — optimized for mobile */}
                 <div className="col-span-1 md:col-span-7 relative min-h-[500px] md:min-h-[820px] mt-12 md:mt-0" onMouseLeave={() => setHoveredId(null)}>
 
-                    <AnimatePresence>
+                    <AnimatePresence mode="wait">
                         <motion.div
                             key={activeService ?? 'default'}
-                            initial={{ opacity: 0, scale: 1.02 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 1 }}
-                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.25, ease: "easeOut" }}
                             className="absolute inset-0 w-full h-full pointer-events-none"
                         >
                             <div className="absolute top-0 left-0 w-[65%] md:w-[60%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
@@ -319,24 +319,11 @@ export default function SanctuarySection() {
                                     alt={activeService ? `${activeService} — image 3` : 'Rainbow over the sauna'} />
                             </div>
 
-                            <div className="absolute bottom-[-10px] md:bottom-[-20px] right-4 md:right-12 transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
-                                style={getTransform('4', '3deg', 'polaroid')} onMouseEnter={() => setHoveredId('4')}>
+                            <div className="absolute bottom-[-40px] md:bottom-[-60px] right-2 md:right-8 z-40 pointer-events-auto"
+                                style={{ transform: 'rotate(3deg)' }}>
                                 <div className="relative inline-block overflow-visible">
                                     <Polaroid src={currentImages.polaroid} label={currentImages.polaroidLabel}
-                                        rotation="rotate-0" size="w-40 md:w-48" forcePlaceholder={false} />
-
-                                    {/* The Sun Reflection Stream */}
-                                    <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden rounded-[2px]">
-                                        <motion.div
-                                            initial={{ x: "-150%" }}
-                                            animate={{ x: "200%" }}
-                                            transition={{ duration: 1.5, ease: "easeInOut", delay: 0.1 }}
-                                            className="absolute inset-0 w-full h-full mix-blend-overlay"
-                                            style={{
-                                                background: "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 60%, transparent 80%)"
-                                            }}
-                                        />
-                                    </div>
+                                        rotation="rotate-0" size="w-48 md:w-80" forcePlaceholder={false} />
                                 </div>
                             </div>
                         </motion.div>

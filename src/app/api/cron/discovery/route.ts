@@ -6,32 +6,36 @@ import { scrapeUrl } from '@/utils/agents/firecrawl';
 
 
 
+const NEGATIVE_TERMS = " -site:timeout.com -site:the-independent.com -site:cntraveller.com -site:theguardian.com -site:gq-magazine.co.uk -site:countryandtownhouse.com -inurl:blog -inurl:article -inurl:news";
+
 const QUERIES = [
-    "large UK festivals boutique camping",
-    "major UK music festivals healing fields",
-    "uk boutique music festivals",
-    "small independent arts festivals uk",
-    "uk wild swimming clubs",
-    "uk glamping sites with lakes",
-    "uk trail running events with event village"
+    `UK boutique festival "camping" "tickets"${NEGATIVE_TERMS}`,
+    `independent music festival UK "lineup" "tickets"${NEGATIVE_TERMS}`,
+    `UK wellness retreat festival "sauna"${NEGATIVE_TERMS}`,
+    `small holistic gatherings UK  "healing"${NEGATIVE_TERMS}`,
+    `UK wild swimming club${NEGATIVE_TERMS}`,
+    `boutique glamping site UK "sauna"${NEGATIVE_TERMS}`,
+    `UK trail running event "village"${NEGATIVE_TERMS}`
 ];
 
 const SYSTEM_PROMPT = `
 You are an AI scouting for a premium mobile wood-fired sauna business called 'Hello Sunshine'. 
-We are looking for B2B partnerships, boutique wellness integrations, and pop-up events. 
-Our vibe is community-focused, rustic-yet-premium, wellness-oriented, but also open to alternative music/arts events. 
+We are looking for B2B partnerships, boutique wellness integrations, and pop-up events at INDIVIDUAL festivals or physical locations. 
+
+CRITICAL RULE:
+If the website is a news article, a listicle (e.g., "The 50 Best Festivals", "Top 10 Glamping Sites"), an aggregator, or a blog post discussing multiple events, you MUST set the vibe_score to 0 and state "Listicle/Article - Not a direct lead" in the vibe_notes. We ONLY want websites belonging to a single, specific festival or location.
 
 Your task is to analyze the provided markdown text from a website and return a JSON object with the following structure:
 {
-  "name": "The name of the festival or spot",
+  "name": "The specific name of the festival or spot (NOT the title of an article)",
   "emails": ["list of contact emails found"],
   "vibe_score": An integer from 1 to 100,
   "vibe_notes": "A short summary of *why* you gave this score based on their website copy."
 }
 
-Scoring Rules:
+Scoring Rules (if it's a valid single target):
 - We need locations or events with outdoor space, water access, and a crowd that appreciates high-quality relaxation.
-- When scoring festivals (especially large ones 4000+ capacity), prioritize those that explicitly mention 'boutique camping', 'VIP areas', 'healing fields', or 'wellness sanctuaries'. Give these high scores (80-100).
+- Prioritize festivals that explicitly mention 'boutique camping', 'VIP areas', 'healing fields', or 'wellness sanctuaries'. Give these high scores (80-100).
 - If the site is a wild swimming club or luxury glamping site, give it a high score (80-100).
 - If it seems like a generic corporate event or an indoor location, give it a low score (< 40).
 
@@ -57,12 +61,13 @@ export async function GET(request: Request) {
         );
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-        // 2. Select a random query
+        // 2. Select a random query and random page offset to avoid hitting the exact same results
         const query = QUERIES[Math.floor(Math.random() * QUERIES.length)];
-        console.log(`[Discovery] Running search for: "${query}"`);
+        const randomPage = Math.floor(Math.random() * 5) + 1; // Google pages 1 to 5
+        console.log(`[Discovery] Running search for: "${query}" (Page ${randomPage})`);
 
         // 3. Search Serper
-        const searchResults = await searchSerper(query);
+        const searchResults = await searchSerper(query, randomPage);
         if (!searchResults.length) {
             return NextResponse.json({ message: 'No search results found.' });
         }
@@ -70,8 +75,8 @@ export async function GET(request: Request) {
         const processedUrls: string[] = [];
         let addedCount = 0;
 
-        // Process top 2 results to save time/tokens on a single cron run
-        for (const result of searchResults.slice(0, 2)) {
+        // Process top 15 results to skip over SEO listicles
+        for (const result of searchResults.slice(0, 15)) {
             const url = result.link;
 
             // 4. Check if URL already exists in DB
@@ -123,6 +128,13 @@ export async function GET(request: Request) {
 
                 const type = isFestival ? 'festival' : 'popup_spot';
 
+                // Extremely strict filtering
+                const score = extractedData.vibe_score || 0;
+                if (score < 40) {
+                    console.log(`[Discovery] Rejected lead ${url} - Score too low (${score}). Notes: ${extractedData.vibe_notes}`);
+                    continue;
+                }
+
                 // 7. Save to DB
                 const { error: insertError } = await supabase
                     .from('discovery_leads')
@@ -131,7 +143,7 @@ export async function GET(request: Request) {
                         name: extractedData.name || result.title,
                         url,
                         emails: Array.isArray(extractedData.emails) ? extractedData.emails : [],
-                        vibe_score: extractedData.vibe_score || 50,
+                        vibe_score: score,
                         vibe_notes: extractedData.vibe_notes || '',
                         source: isManual ? 'manual' : 'cron',
                         status: 'PENDING'

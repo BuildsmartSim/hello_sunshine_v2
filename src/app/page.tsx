@@ -88,45 +88,34 @@ export default function Home() {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={guestbookSpread}
-                  initial={{ opacity: 0, scale: 1.02 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
                   className="flex flex-col items-center w-full relative"
                 >
                   <Polaroid
                     src={activePolaroids[0].src}
                     label={activePolaroids[0].label}
                     rotation="rotate-[-5deg]"
-                    size="w-64"
-                    className="hover:z-50 transition-all duration-700 ease-in-out z-10"
+                    size="w-48 md:w-80"
+                    className="z-10"
                   />
-                  <Polaroid
-                    src={activePolaroids[1].src}
-                    label={activePolaroids[1].label}
-                    rotation="rotate-[4deg]"
-                    size="w-64"
-                    className="hover:z-50 transition-all duration-700 ease-in-out translate-x-3 -mt-12 z-20"
-                  />
-                  <div className="relative inline-block overflow-visible z-30 hover:z-50 transition-all duration-700 ease-in-out -translate-x-2 -mt-16">
+                  <div className="-mt-16 md:-mt-32 translate-x-3 md:translate-x-6 z-20">
+                    <Polaroid
+                      src={activePolaroids[1].src}
+                      label={activePolaroids[1].label}
+                      rotation="rotate-[4deg]"
+                      size="w-48 md:w-80"
+                    />
+                  </div>
+                  <div className="relative inline-block overflow-visible -translate-x-3 md:-translate-x-6 -mt-16 md:-mt-32 z-30">
                     <Polaroid
                       src={activePolaroids[2].src}
                       label={activePolaroids[2].label}
                       rotation="rotate-[-3deg]"
-                      size="w-64"
+                      size="w-48 md:w-80"
                     />
-                    {/* The Sun Reflection Stream overlaid on the top polaroid */}
-                    <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden rounded-[2px]" style={{ transform: "rotate(-3deg)" }}>
-                      <motion.div
-                        initial={{ x: "-150%" }}
-                        animate={{ x: "200%" }}
-                        transition={{ duration: 1.5, ease: "easeInOut", delay: 0.1 }}
-                        className="absolute inset-0 w-full h-full mix-blend-overlay"
-                        style={{
-                          background: "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 60%, transparent 80%)"
-                        }}
-                      />
-                    </div>
                   </div>
                 </motion.div>
               </AnimatePresence>

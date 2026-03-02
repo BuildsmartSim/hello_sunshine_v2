@@ -4,7 +4,7 @@ export interface SerperResult {
     snippet: string;
 }
 
-export async function searchSerper(query: string): Promise<SerperResult[]> {
+export async function searchSerper(query: string, page: number = 1): Promise<SerperResult[]> {
     const url = 'https://google.serper.dev/search';
     const apiKey = process.env.SERPER_API_KEY;
 
@@ -24,6 +24,7 @@ export async function searchSerper(query: string): Promise<SerperResult[]> {
                 q: query,
                 gl: 'uk', // Google location: UK
                 hl: 'en', // Language: English
+                page: page
             })
         });
 

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@/utils/supabase/client';
 import { format } from 'date-fns';
+import { getDiscoveryLeadsAction, updateDiscoveryLeadStatusAction, deleteDiscoveryLeadAction } from '@/app/actions/discovery';
 
 interface Lead {
     id: string;
@@ -21,17 +21,13 @@ export default function DiscoveryPage() {
     const [leads, setLeads] = useState<Lead[]>([]);
     const [loading, setLoading] = useState(true);
     const [runningAgent, setRunningAgent] = useState(false);
-    const supabase = createClient();
 
     const fetchLeads = async () => {
         setLoading(true);
-        const { data, error } = await supabase
-            .from('discovery_leads')
-            .select('*')
-            .order('vibe_score', { ascending: false });
-
-        if (data) setLeads(data);
-        if (error) console.error('Error fetching leads:', error);
+        const res = await getDiscoveryLeadsAction();
+        if (res.success) {
+            setLeads(res.data as Lead[]);
+        }
         setLoading(false);
     };
 
@@ -42,13 +38,6 @@ export default function DiscoveryPage() {
     const runDiscoveryAgent = async () => {
         setRunningAgent(true);
         try {
-            // In production, you would not expose CRON_SECRET to the client,
-            // but for this internal admin tool we will trigger via API or a server action.
-            // Easiest is to call a server action, but for now we'll call the API route
-            // It will fail if unauthorized depending on implementation. Let's just 
-            // do a simple fetch if we allowed it, or you'd use a server action.
-            // To bypass auth rules locally for demo, you'd ensure it works in dev mode.
-
             const res = await fetch('/api/cron/discovery');
             const data = await res.json();
 
@@ -66,13 +55,20 @@ export default function DiscoveryPage() {
     };
 
     const updateStatus = async (id: string, status: Lead['status']) => {
-        const { error } = await supabase
-            .from('discovery_leads')
-            .update({ status })
-            .eq('id', id);
-
-        if (!error) {
+        const res = await updateDiscoveryLeadStatusAction(id, status);
+        if (res.success) {
             setLeads(leads.map(l => l.id === id ? { ...l, status } : l));
+        }
+    };
+
+    const deleteLead = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this lead?')) return;
+        // Optimistic UI update
+        setLeads(leads.filter(l => l.id !== id));
+        const res = await deleteDiscoveryLeadAction(id);
+        if (!res.success) {
+            alert('Failed to delete lead from database.');
+            fetchLeads(); // Revert
         }
     };
 
@@ -159,9 +155,9 @@ export default function DiscoveryPage() {
                                             value={lead.status}
                                             onChange={(e) => updateStatus(lead.id, e.target.value as any)}
                                             className={`text-xs font-bold uppercase tracking-widest pl-3 pr-8 py-2 rounded-full appearance-none border-0 ring-1 ring-inset ${lead.status === 'PENDING' ? 'bg-neutral-100 text-neutral-600 ring-neutral-200' :
-                                                    lead.status === 'CONTACTED' ? 'bg-blue-50 text-blue-600 ring-blue-200' :
-                                                        lead.status === 'INTERESTED' ? 'bg-green-50 text-green-600 ring-green-200' :
-                                                            'bg-red-50 text-red-600 ring-red-200'
+                                                lead.status === 'CONTACTED' ? 'bg-blue-50 text-blue-600 ring-blue-200' :
+                                                    lead.status === 'INTERESTED' ? 'bg-green-50 text-green-600 ring-green-200' :
+                                                        'bg-red-50 text-red-600 ring-red-200'
                                                 }`}
                                         >
                                             <option value="PENDING">Pending</option>
@@ -174,6 +170,12 @@ export default function DiscoveryPage() {
                                         <div className="flex flex-col items-end gap-1 text-[10px] text-neutral-400 font-mono uppercase">
                                             <span>{lead.type.replace('_', ' ')}</span>
                                             <span>{format(new Date(lead.created_at), 'MMM d, yyyy')}</span>
+                                            <button
+                                                onClick={() => deleteLead(lead.id)}
+                                                className="mt-2 text-red-400 hover:text-red-600 transition-colors uppercase tracking-widest font-bold border border-red-100 bg-red-50 hover:bg-red-100 px-3 py-1 rounded"
+                                            >
+                                                Delete
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
