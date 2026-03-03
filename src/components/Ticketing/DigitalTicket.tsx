@@ -12,9 +12,10 @@ interface DigitalTicketProps {
     passName: string;
     date: string;
     checkInUrl: string;
+    requiresTermsSignoff?: boolean;
 }
 
-export function DigitalTicket({ ticketId, customerName, eventTitle, passName, date, checkInUrl }: DigitalTicketProps) {
+export function DigitalTicket({ ticketId, customerName, eventTitle, passName, date, checkInUrl, requiresTermsSignoff }: DigitalTicketProps) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -84,6 +85,13 @@ export function DigitalTicket({ ticketId, customerName, eventTitle, passName, da
                         <span className="text-[11px] uppercase tracking-[0.4em] text-charcoal/70 font-bold block mb-1">Ticket ID</span>
                         <span className="text-xs font-mono text-charcoal/70">{ticketId.substring(0, 18).toUpperCase()}...</span>
                     </div>
+
+                    {requiresTermsSignoff && (
+                        <div className="mt-8 bg-red-50 border-2 border-red-500/30 rounded-xl p-4 text-center max-w-[240px]">
+                            <p className="text-red-700 font-bold uppercase text-[10px] tracking-widest mb-1">⚠️ Action Required</p>
+                            <p className="text-red-600/80 text-[10px] font-mono leading-tight">Please sign the Terms & Conditions waiver at the entry desk.</p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Perforation Line (Visual Only) */}

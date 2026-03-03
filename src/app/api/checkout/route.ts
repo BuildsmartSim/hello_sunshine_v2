@@ -7,10 +7,10 @@ import { stripe } from '@/lib/stripe';
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { priceId, email, name, metadata } = body;
+        const { priceId, email, name, quantity = 1, metadata, unitAmount: clientUnitAmount } = body;
         const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-        console.log('Checkout requested for:', email, priceId);
+        console.log(`Checkout requested for: ${email}, ${priceId}, qty: ${quantity}`);
 
         // Fetch Geolocation data
         let location_city = null;
@@ -38,10 +38,10 @@ export async function POST(req: Request) {
 
         // 1. Check Inventory
         const stock = await inventory.checkAvailability(priceId);
-        if (!stock.available) {
-            console.warn(`Blocked checkout for sold-out item: ${priceId}`);
+        if (!stock.available || stock.remaining < quantity) {
+            console.warn(`Blocked checkout for item due to stock: ${priceId}`);
             return NextResponse.json(
-                { error: 'Sorry, this ticket tier has just sold out.' },
+                { error: `Sorry, we only have ${stock.remaining || 0} tickets remaining for this tier.` },
                 { status: 409 } // 409 Conflict
             );
         }
@@ -58,35 +58,41 @@ export async function POST(req: Request) {
         const stripe = (await import('@/lib/stripe')).getStripe();
         const supabase = (await import('@/lib/supabaseAdmin')).supabaseAdmin;
 
-        // Extract price dynamically from app_events since local DB may lack price_amount_pence
-        let unitAmount = 0;
+        let serverUnitAmount = 0;
         const { data: events } = await supabase.from('app_events').select('tiers');
         if (events) {
-            for (const ev of events) {
-                const tier = ev.tiers?.find((t: any) => t.id === priceId);
-                if (tier && tier.price) {
-                    const numericPrice = Number(tier.price.replace(/[^0-9.-]+/g, ""));
-                    unitAmount = Math.round(numericPrice * 100);
-                    break;
+            outerLoop: for (const ev of events) {
+                if (!ev.tiers) continue;
+                // Find the tier where id matches priceId
+                const match = ev.tiers.find((t: any) => t.id === priceId);
+                if (match && match.price) {
+                    const numericPrice = Number(match.price.toString().replace(/[^0-9.-]+/g, ""));
+                    serverUnitAmount = Math.round(numericPrice * 100);
+                    break outerLoop;
                 }
             }
         }
 
-        // Failsafe in case DB has no price (Stripe requires > 30p for GBP)
-        if (unitAmount < 30) unitAmount = 1000;
+        if (serverUnitAmount < 30) {
+            console.error(`[SECURITY] Invalid price looked up for tier ${priceId}: ${serverUnitAmount}p. Refusing checkout.`);
+            return NextResponse.json(
+                { error: `Pricing error for tier.` },
+                { status: 400 }
+            );
+        }
 
         // 2. Create Session with Metadata
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
                 {
-                    quantity: 1,
+                    quantity: quantity,
                     price_data: {
                         currency: 'gbp',
                         product_data: {
-                            name: stock.productName || `Ticket: ${priceId}`
+                            name: stock.productName || `Pass: ${priceId}`
                         },
-                        unit_amount: unitAmount
+                        unit_amount: serverUnitAmount
                     }
                 }
             ],
@@ -101,18 +107,21 @@ export async function POST(req: Request) {
                 referral_code: metadata?.referral_code || null,
                 location_city,
                 location_country,
+                quantity: quantity.toString(),
                 ...metadata
             },
         });
 
-        // 3. Create Pending Ticket Reservation to lock inventory
+        // 3. Create Pending Ticket Reservations to lock inventory
+        const pendingTickets = Array.from({ length: quantity }).map(() => ({
+            product_id: stock.productId,
+            stripe_session_id: session.id,
+            status: 'pending'
+        }));
+
         const { error: reserveError } = await supabase
             .from('tickets')
-            .insert({
-                product_id: stock.productId,
-                stripe_session_id: session.id,
-                status: 'pending'
-            });
+            .insert(pendingTickets);
 
         if (reserveError) {
             console.error('Failed to reserve pending ticket:', reserveError);

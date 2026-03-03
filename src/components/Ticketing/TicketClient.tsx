@@ -59,6 +59,7 @@ export function TicketClient({ ticket, checkInUrl }: TicketClientProps) {
                     passName={ticket.product?.name || ticket.slot?.product?.name || 'General Entry'}
                     date={ticket.slot ? new Date(ticket.slot.start_time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Season Pass'}
                     checkInUrl={checkInUrl}
+                    requiresTermsSignoff={ticket.profile?.terms_accepted === false}
                 />
             </div>
 

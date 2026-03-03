@@ -226,6 +226,15 @@ export async function checkInTicketAction(ticketId: string, notes?: string, pin?
             };
         }
 
+        if (ticket.profile && ticket.profile.terms_accepted === false) {
+            return {
+                success: false,
+                error: 'TERMS NOT ACCEPTED - PLEASE SIGN WAIVER AT DESK',
+                guestName: ticket.profile?.full_name,
+                productName: ticket.slot?.product?.name || ticket.product?.name
+            };
+        }
+
         // 3. Mark as Checked In
         const { error: updateError } = await supabaseAdmin
             .from('tickets')

@@ -28,7 +28,20 @@ export default function SingleTicketPage() {
     const [inventory, setInventory] = useState<Record<string, { remaining: number; soldOut: boolean }>>({});
     const [isLoadingData, setIsLoadingData] = useState(true);
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        name: string;
+        email: string;
+        phone: string;
+        age: string;
+        gender: string;
+        waiverHealthy: boolean;
+        waiverTowels: boolean;
+        termsAccepted: boolean;
+        mailingList: boolean;
+        quantity: number;
+        guestEmails: string[];
+        guestNames: string[];
+    }>({
         name: "",
         email: "",
         phone: "",
@@ -38,6 +51,9 @@ export default function SingleTicketPage() {
         waiverTowels: false,
         termsAccepted: false,
         mailingList: false,
+        quantity: 1,
+        guestEmails: [],
+        guestNames: [],
     });
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -80,7 +96,7 @@ export default function SingleTicketPage() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    const handleFormChange = (field: string, value: string | boolean) => {
+    const handleFormChange = (field: string, value: string | boolean | number | string[]) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
@@ -89,6 +105,9 @@ export default function SingleTicketPage() {
         setError(null);
 
         try {
+            const numericPrice = Number(selectedSubTier?.price?.replace(/[^0-9.-]+/g, "") || 0);
+            const unitAmount = Math.round(numericPrice * 100);
+
             const response = await fetch("/api/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -96,6 +115,8 @@ export default function SingleTicketPage() {
                     priceId: selectedSubTier?.id,
                     email: formData.email,
                     name: formData.name,
+                    quantity: formData.quantity,
+                    unitAmount: unitAmount,
                     metadata: {
                         event_id: event?.id,
                         age: formData.age,
@@ -105,6 +126,8 @@ export default function SingleTicketPage() {
                         waiver_accepted_at: new Date().toISOString(),
                         terms_accepted: formData.termsAccepted.toString(),
                         mailing_list_optin: formData.mailingList.toString(),
+                        guest_emails: JSON.stringify(formData.guestEmails),
+                        guest_names: JSON.stringify(formData.guestNames),
                         referral_code:
                             document.cookie
                                 .split("; ")
@@ -230,9 +253,13 @@ export default function SingleTicketPage() {
                                         <StepDetails
                                             formData={formData}
                                             onChange={handleFormChange}
-                                            onBack={() => setCurrentStep("overview")}
                                             onNext={handleConfirm}
+                                            onBack={() => {
+                                                setCurrentStep("overview");
+                                                setSelectedSubTier(null);
+                                            }}
                                             selectedTier={event}
+                                            selectedSubTier={selectedSubTier}
                                         />
                                     </motion.div>
                                 )}

@@ -27,23 +27,25 @@ export async function POST(req: Request) {
         const session = event.data.object as any;
 
         try {
-            // 1. Upsert Profile
             const { customer_details, metadata } = session;
-            const profile = await upsertProfile({
-                email: customer_details.email,
-                full_name: metadata.customer_name || customer_details.name,
-                phone: metadata.phone || customer_details.phone,
-                age: metadata.age ? parseInt(metadata.age) : undefined,
-                gender: metadata.gender,
-                waiver_accepted: metadata.waiver_accepted === 'true',
-                waiver_accepted_at: metadata.waiver_accepted_at,
-                terms_accepted: metadata.terms_accepted === 'true',
-                mailing_list_optin: metadata.mailing_list_optin === 'true',
-                location_city: metadata.location_city || null,
-                location_country: metadata.location_country || null,
-            });
 
-            // 1.5 Handle Ambassador/Referral Code
+            // 1. Get Guest Emails and Names
+            const guestEmails = metadata.guest_emails ? JSON.parse(metadata.guest_emails) : [];
+            const guestNames = metadata.guest_names ? JSON.parse(metadata.guest_names) : [];
+
+            // 2. Fetch all pending tickets for this session
+            const { data: pendingTickets, error: fetchError } = await supabaseAdmin
+                .from('tickets')
+                .select('*')
+                .eq('stripe_session_id', session.id)
+                .eq('status', 'pending');
+
+            if (fetchError || !pendingTickets || pendingTickets.length === 0) {
+                console.error('No pending tickets found for session:', session.id);
+                throw new Error('No pending tickets found');
+            }
+
+            // 3. Handle Ambassador/Referral Code
             let ambassadorId = null;
             if (metadata.referral_code) {
                 const { data: ambassador } = await supabaseAdmin
@@ -57,50 +59,98 @@ export async function POST(req: Request) {
                 }
             }
 
-            // 2. Finalize Ticket (Upsert pending to active)
-            const { data: ticket, error: ticketError } = await supabaseAdmin
-                .from('tickets')
-                .upsert({
-                    profile_id: profile.id,
-                    slot_id: session.metadata.slot_id || null,
-                    product_id: session.metadata.product_id || null,
-                    stripe_session_id: session.id,
-                    status: 'active',
-                    ambassador_id: ambassadorId
-                }, { onConflict: 'stripe_session_id' })
-                .select()
-                .single();
+            // 4. Process Profiles and Assign Tickets
+            const primaryProfile = await upsertProfile({
+                email: customer_details.email,
+                full_name: metadata.customer_name || customer_details.name,
+                phone: metadata.phone || customer_details.phone,
+                age: metadata.age ? parseInt(metadata.age) : undefined,
+                gender: metadata.gender,
+                waiver_accepted: metadata.waiver_accepted === 'true',
+                waiver_accepted_at: metadata.waiver_accepted_at,
+                terms_accepted: metadata.terms_accepted === 'true',
+                mailing_list_optin: metadata.mailing_list_optin === 'true',
+                location_city: metadata.location_city || null,
+                location_country: metadata.location_country || null,
+            });
 
-            if (ticketError) throw ticketError;
+            const profilesAndTickets = [
+                { profile: primaryProfile, ticketId: pendingTickets[0].id, isPrimary: true }
+            ];
 
-            // 3. Send Email
-            try {
-                const { sendTicketEmail } = await import('@/lib/ticketing');
-                await sendTicketEmail(ticket.id);
-            } catch (emailErr) {
-                console.error('Failed to send ticket email:', emailErr);
-                // We don't want to crash the whole webhook if email fails, 
-                // but we might want to log it for retry.
+            // Process guests
+            for (let i = 0; i < guestEmails.length && i + 1 < pendingTickets.length; i++) {
+                const guestEmail = guestEmails[i];
+                const guestName = guestNames[i] && guestNames[i].trim() !== '' ? guestNames[i].trim() : `Guest of ${primaryProfile.full_name}`;
+                const ticketId = pendingTickets[i + 1].id;
+
+                if (guestEmail && guestEmail.trim() !== '') {
+                    // Upsert real guest profile (they will need to sign terms later if they haven't)
+                    const guestProfile = await upsertProfile({
+                        email: guestEmail.trim(),
+                        full_name: guestName,
+                        terms_accepted: false, // Must sign at door or via email link later
+                        waiver_accepted: false,
+                    });
+                    profilesAndTickets.push({ profile: guestProfile, ticketId, isPrimary: false });
+                } else {
+                    // Create Placeholder Guest Profile
+                    const placeholderEmail = `guest-${ticketId}@pending.local`;
+                    const guestProfile = await upsertProfile({
+                        email: placeholderEmail,
+                        full_name: guestName,
+                        terms_accepted: false,
+                        waiver_accepted: false,
+                    });
+                    profilesAndTickets.push({ profile: guestProfile, ticketId, isPrimary: false });
+                }
             }
 
-            // 4. Update Loyalty (Increment total_sweats)
-            try {
-                const { error: updateError } = await supabaseAdmin.rpc('increment_sweats', {
-                    profile_uuid: profile.id
-                });
+            // 5. Update Tickets to Active and Send Emails
+            const { sendTicketEmail } = await import('@/lib/ticketing');
 
-                if (updateError) {
-                    console.error('RPC increment_sweats failed, falling back to manual update:', updateError);
-                    // Fallback if the RPC doesn't exist yet
-                    // Note: profile.total_sweats might not exist on the type depending on upsertProfile return
-                    const currentSweats = (profile as any).total_sweats || 0;
-                    await supabaseAdmin
-                        .from('profiles')
-                        .update({ total_sweats: currentSweats + 1 })
-                        .eq('id', profile.id);
+            for (const item of profilesAndTickets) {
+                // Update Ticket
+                const { error: ticketUpdateError } = await supabaseAdmin
+                    .from('tickets')
+                    .update({
+                        profile_id: item.profile.id,
+                        status: 'active',
+                        ambassador_id: ambassadorId
+                    })
+                    .eq('id', item.ticketId);
+
+                if (ticketUpdateError) {
+                    console.error(`Failed to activate ticket ${item.ticketId}:`, ticketUpdateError);
+                    continue; // Try others
                 }
-            } catch (sweatsErr) {
-                console.error('Failed to increment loyalty sweats:', sweatsErr);
+
+                // Send Email (only if it's not a placeholder)
+                if (!item.profile.email.endsWith('@pending.local')) {
+                    try {
+                        await sendTicketEmail(item.ticketId);
+                    } catch (emailErr) {
+                        console.error(`Failed to send ticket email to ${item.profile.email}:`, emailErr);
+                    }
+                }
+
+                // Update Loyalty for Primary Buyer ONLY for now, or for everyone? 
+                // Let's increment for the profile attached to the ticket.
+                try {
+                    const { error: updateError } = await supabaseAdmin.rpc('increment_sweats', {
+                        profile_uuid: item.profile.id
+                    });
+
+                    if (updateError) {
+                        const currentSweats = (item.profile as any).total_sweats || 0;
+                        await supabaseAdmin
+                            .from('profiles')
+                            .update({ total_sweats: currentSweats + 1 })
+                            .eq('id', item.profile.id);
+                    }
+                } catch (sweatsErr) {
+                    console.error('Failed to increment loyalty sweats:', sweatsErr);
+                }
             }
 
         } catch (err) {

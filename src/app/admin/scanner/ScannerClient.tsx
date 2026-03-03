@@ -134,6 +134,11 @@ export function ScannerClient({ readinessTasks = [] }: { readinessTasks?: Readin
                     setStatus('warning');
                     setGuestName(res.guestName || 'Previously Scanned');
                     setMessage(res.error);
+                } else if (res.error?.includes('TERMS NOT ACCEPTED')) {
+                    setStatus('warning');
+                    setGuestName(res.guestName || 'Guest');
+                    setProductName(res.productName || 'Ticket');
+                    setMessage(res.error);
                 } else {
                     setStatus('error');
                     setMessage(res.error || 'Invalid Ticket');

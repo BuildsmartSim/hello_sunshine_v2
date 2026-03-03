@@ -11,13 +11,14 @@ export async function GET(req: Request) {
     let ticketId = ticketIdParam;
 
     if (!ticketId && sessionId) {
-        const { data: ticketRecord } = await supabaseAdmin
+        const { data: ticketRecords, error } = await supabaseAdmin
             .from('tickets')
             .select('id, status, profile_id')
             .eq('stripe_session_id', sessionId)
-            .single();
+            .order('created_at', { ascending: true });
 
-        if (ticketRecord) {
+        if (ticketRecords && ticketRecords.length > 0) {
+            const ticketRecord = ticketRecords[0];
             ticketId = ticketRecord.id;
 
             // SYNC FALLBACK: If the profile is missing, it means the webhook hasn't run or failed.
@@ -66,7 +67,21 @@ export async function GET(req: Request) {
     }
 
     const { getTicketWithDetails } = await import('@/lib/ticketing');
-    const fullTicket = await getTicketWithDetails(ticketId);
 
-    return NextResponse.json({ ticketId: ticketId, ticket: fullTicket });
+    let fullTickets: any[] = [];
+    if (sessionId) {
+        const { data: sessionTickets } = await supabaseAdmin
+            .from('tickets')
+            .select('id')
+            .eq('stripe_session_id', sessionId)
+            .order('created_at', { ascending: true });
+
+        if (sessionTickets) {
+            fullTickets = await Promise.all(sessionTickets.map((t: any) => getTicketWithDetails(t.id)));
+        }
+    } else {
+        fullTickets = [await getTicketWithDetails(ticketId)];
+    }
+
+    return NextResponse.json({ ticketId: ticketId, ticket: fullTickets[0], tickets: fullTickets });
 }

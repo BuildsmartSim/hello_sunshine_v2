@@ -51,7 +51,7 @@ export function Button({ variant = 'deepDry', children, className = '', ...props
 
     return (
         <button
-            className={`${variantStyles} ${className} uppercase tracking-[0.3em] font-black text-xs md:text-sm`}
+            className={`${variantStyles} ${className} cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-[0.3em] font-black text-xs md:text-sm`}
             style={{ fontFamily: fonts.body }}
             {...props}
         >

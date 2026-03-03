@@ -15,7 +15,7 @@ function SuccessContent() {
     const sessionId = searchParams.get('session_id');
     const directTicketId = searchParams.get('id');
     const [ticketId, setTicketId] = useState<string | null>(directTicketId);
-    const [ticketData, setTicketData] = useState<any | null>(null);
+    const [ticketsData, setTicketsData] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(!!sessionId && !directTicketId);
 
     useEffect(() => {
@@ -31,8 +31,10 @@ function SuccessContent() {
                     if (data.ticketId) {
                         setTicketId(data.ticketId);
                     }
-                    if (data.ticket) {
-                        setTicketData(data.ticket);
+                    if (data.tickets && data.tickets.length > 0) {
+                        setTicketsData(data.tickets);
+                    } else if (data.ticket) {
+                        setTicketsData([data.ticket]);
                     }
                 } catch (err) {
                     console.error('Failed to resolve ticket from session:', err);
@@ -85,9 +87,11 @@ function SuccessContent() {
             </div>
 
             <div className="flex flex-col gap-4 w-full">
-                {ticketData ? (
-                    <div className="w-full animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                        <TicketClient ticket={ticketData} checkInUrl={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://hellosunshinesauna.com'}/tickets/check-in/${ticketId}`} />
+                {ticketsData.length > 0 ? (
+                    <div className="w-full flex flex-col gap-12 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                        {ticketsData.map((tData, i) => (
+                            <TicketClient key={tData.id || i} ticket={tData} checkInUrl={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://hellosunshinesauna.com'}/tickets/check-in/${tData.id}`} />
+                        ))}
                     </div>
                 ) : ticketId ? (
                     <Link href={`/tickets/view/${ticketId}`}>

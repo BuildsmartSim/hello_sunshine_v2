@@ -91,6 +91,10 @@ export async function getTicketWithDetails(id: string) {
         .select(`
       *,
       profile:profiles(*),
+      product:products(
+        *,
+        location:locations(*)
+      ),
       slot:slots(
         *,
         product:products(
@@ -153,11 +157,11 @@ export async function sendTicketEmail(ticketId: string) {
     const { data, error } = await resend.emails.send({
         from: 'Hello Sunshine Sauna <hello@hellosunshinesauna.com>',
         to: [customerEmail],
-        subject: `Your Ticket for ${ticket.slot?.product?.location?.name || 'Hello Sunshine Sauna'}`,
+        subject: `Your Ticket for ${ticket.product?.location?.name || ticket.slot?.product?.location?.name || 'Hello Sunshine Sauna'}`,
         react: TicketEmail({
             customerName: ticket.profile?.full_name || 'Guest',
-            eventTitle: ticket.slot?.product?.location?.name || 'Hello Sunshine Sauna',
-            passName: ticket.slot?.product?.name || 'General Entry',
+            eventTitle: ticket.product?.location?.name || ticket.slot?.product?.location?.name || 'Hello Sunshine Sauna',
+            passName: ticket.product?.name || ticket.slot?.product?.name || 'General Entry',
             date: ticket.slot ? new Date(ticket.slot.start_time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Season Pass',
             ticketId: ticket.id,
         }) as React.ReactElement,
