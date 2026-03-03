@@ -45,7 +45,6 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/d3-geo": "^3.1.0",
-    "@types/mapbox__point-geometry": "^1.0.87",
     "@types/mapbox-gl": "^2.7.21",
     "@types/node": "^20",
     "@types/pg": "^8.16.0",
@@ -59,5 +58,10 @@
     "sharp": "^0.33.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "mapbox-gl": {
+      "@types/mapbox__point-geometry": "^1.0.87"
+    }
   }
 }
