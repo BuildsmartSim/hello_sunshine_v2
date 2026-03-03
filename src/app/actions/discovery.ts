@@ -68,12 +68,22 @@ export async function triggerDiscoveryAgentAction(origin: string) {
         const secret = process.env.CRON_SECRET;
         if (!secret) throw new Error("CRON_SECRET is not configured");
 
-        const res = await fetch(`${origin}/api/cron/discovery?key=${secret}`, {
+        // Bypass public Nginx to avoid 60-second proxy timeouts on long-running scrapes
+        const localUrl = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1:3000' : origin;
+        const res = await fetch(`${localUrl}/api/cron/discovery?key=${secret}`, {
             method: 'GET',
             cache: 'no-store'
         });
 
-        const data = await res.json();
+        const text = await res.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error('Non-JSON response from agent:', text.substring(0, 500));
+            return { success: false, error: 'Agent timed out or returned invalid response.' };
+        }
+
         if (!res.ok) {
             return { success: false, error: data.error || data.message || 'API request failed' };
         }

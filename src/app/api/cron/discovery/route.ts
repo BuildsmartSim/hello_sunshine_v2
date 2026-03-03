@@ -6,7 +6,7 @@ import { scrapeUrl } from '@/utils/agents/firecrawl';
 
 
 
-const NEGATIVE_TERMS = " -site:timeout.com -site:the-independent.com -site:cntraveller.com -site:theguardian.com -site:gq-magazine.co.uk -site:countryandtownhouse.com -inurl:blog -inurl:article -inurl:news";
+const NEGATIVE_TERMS = " -site:timeout.com -site:the-independent.com -site:cntraveller.com -site:theguardian.com -site:gq-magazine.co.uk -site:countryandtownhouse.com -site:instagram.com -site:tiktok.com -site:facebook.com -inurl:blog -inurl:article -inurl:news";
 
 const QUERIES = [
     `UK boutique festival "camping" "tickets"${NEGATIVE_TERMS}`,
