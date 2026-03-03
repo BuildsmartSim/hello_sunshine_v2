@@ -75,8 +75,11 @@ export async function GET(request: Request) {
         const processedUrls: string[] = [];
         let addedCount = 0;
 
-        // Process top 5 results to ensure the agent finishes before the Nginx 60-second connection timeout
-        for (const result of searchResults.slice(0, 5)) {
+        const limitStr = new URL(request.url).searchParams.get('limit');
+        const searchLimit = limitStr ? parseInt(limitStr, 10) : 5;
+
+        // Process top results (limited to avoid timeouts unless running a deep local scan)
+        for (const result of searchResults.slice(0, searchLimit)) {
             const url = result.link;
 
             // 4. Check if URL already exists in DB

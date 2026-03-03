@@ -60,7 +60,7 @@ export async function deleteDiscoveryLeadAction(id: string) {
     }
 }
 
-export async function triggerDiscoveryAgentAction(origin: string) {
+export async function triggerDiscoveryAgentAction(origin: string, isDeepScan: boolean = false) {
     try {
         const auth = await requireAdminOrPin();
         if (!auth.authorized) throw new Error(auth.error);
@@ -68,9 +68,15 @@ export async function triggerDiscoveryAgentAction(origin: string) {
         const secret = process.env.CRON_SECRET;
         if (!secret) throw new Error("CRON_SECRET is not configured");
 
+        const targetUrl = new URL(`/api/cron/discovery`, origin === 'http://localhost:3000' || process.env.NODE_ENV !== 'production' ? origin : 'http://127.0.0.1:3000');
+        targetUrl.searchParams.set('key', secret);
+
+        if (isDeepScan) {
+            targetUrl.searchParams.set('limit', '15');
+        }
+
         // Bypass public Nginx to avoid 60-second proxy timeouts on long-running scrapes
-        const localUrl = process.env.NODE_ENV === 'production' ? 'http://127.0.0.1:3000' : origin;
-        const res = await fetch(`${localUrl}/api/cron/discovery?key=${secret}`, {
+        const res = await fetch(targetUrl.toString(), {
             method: 'GET',
             cache: 'no-store'
         });
