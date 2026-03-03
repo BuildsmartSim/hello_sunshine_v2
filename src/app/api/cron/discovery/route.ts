@@ -75,8 +75,8 @@ export async function GET(request: Request) {
         const processedUrls: string[] = [];
         let addedCount = 0;
 
-        // Process top 15 results to skip over SEO listicles
-        for (const result of searchResults.slice(0, 15)) {
+        // Process top 5 results to ensure the agent finishes before the Nginx 60-second connection timeout
+        for (const result of searchResults.slice(0, 5)) {
             const url = result.link;
 
             // 4. Check if URL already exists in DB
