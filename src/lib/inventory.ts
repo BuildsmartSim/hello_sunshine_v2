@@ -39,11 +39,11 @@ export const inventory = {
             }
 
             const sold = tickets?.length || 0;
-            const limit = product.stock_limit || 0; // If null, maybe unlimited? Assuming 0 for safety based on SQL
-            const remaining = Math.max(0, limit - sold);
+            const isUnlimited = product.stock_limit === null || product.stock_limit === undefined;
+            const remaining = isUnlimited ? 999999 : Math.max(0, product.stock_limit - sold);
 
             return {
-                available: remaining > 0,
+                available: isUnlimited || remaining > 0,
                 remaining,
                 productId: product.id,
                 productName: product.name

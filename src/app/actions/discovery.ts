@@ -60,7 +60,11 @@ export async function deleteDiscoveryLeadAction(id: string) {
     }
 }
 
-export async function triggerDiscoveryAgentAction(origin: string, isDeepScan: boolean = false) {
+export async function triggerDiscoveryAgentAction(
+    origin: string,
+    isDeepScan: boolean = false,
+    params?: { country?: string; region?: string; city?: string; type?: string }
+) {
     try {
         const auth = await requireAdminOrPin();
         if (!auth.authorized) throw new Error(auth.error);
@@ -74,6 +78,11 @@ export async function triggerDiscoveryAgentAction(origin: string, isDeepScan: bo
         if (isDeepScan) {
             targetUrl.searchParams.set('limit', '15');
         }
+
+        if (params?.country) targetUrl.searchParams.set('country', params.country);
+        if (params?.region) targetUrl.searchParams.set('region', params.region);
+        if (params?.city) targetUrl.searchParams.set('city', params.city);
+        if (params?.type) targetUrl.searchParams.set('type', params.type);
 
         // Bypass public Nginx to avoid 60-second proxy timeouts on long-running scrapes
         const res = await fetch(targetUrl.toString(), {

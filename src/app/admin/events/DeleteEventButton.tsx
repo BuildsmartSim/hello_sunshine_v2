@@ -3,15 +3,21 @@
 import React, { useState } from 'react';
 import { deleteEventAction } from '@/app/actions/event_management';
 import { PINOverrideModal } from '@/components/PINOverrideModal';
+import { useAdminRole } from '@/hooks/useAdminRole';
 
 export function DeleteEventButton({ eventId, eventTitle }: { eventId: string, eventTitle: string }) {
+    const isAdmin = useAdminRole();
     const [isConfirming, setIsConfirming] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
 
     const requestDeleteAuth = () => {
         setIsConfirming(false);
-        setIsPinModalOpen(true);
+        if (isAdmin) {
+            handleDelete('');
+        } else {
+            setIsPinModalOpen(true);
+        }
     };
 
     const handleDelete = async (pin: string) => {

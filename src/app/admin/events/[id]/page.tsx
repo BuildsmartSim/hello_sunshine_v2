@@ -21,15 +21,19 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
 
     // Fetch stock limits from products for the tiers
     const processedTiers = await Promise.all((event.tiers || []).map(async (tier: any) => {
-        const { data: product } = await supabaseAdmin
-            .from('products')
-            .select('stock_limit')
-            .eq('price_id', tier.id)
-            .single();
+        let stock_limit = '';
+        if (tier && tier.id) {
+            const { data: product } = await supabaseAdmin
+                .from('products')
+                .select('stock_limit')
+                .eq('price_id', tier.id)
+                .single();
+            stock_limit = product?.stock_limit ?? '';
+        }
 
         return {
             ...tier,
-            stock_limit: product?.stock_limit ?? ''
+            stock_limit
         };
     }));
 

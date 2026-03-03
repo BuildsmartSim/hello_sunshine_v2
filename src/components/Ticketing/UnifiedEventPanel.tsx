@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TicketSubTier, EventData, SERVICE_ICONS } from '@/data/festivals';
+import { TicketSubTier, EventData, SERVICE_ICONS, sortTiersByType } from '@/data/festivals';
 import { fonts } from '@/design-system/tokens';
 import { Button } from '@/components/Button';
 import Image from 'next/image';
@@ -99,7 +99,7 @@ export function UnifiedEventPanel({ event, selectedTierId, onSelect, inventory =
                 </div>
 
                 {/* 3. TIERS LIST */}
-                {event.tiers.map((tier) => {
+                {sortTiersByType(event.tiers).map((tier) => {
                     const stock = inventory[tier.id];
                     const isSoldOut = stock?.soldOut;
                     const isLowStock = stock?.remaining !== undefined && stock.remaining < 5 && !isSoldOut;

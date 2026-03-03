@@ -12,6 +12,16 @@ export async function saveEventAction(eventData: any, pin?: string) {
 
         // 1. Upsert the event into app_events
         const eventToSave = { ...eventData };
+        if (eventToSave.opening_times && typeof eventToSave.opening_times !== 'string') {
+            // New Matrix format comes in as an object/array, we should stringify it or save it directly if it's a JSON column.
+            // Currently app_events.opening_times is likely text[] or jsonb. Assuming it's a JSONB or text array.
+            eventToSave.opening_times = Object.keys(eventToSave.opening_times).map(day => {
+                const dayData = eventToSave.opening_times[day];
+                if (!dayData.isOpen) return null;
+                return `${day}: ${dayData.open}-${dayData.close}`;
+            }).filter(Boolean);
+        }
+
         if (!eventToSave.id) {
             delete eventToSave.id; // Let supabase generate ID if creating new
         }
@@ -89,6 +99,7 @@ export async function saveEventAction(eventData: any, pin?: string) {
         }
 
         revalidatePath('/admin');
+        revalidatePath('/admin/events');
         revalidatePath('/');
         return { success: true, eventId: savedEvent.id };
     } catch (error) {
@@ -110,6 +121,7 @@ export async function deleteEventAction(eventId: string, pin?: string) {
         if (error) throw error;
 
         revalidatePath('/admin');
+        revalidatePath('/admin/events');
         revalidatePath('/');
         return { success: true };
     } catch (error) {

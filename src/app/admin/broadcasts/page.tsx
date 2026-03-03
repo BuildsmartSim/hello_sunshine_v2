@@ -6,8 +6,10 @@ import { getCommunityHeatmapAction } from '@/app/actions/admin';
 import { Button } from '@/components/Button';
 import { PINOverrideModal } from '@/components/PINOverrideModal';
 import { CommunityMap } from '../CommunityMap';
+import { useAdminRole } from '@/hooks/useAdminRole';
 
 export default function BroadcastStudio() {
+    const isAdmin = useAdminRole();
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
     const [pinAction, setPinAction] = useState<'fetch' | 'send' | null>(null);
     const [audiences, setAudiences] = useState<any[]>([]);
@@ -32,8 +34,12 @@ export default function BroadcastStudio() {
 
     const handleForceFetch = () => {
         if (audiences.length > 0 || historicalAudiences.length > 0) return; // Already fetched
-        setPinAction('fetch');
-        setIsPinModalOpen(true);
+        if (isAdmin) {
+            handleFetchAudiences('');
+        } else {
+            setPinAction('fetch');
+            setIsPinModalOpen(true);
+        }
     };
 
     const handleFetchAudiences = async (pin: string) => {
@@ -93,8 +99,12 @@ export default function BroadcastStudio() {
         if (!confirm('Are you sure you want to send this broadcast email to the targeted audience? This action cannot be undone.')) {
             return;
         }
-        setPinAction('send');
-        setIsPinModalOpen(true);
+        if (isAdmin) {
+            handleConfirmSend('');
+        } else {
+            setPinAction('send');
+            setIsPinModalOpen(true);
+        }
     };
 
     const handleConfirmSend = async (pin: string) => {

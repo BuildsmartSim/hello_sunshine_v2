@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { searchTicketsAction, refundTicketAction } from '@/app/actions/tickets';
 import { PINOverrideModal } from '@/components/PINOverrideModal';
+import { useAdminRole } from '@/hooks/useAdminRole';
 
 interface TicketRow {
     id: string;
@@ -21,6 +22,7 @@ interface TicketRow {
 }
 
 export function GuestManager({ initialTickets }: { initialTickets: any[] }) {
+    const isAdmin = useAdminRole();
     const [tickets, setTickets] = useState<TicketRow[]>(initialTickets);
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearching, setIsSearching] = useState(false);
@@ -51,15 +53,20 @@ export function GuestManager({ initialTickets }: { initialTickets: any[] }) {
 
     const requestRefundAuth = (ticketId: string, stripeSessionId?: string | null) => {
         if (!confirm('Are you sure you want to refund this ticket? This will trigger a Stripe refund if applicable and mark the ticket as refunded.')) return;
-        setTicketToRefund({ id: ticketId, sessionId: stripeSessionId });
-        setIsPinModalOpen(true);
+        if (isAdmin) {
+            handleRefund('', { id: ticketId, sessionId: stripeSessionId });
+        } else {
+            setTicketToRefund({ id: ticketId, sessionId: stripeSessionId });
+            setIsPinModalOpen(true);
+        }
     };
 
-    const handleRefund = async (pin: string) => {
-        if (!ticketToRefund) return;
+    const handleRefund = async (pin: string, directTicket?: { id: string, sessionId?: string | null }) => {
+        const target = directTicket || ticketToRefund;
+        if (!target) return;
         setIsPinModalOpen(false);
 
-        const { id: ticketId, sessionId: stripeSessionId } = ticketToRefund;
+        const { id: ticketId, sessionId: stripeSessionId } = target;
         setRefundingId(ticketId);
         setErrorMsg('');
 

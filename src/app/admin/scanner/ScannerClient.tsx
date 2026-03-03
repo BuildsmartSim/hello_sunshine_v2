@@ -6,10 +6,12 @@ import { checkInTicketAction } from '@/app/actions/tickets';
 import { MissionBriefing } from '../MissionBriefing';
 import type { ReadinessTask } from '../ReadinessScorecard';
 import { PINOverrideModal } from '@/components/PINOverrideModal';
+import { useAdminRole } from '@/hooks/useAdminRole';
 
 type ScanStatus = 'idle' | 'success' | 'error' | 'warning';
 
 export function ScannerClient({ readinessTasks = [] }: { readinessTasks?: ReadinessTask[] }) {
+    const isAdmin = useAdminRole();
     const [status, setStatus] = useState<ScanStatus>('idle');
     const [message, setMessage] = useState('');
     const [guestName, setGuestName] = useState('');
@@ -40,7 +42,11 @@ export function ScannerClient({ readinessTasks = [] }: { readinessTasks?: Readin
 
     const handleSyncRequest = () => {
         if (syncQueue.length === 0 || isSyncing) return;
-        setIsPinModalOpen(true);
+        if (isAdmin) {
+            handleConfirmSync('');
+        } else {
+            setIsPinModalOpen(true);
+        }
     };
 
     const handleConfirmSync = async (pin: string) => {

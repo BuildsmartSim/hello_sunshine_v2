@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { searchTicketsAction, refundTicketAction } from '@/app/actions/tickets';
 import { PINOverrideModal } from '@/components/PINOverrideModal';
+import { useAdminRole } from '@/hooks/useAdminRole';
 
 interface TicketRow {
     id: string;
@@ -20,6 +21,7 @@ interface TicketRow {
 }
 
 export function RefundManager({ initialTickets }: { initialTickets: any[] }) {
+    const isAdmin = useAdminRole();
     const [tickets, setTickets] = useState<TicketRow[]>(initialTickets);
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearching, setIsSearching] = useState(false);
@@ -50,7 +52,11 @@ export function RefundManager({ initialTickets }: { initialTickets: any[] }) {
 
     const requestRefundAuth = () => {
         if (!selectedTicket || !refundReason.trim()) return;
-        setIsPinModalOpen(true);
+        if (isAdmin) {
+            processRefund('');
+        } else {
+            setIsPinModalOpen(true);
+        }
     };
 
     const processRefund = async (pin: string) => {

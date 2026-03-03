@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TicketSubTier, EventData } from '@/data/festivals';
+import { TicketSubTier, EventData, sortTiersByType } from '@/data/festivals';
 import { fonts } from '@/design-system/tokens';
 import { Button } from '@/components/Button';
 
@@ -24,7 +24,7 @@ export function TypographicTierList({ event, selectedTierId, onSelect, inventory
                     <div className="w-[160px] text-right">Access</div>
                 </div>
 
-                {event.tiers.map((tier) => {
+                {sortTiersByType(event.tiers).map((tier) => {
                     const stock = inventory[tier.id];
                     const isSoldOut = stock?.soldOut;
                     const isLowStock = stock?.remaining !== undefined && stock.remaining < 5 && !isSoldOut;

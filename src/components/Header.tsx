@@ -8,6 +8,7 @@ import { useScroll, useMotionValueEvent, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useHasMounted } from '@/design-system/MediaContext';
 import { Button } from '@/components/Button';
+import { usePathname, useRouter } from 'next/navigation';
 
 const LOGO_SRC = "/HSSLOGO black YELLOW.png";
 
@@ -16,6 +17,16 @@ export default function Header() {
     const [hidden, setHidden] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const hasMounted = useHasMounted();
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        if (pathname === '/') {
+            e.preventDefault();
+            document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+        }
+        setIsMenuOpen(false);
+    };
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         const previous = scrollY.getPrevious() || 0;
@@ -81,13 +92,10 @@ export default function Header() {
                     {/* Refined Navigation Column (Studio Style) - Desktop Only */}
                     <nav className="hidden lg:flex items-center gap-12 font-body text-[14px] font-bold uppercase tracking-[0.4em]">
                         {navItems.map(it => (
-                            <a key={it.label} href={it.href} onClick={(e) => {
-                                e.preventDefault();
-                                document.querySelector(it.href)?.scrollIntoView({ behavior: 'smooth' });
-                            }} className="text-charcoal/60 hover:text-charcoal transition-all relative group">
+                            <Link key={it.label} href={`/${it.href}`} onClick={(e) => handleNavClick(e, it.href)} className="text-charcoal/60 hover:text-charcoal transition-all relative group">
                                 {it.label}
                                 <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                            </a>
+                            </Link>
                         ))}
                     </nav>
 
@@ -98,7 +106,11 @@ export default function Header() {
                             className="!px-4 !py-2 !text-[11px] md:!text-[14px] md:!px-8 md:!py-3"
                             onClick={() => {
                                 setIsMenuOpen(false);
-                                document.querySelector('#ticketing')?.scrollIntoView({ behavior: 'smooth' });
+                                if (pathname === '/') {
+                                    document.querySelector('#ticketing')?.scrollIntoView({ behavior: 'smooth' });
+                                } else {
+                                    router.push('/#ticketing');
+                                }
                             }}
                         >
                             Book Now
@@ -141,21 +153,20 @@ export default function Header() {
 
                 <nav className="relative z-10 flex flex-col gap-4">
                     {navItems.map((it, idx) => (
-                        <motion.a
+                        <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={isMenuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                             transition={{ delay: idx * 0.08 }}
                             key={it.label}
-                            href={it.href}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setIsMenuOpen(false);
-                                document.querySelector(it.href)?.scrollIntoView({ behavior: 'smooth' });
-                            }}
-                            className="w-full rounded-full border border-charcoal/10 bg-charcoal/[0.03] py-4 px-8 flex items-center justify-center text-center font-body text-[13px] font-bold uppercase tracking-[0.4em] text-charcoal hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 active:scale-95"
                         >
-                            {it.label}
-                        </motion.a>
+                            <Link
+                                href={`/${it.href}`}
+                                onClick={(e) => handleNavClick(e, it.href)}
+                                className="w-full rounded-full border border-charcoal/10 bg-charcoal/[0.03] py-4 px-8 flex items-center justify-center text-center font-body text-[13px] font-bold uppercase tracking-[0.4em] text-charcoal hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 active:scale-95"
+                            >
+                                {it.label}
+                            </Link>
+                        </motion.div>
                     ))}
                 </nav>
 

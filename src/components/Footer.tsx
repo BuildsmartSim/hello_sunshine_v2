@@ -5,9 +5,12 @@ import Image from 'next/image';
 import { textures, icons, pencil } from '@/design-system/tokens';
 import { LayeredPencil } from '@/components/LayeredPencil';
 import { useHasMounted } from '@/design-system/MediaContext';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Footer() {
     const hasMounted = useHasMounted();
+    const pathname = usePathname();
 
     if (!hasMounted) return null;
     return (
@@ -79,16 +82,16 @@ export default function Footer() {
 
                     <nav className="flex flex-wrap justify-center gap-8 md:gap-12 font-body text-[13px] font-bold uppercase tracking-[0.4em]">
                         {[
-                            { label: 'Sauna', href: '#sanctuary' },
-                            { label: 'Experience', href: '#sanctuary' },
-                            { label: 'Story', href: '#hero' },
-                            { label: 'Journal', href: '#guestbook' }
+                            { label: 'Sanctuary', href: '#sanctuary' },
+                            { label: 'Guestbook', href: '#guestbook' },
+                            { label: 'Ticketing', href: '#ticketing' },
+                            { label: 'Contact', href: '#contact' }
                         ].map((item) => (
-                            <a
+                            <Link
                                 key={item.label}
-                                href={item.href}
+                                href={`/${item.href}`}
                                 onClick={(e) => {
-                                    if (item.href.startsWith('#')) {
+                                    if (pathname === '/') {
                                         e.preventDefault();
                                         document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
                                     }
@@ -97,7 +100,7 @@ export default function Footer() {
                             >
                                 {item.label}
                                 <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#F8C630] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                            </a>
+                            </Link>
                         ))}
                     </nav>
                 </div>

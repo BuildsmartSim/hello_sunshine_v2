@@ -3,6 +3,7 @@
 import React, { useTransition, useState, useEffect } from 'react';
 import { toggleEventActiveAction, toggleEventFeatureAction } from '@/app/actions/admin';
 import { PINOverrideModal } from '@/components/PINOverrideModal';
+import { useAdminRole } from '@/hooks/useAdminRole';
 
 interface EventToggleProps {
     eventId: string;
@@ -11,6 +12,7 @@ interface EventToggleProps {
 }
 
 export function EventToggle({ eventId, initialState, type }: EventToggleProps) {
+    const isAdmin = useAdminRole();
     const [isPending, startTransition] = useTransition();
     const [optimisticState, setOptimisticState] = useState(initialState);
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
@@ -21,7 +23,11 @@ export function EventToggle({ eventId, initialState, type }: EventToggleProps) {
     }, [initialState]);
 
     const handleToggleRequest = () => {
-        setIsPinModalOpen(true);
+        if (isAdmin) {
+            handleConfirmToggle('');
+        } else {
+            setIsPinModalOpen(true);
+        }
     };
 
     const handleConfirmToggle = (pin: string) => {

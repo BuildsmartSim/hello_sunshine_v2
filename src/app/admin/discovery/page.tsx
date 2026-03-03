@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { getDiscoveryLeadsAction, updateDiscoveryLeadStatusAction, deleteDiscoveryLeadAction, triggerDiscoveryAgentAction } from '@/app/actions/discovery';
+import { getCommunityHeatmapAction } from '@/app/actions/admin';
+import { RadarMap } from './RadarMap';
 
 interface Lead {
     id: string;
@@ -15,19 +17,33 @@ interface Lead {
     status: 'PENDING' | 'CONTACTED' | 'INTERESTED' | 'REJECTED';
     source: 'cron' | 'manual';
     created_at: string;
+    latitude?: number | null;
+    longitude?: number | null;
+    location_name?: string | null;
+}
+
+interface GeoPoint {
+    lat: number;
+    long: number;
+    city?: string;
 }
 
 export default function DiscoveryPage() {
     const [leads, setLeads] = useState<Lead[]>([]);
+    const [heatmap, setHeatmap] = useState<GeoPoint[]>([]);
     const [loading, setLoading] = useState(true);
     const [runningAgent, setRunningAgent] = useState(false);
 
     const fetchLeads = async () => {
         setLoading(true);
-        const res = await getDiscoveryLeadsAction();
+        const [res, heat] = await Promise.all([
+            getDiscoveryLeadsAction(),
+            getCommunityHeatmapAction()
+        ]);
         if (res.success) {
             setLeads(res.data as Lead[]);
         }
+        setHeatmap(heat);
         setLoading(false);
     };
 
@@ -35,32 +51,21 @@ export default function DiscoveryPage() {
         fetchLeads();
     }, []);
 
-    const runDiscoveryAgent = async () => {
+    const [searchParams, setSearchParams] = useState({
+        country: 'UK',
+        region: '',
+        city: '',
+        type: 'boutique festival'
+    });
+
+    const runDiscoveryAgent = async (deepScan: boolean) => {
+        if (deepScan && !confirm('Deep scan will process 15 links and takes ~90 seconds. It may timeout if run on a live server with Nginx. Proceed?')) return;
         setRunningAgent(true);
         try {
-            const res = await triggerDiscoveryAgentAction(window.location.origin, false);
+            const res = await triggerDiscoveryAgentAction(window.location.origin, deepScan, searchParams);
 
             if (res.success && res.data) {
                 alert(`Success! Query: ${res.data.query}\nProcessed: ${res.data.processed}\nAdded: ${res.data.added}`);
-                fetchLeads();
-            } else {
-                alert(`Error: ${res.error || 'Failed to run agent'}`);
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Internal error running agent');
-        }
-        setRunningAgent(false);
-    };
-
-    const runDeepDiscoveryAgent = async () => {
-        if (!confirm('Deep scan will process 15 links and takes ~90 seconds. It may timeout if run on a live server with Nginx. Proceed?')) return;
-        setRunningAgent(true);
-        try {
-            const res = await triggerDiscoveryAgentAction(window.location.origin, true);
-
-            if (res.success && res.data) {
-                alert(`Success! Deep Scan Query: ${res.data.query}\nProcessed: ${res.data.processed}\nAdded: ${res.data.added}`);
                 fetchLeads();
             } else {
                 alert(`Error: ${res.error || 'Failed to run agent'}`);
@@ -81,12 +86,11 @@ export default function DiscoveryPage() {
 
     const deleteLead = async (id: string) => {
         if (!confirm('Are you sure you want to delete this lead?')) return;
-        // Optimistic UI update
         setLeads(leads.filter(l => l.id !== id));
         const res = await deleteDiscoveryLeadAction(id);
         if (!res.success) {
             alert('Failed to delete lead from database.');
-            fetchLeads(); // Revert
+            fetchLeads();
         }
     };
 
@@ -101,51 +105,99 @@ export default function DiscoveryPage() {
                         AI-Scouted Partnership Opportunities
                     </p>
                 </div>
-                <div className="flex gap-4">
+            </div>
+
+            {/* Target Control Panel */}
+            <div className="bg-white border rounded-2xl shadow-sm p-6 flex flex-col md:flex-row gap-6 items-end">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1 w-full">
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-neutral-500 font-mono">Country</label>
+                        <select
+                            value={searchParams.country}
+                            onChange={e => setSearchParams({ ...searchParams, country: e.target.value })}
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-4 py-2 font-mono text-sm"
+                        >
+                            <option value="UK">United Kingdom</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="France">France</option>
+                        </select>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-neutral-500 font-mono">Region / County</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. Cornwall, Sussex"
+                            value={searchParams.region}
+                            onChange={e => setSearchParams({ ...searchParams, region: e.target.value })}
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-4 py-2 font-mono text-sm"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-neutral-500 font-mono">City / Town (Opt)</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. Brighton, Newquay"
+                            value={searchParams.city}
+                            onChange={e => setSearchParams({ ...searchParams, city: e.target.value })}
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-4 py-2 font-mono text-sm"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold uppercase tracking-widest text-neutral-500 font-mono">Focus Type</label>
+                        <select
+                            value={searchParams.type}
+                            onChange={e => setSearchParams({ ...searchParams, type: e.target.value })}
+                            className="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-4 py-2 font-mono text-sm"
+                        >
+                            <option value="boutique festival">Boutique Festival</option>
+                            <option value="wellness retreat">Wellness Retreat</option>
+                            <option value="wild swimming club">Wild Swimming Club</option>
+                            <option value="glamping site">Luxury Glamping Site</option>
+                            <option value="sauna meetup">Sauna Gathering</option>
+                            <option value="trail running event">Trail Running Event</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="flex gap-2">
                     <button
-                        onClick={runDeepDiscoveryAgent}
+                        onClick={() => runDiscoveryAgent(true)}
                         disabled={runningAgent}
-                        className="bg-neutral-100 text-neutral-600 px-6 py-3 rounded-xl font-mono uppercase font-bold tracking-widest text-sm hover:bg-neutral-200 transition-colors disabled:opacity-50 flex items-center gap-2 border border-neutral-200"
+                        title="Local only. Runs a deep 15-page search."
+                        className="bg-neutral-100 text-neutral-600 px-4 py-2 rounded-lg font-mono uppercase font-bold tracking-widest text-xs hover:bg-neutral-200 transition-colors disabled:opacity-50 h-full border border-neutral-200"
                     >
-                        {runningAgent ? (
-                            <>
-                                <svg className="animate-spin h-4 w-4 text-neutral-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Deep Scouting...
-                            </>
-                        ) : (
-                            <>
-                                <svg className="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                                Deep Scan
-                            </>
-                        )}
+                        {runningAgent ? '...' : 'Deep Scan'}
                     </button>
                     <button
-                        onClick={runDiscoveryAgent}
+                        onClick={() => runDiscoveryAgent(false)}
                         disabled={runningAgent}
-                        className="bg-neutral-900 text-white px-6 py-3 rounded-xl font-mono uppercase font-bold tracking-widest text-sm hover:bg-neutral-800 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg"
+                        className="bg-neutral-900 text-white px-6 py-2 rounded-lg font-mono uppercase font-bold tracking-widest text-xs hover:bg-neutral-800 transition-colors disabled:opacity-50 flex items-center gap-2 shadow-lg h-full"
                     >
                         {runningAgent ? (
                             <>
-                                <svg className="animate-spin h-4 w-4 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <svg className="animate-spin h-3 w-3 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
-                                Scouting Web...
+                                Scouting...
                             </>
                         ) : (
                             <>
-                                <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                Run AI Scout
+                                <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                Target Scout
                             </>
                         )}
                     </button>
                 </div>
             </div>
 
-            <div className="bg-white border rounded-2xl shadow-sm overflow-hidden">
+            {/* Radar Map Primary View */}
+            <RadarMap leads={leads} heatmapData={heatmap} />
+
+            <div className="bg-white border rounded-2xl shadow-sm overflow-hidden mt-8">
+                <div className="p-4 bg-neutral-50/50 border-b flex justify-between items-center">
+                    <h2 className="font-mono text-xs uppercase tracking-widest text-neutral-500 font-bold">List View ({leads.length} Leads)</h2>
+                </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm">
                         <thead className="bg-neutral-50 text-neutral-500 font-mono uppercase tracking-widest text-xs border-b">

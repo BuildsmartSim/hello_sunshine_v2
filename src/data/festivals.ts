@@ -2,6 +2,31 @@ import { textures } from '@/design-system/tokens';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 
+export const TIER_CATEGORIES = [
+    'Early Birds',
+    'Full Weekend',
+    'Full Weekend Couples',
+    'Single Session',
+    'Crew',
+    'Traders',
+    'UC/Benefits Claimants',
+    'Other'
+];
+
+export function sortTiersByType(tiers: TicketSubTier[]): TicketSubTier[] {
+    return [...tiers].sort((a, b) => {
+        // Find if the tier name STARTS WITH any of our predefined categories. 
+        // This allows them to add extra info (e.g. "Early Birds - Saturday") but still sort correctly.
+        let indexA = TIER_CATEGORIES.findIndex(cat => a.name.startsWith(cat));
+        let indexB = TIER_CATEGORIES.findIndex(cat => b.name.startsWith(cat));
+
+        indexA = indexA === -1 ? TIER_CATEGORIES.length : indexA;
+        indexB = indexB === -1 ? TIER_CATEGORIES.length : indexB;
+
+        return indexA - indexB;
+    });
+}
+
 export type TicketSubTier = {
     id: string;
     name: string;

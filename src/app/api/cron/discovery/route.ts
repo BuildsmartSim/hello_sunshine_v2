@@ -4,19 +4,7 @@ import { GoogleGenAI } from '@google/genai';
 import { searchSerper } from '@/utils/agents/serper';
 import { scrapeUrl } from '@/utils/agents/firecrawl';
 
-
-
 const NEGATIVE_TERMS = " -site:timeout.com -site:the-independent.com -site:cntraveller.com -site:theguardian.com -site:gq-magazine.co.uk -site:countryandtownhouse.com -site:instagram.com -site:tiktok.com -site:facebook.com -inurl:blog -inurl:article -inurl:news";
-
-const QUERIES = [
-    `UK boutique festival "camping" "tickets"${NEGATIVE_TERMS}`,
-    `independent music festival UK "lineup" "tickets"${NEGATIVE_TERMS}`,
-    `UK wellness retreat festival "sauna"${NEGATIVE_TERMS}`,
-    `small holistic gatherings UK  "healing"${NEGATIVE_TERMS}`,
-    `UK wild swimming club${NEGATIVE_TERMS}`,
-    `boutique glamping site UK "sauna"${NEGATIVE_TERMS}`,
-    `UK trail running event "village"${NEGATIVE_TERMS}`
-];
 
 const SYSTEM_PROMPT = `
 You are an AI scouting for a premium mobile wood-fired sauna business called 'Hello Sunshine'. 
@@ -28,6 +16,7 @@ If the website is a news article, a listicle (e.g., "The 50 Best Festivals", "To
 Your task is to analyze the provided markdown text from a website and return a JSON object with the following structure:
 {
   "name": "The specific name of the festival or spot (NOT the title of an article)",
+  "location_name": "The specific city, county, or region this event takes place in. (e.g. 'Brighton, East Sussex')",
   "emails": ["list of contact emails found"],
   "vibe_score": An integer from 1 to 100,
   "vibe_notes": "A short summary of *why* you gave this score based on their website copy."
@@ -44,11 +33,32 @@ Return ONLY valid JSON.
 
 export const maxDuration = 300;
 
+async function geocodeLocation(locationName: string): Promise<{ lat: number, lng: number } | null> {
+    if (!locationName || locationName.trim() === '') return null;
+    try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationName)}&limit=1`, {
+            headers: {
+                'User-Agent': 'HelloSunshineApp/1.0'
+            }
+        });
+        const data = await res.json();
+        if (data && data.length > 0) {
+            return {
+                lat: parseFloat(data[0].lat),
+                lng: parseFloat(data[0].lon)
+            };
+        }
+    } catch (e) {
+        console.error(`Geocoding failed for ${locationName}`, e);
+    }
+    return null;
+}
+
 export async function GET(request: Request) {
-    // 1. Check authorization (Vercel Cron or manual admin)
     const authHeader = request.headers.get('authorization');
+    const searchParams = new URL(request.url).searchParams;
     const isVercelCron = authHeader === `Bearer ${process.env.CRON_SECRET}`;
-    const isManual = new URL(request.url).searchParams.get('key') === process.env.CRON_SECRET;
+    const isManual = searchParams.get('key') === process.env.CRON_SECRET;
 
     if (!isVercelCron && !isManual && process.env.NODE_ENV !== 'development') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -61,12 +71,18 @@ export async function GET(request: Request) {
         );
         const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-        // 2. Select a random query and random page offset to avoid hitting the exact same results
-        const query = QUERIES[Math.floor(Math.random() * QUERIES.length)];
-        const randomPage = Math.floor(Math.random() * 5) + 1; // Google pages 1 to 5
+        const country = searchParams.get('country') || 'UK';
+        const region = searchParams.get('region') || '';
+        const city = searchParams.get('city') || '';
+        const eventType = searchParams.get('type') || 'boutique festival';
+
+        // Construct dynamic query
+        const locationTokens = [city, region, country].filter(Boolean).map(t => `"${t}"`).join(' ');
+        const query = `${eventType} ${locationTokens} "tickets"${NEGATIVE_TERMS}`;
+
+        const randomPage = Math.floor(Math.random() * 5) + 1; // Deep crawl mitigation
         console.log(`[Discovery] Running search for: "${query}" (Page ${randomPage})`);
 
-        // 3. Search Serper
         const searchResults = await searchSerper(query, randomPage);
         if (!searchResults.length) {
             return NextResponse.json({ message: 'No search results found.' });
@@ -75,14 +91,12 @@ export async function GET(request: Request) {
         const processedUrls: string[] = [];
         let addedCount = 0;
 
-        const limitStr = new URL(request.url).searchParams.get('limit');
+        const limitStr = searchParams.get('limit');
         const searchLimit = limitStr ? parseInt(limitStr, 10) : 5;
 
-        // Process top results (limited to avoid timeouts unless running a deep local scan)
         for (const result of searchResults.slice(0, searchLimit)) {
             const url = result.link;
 
-            // 4. Check if URL already exists in DB
             const { data: existing } = await supabase
                 .from('discovery_leads')
                 .select('id')
@@ -96,7 +110,6 @@ export async function GET(request: Request) {
 
             console.log(`[Discovery] Scraping ${url}...`);
 
-            // 5. Scrape with Firecrawl
             const markdown = await scrapeUrl(url);
             if (!markdown) {
                 console.log(`[Discovery] Could not scrape ${url}, skipping.`);
@@ -105,46 +118,48 @@ export async function GET(request: Request) {
 
             console.log(`[Discovery] Analyzing markdown for ${url}...`);
 
-            // 6. Extract with Gemini
             try {
                 const response = await ai.models.generateContent({
                     model: 'gemini-2.5-flash',
                     contents: [
                         { text: SYSTEM_PROMPT },
-                        { text: `WEBSITE MARKDOWN:\n\n${markdown.substring(0, 50000)}` } // Limit to 50k chars
+                        { text: `WEBSITE MARKDOWN:\n\n${markdown.substring(0, 50000)}` }
                     ],
                     config: {
                         responseMimeType: 'application/json',
                     }
                 });
 
-                // Use type assertion to avoid TS complaining about the getter
                 const jsonText = String((response as any).text);
                 if (!jsonText) throw new Error("No text response from Gemini");
 
                 const extractedData = JSON.parse(jsonText);
 
-                // Determine Type rough guess
                 const isFestival =
                     query.includes('festival') ||
                     extractedData.name?.toLowerCase().includes('festival');
 
                 const type = isFestival ? 'festival' : 'popup_spot';
 
-                // Extremely strict filtering
                 const score = extractedData.vibe_score || 0;
                 if (score < 40) {
-                    console.log(`[Discovery] Rejected lead ${url} - Score too low (${score}). Notes: ${extractedData.vibe_notes}`);
+                    console.log(`[Discovery] Rejected lead ${url} - Score too low (${score}).`);
                     continue;
                 }
 
-                // 7. Save to DB
+                // Geocode the extracted location string
+                console.log(`[Discovery] Geocoding location: ${extractedData.location_name}`);
+                const coords = await geocodeLocation(extractedData.location_name || city || region || country);
+
                 const { error: insertError } = await supabase
                     .from('discovery_leads')
                     .insert({
                         type,
                         name: extractedData.name || result.title,
                         url,
+                        location_name: extractedData.location_name || '',
+                        latitude: coords?.lat || null,
+                        longitude: coords?.lng || null,
                         emails: Array.isArray(extractedData.emails) ? extractedData.emails : [],
                         vibe_score: score,
                         vibe_notes: extractedData.vibe_notes || '',
@@ -155,7 +170,7 @@ export async function GET(request: Request) {
                 if (insertError) {
                     console.error(`[Discovery] DB Insert Error for ${url}:`, insertError);
                 } else {
-                    console.log(`[Discovery] successfully added: ${extractedData.name}`);
+                    console.log(`[Discovery] successfully added: ${extractedData.name} at ${coords?.lat}, ${coords?.lng}`);
                     addedCount++;
                     processedUrls.push(url);
                 }
