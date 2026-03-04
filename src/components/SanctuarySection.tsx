@@ -86,12 +86,12 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
     'Sauna': {
         img1: "/optimized/photographs/webp/Sauna/IMG-20230727-WA0006.webp",
         img2: "/optimized/polaroids/webp/TIM+STOVE.jpg",
-        img3: "/optimized/photographs/webp/Sauna/CARAVAN LEAVES OUTDOORS.webp",
+        img3: "/optimized/photographs/webp/Sauna/caravan-leaves-outdoors.webp",
         polaroid: "/optimized/photographs/webp/Sauna/woman-doing-face-paint.webp",
         polaroidLabel: "The sign says it all.",
     },
     'Hot Tub': {
-        img1: "/optimized/photographs/webp/Hot Tub/PLUNGEPOOL MAN WATER.webp",
+        img1: "/optimized/photographs/webp/Hot Tub/plungepool-man-water.webp",
         img2: "/optimized/photographs/webp/Hot Tub/men-naked-sunbathing-field.webp",
         img3: "/optimized/photographs/webp/Hot Tub/happy-group-hot-tub-thumbs-up.webp",
         polaroid: "/optimized/photographs/webp/Hot Tub/young-woman-soaking-in.webp",
@@ -106,7 +106,7 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
     },
     'Fire Pit': {
         img1: "/optimized/photographs/webp/Fire Pit/5612af0f-fe77-4ee9-97d9-f6b066c2aab7.webp",
-        img2: "/optimized/photographs/webp/Fire Pit/Screenshot 2024-05-16 054512.webp",
+        img2: "/optimized/photographs/webp/Fire Pit/screenshot-2024-05-16-054512.webp",
         img3: "/optimized/photographs/webp/Fire Pit/caravan-camp-fire-pit-gathering.webp",
         polaroid: "/optimized/photographs/webp/Fire Pit/caravan-camp-fire-pit-gathering.webp",
         polaroidLabel: "Singalongs & Starlight",
@@ -114,7 +114,7 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
     'Shower': {
         img1: "/optimized/photographs/webp/Showers/sunny_showers_outdoor_square.webp",
         img2: "/optimized/photographs/webp/Showers/two-blonde-women-brush.webp",
-        img3: "/optimized/photographs/webp/Showers/SOWERS FENCING NIGHT.webp",
+        img3: "/optimized/photographs/webp/Showers/showers-fencing-night.webp",
         polaroid: "/optimized/photographs/webp/Showers/smiling-shirtless-man-vintage.webp",
         polaroidLabel: "Art of the Sauna",
     },

@@ -74,7 +74,7 @@ export default function HeroSection() {
             <div className="pt-6 md:pt-14">
                 <DappledHeaderStroke
                     line1="Hello Sunshine"
-                    line1Size="clamp(42px, 12vw, 142px)"
+                    line1Size="clamp(64px, 15vw, 142px)"
                     centered={false}
                 />
             </div>
