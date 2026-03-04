@@ -18,6 +18,7 @@ import { StandardSection } from '@/components/StandardSection';
    ───────────────────────────────────────────────────── */
 
 const PHOTO_SRC = "/optimized/photographs/webp/nude-people-caravan-sanctuary.webp";
+const MOBILE_PHOTO_SRC = "/optimized/photographs/webp/nude-people-caravan-sanctuary-mobile.webp";
 const POLAROID_SRC = "/optimized/polaroids/webp/sauna-interior-wood-stove-glow.webp";
 
 function HeroPhoto() {
@@ -39,11 +40,21 @@ function HeroPhoto() {
                 />
             </div>
 
-            {/* Panoramic photo - Adjusted aspect for mobile if needed, though 21/9 can work with cover */}
+            {/* Photo - Portrait on Mobile / Panoramic on Desktop */}
             <motion.div
                 layoutId={id}
-                onClick={() => openMedia({ src: PHOTO_SRC, label: 'Hello Sunshine sauna exterior', id, aspect: 'aspect-[21/9]', padding: '10px', borderRadius: '6px' })}
-                className={`relative w-full overflow-hidden rounded-md cursor-zoom-in p-2 md:p-2.5 bg-white aspect-video md:aspect-[21/9] ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                onClick={() => {
+                    const isMobile = window.innerWidth < 768;
+                    openMedia({
+                        src: isMobile ? MOBILE_PHOTO_SRC : PHOTO_SRC,
+                        label: 'Hello Sunshine sauna exterior',
+                        id,
+                        aspect: isMobile ? 'aspect-[4/5]' : 'aspect-[21/9]',
+                        padding: '10px',
+                        borderRadius: '6px'
+                    });
+                }}
+                className={`relative w-full overflow-hidden rounded-md cursor-zoom-in p-2 md:p-2.5 bg-white aspect-[4/5] md:aspect-[21/9] ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                 style={{
                     boxShadow: '0 calc(15px * var(--shadow-intensity, 1)) 40px -8px rgba(50,43,40,0.3)',
                     transform: 'rotate(0.5deg)',
@@ -51,7 +62,10 @@ function HeroPhoto() {
                     visibility: isActive ? 'hidden' : 'visible'
                 }}>
                 <div className="w-full h-full relative overflow-hidden rounded-sm">
-                    <Image src={PHOTO_SRC} alt="Hello Sunshine sauna exterior" fill className="object-cover object-center" />
+                    {/* Desktop Image */}
+                    <Image src={PHOTO_SRC} alt="Hello Sunshine sauna exterior" fill className="object-cover object-center hidden md:block" />
+                    {/* Mobile Image */}
+                    <Image src={MOBILE_PHOTO_SRC} alt="Hello Sunshine sauna exterior" fill className="object-cover object-center block md:hidden" />
                 </div>
             </motion.div>
 

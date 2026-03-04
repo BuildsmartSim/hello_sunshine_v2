@@ -124,6 +124,8 @@ function Photo({ src, tilt = "0deg", className = "", alt = "Photo", id, aspect =
     const isActive = activeMedia?.id === id;
     const isShowingGhost = isActive || (isTransitioning && !activeMedia);
 
+    const portraitSrc = src.replace(/\.(webp|jpg|jpeg|png)$/i, (match) => `-portrait${match}`);
+
     return (
         <div className={`relative overflow-hidden ${className}`} style={{ transform: `rotate(${tilt})` }}
             onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -134,11 +136,24 @@ function Photo({ src, tilt = "0deg", className = "", alt = "Photo", id, aspect =
                 </div>
             )}
             <motion.div layoutId={id}
-                onClick={() => openMedia({ src, label: alt, id, aspect, padding: '12px', borderRadius: '4px' })}
+                onClick={() => {
+                    const isMobile = window.innerWidth < 768;
+                    openMedia({
+                        src: isMobile ? portraitSrc : src,
+                        label: alt,
+                        id,
+                        aspect: isMobile ? 'aspect-[4/5]' : aspect,
+                        padding: '12px',
+                        borderRadius: '4px'
+                    });
+                }}
                 className={`relative z-10 w-full h-full cursor-zoom-in p-2 md:p-3 bg-white ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                 style={{ borderRadius: "4px", boxShadow: shadows.photo, visibility: isActive ? 'hidden' : 'visible' }}>
                 <div className="w-full h-full bg-charcoal/5 relative overflow-hidden border border-charcoal/5" style={{ borderRadius: "2px" }}>
-                    <Image src={src} alt={alt} fill className="object-cover transition-opacity duration-500" sizes="(max-width: 768px) 100vw, 33vw" />
+                    {/* Desktop Image */}
+                    <Image src={src} alt={alt} fill className="object-cover transition-opacity duration-500 hidden md:block" sizes="(max-width: 768px) 100vw, 33vw" />
+                    {/* Mobile Image */}
+                    <Image src={portraitSrc} alt={alt} fill className="object-cover transition-opacity duration-500 block md:hidden" sizes="(max-width: 768px) 100vw, 33vw" />
                 </div>
             </motion.div>
         </div>
@@ -166,17 +181,17 @@ function ServiceTabs({ services, activeService, onSelect }: {
                                 : 'bg-charcoal/[0.03] border-charcoal/10 hover:bg-primary/10 hover:border-primary/30 hover:scale-105'
                             }`}
                     >
-                        <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center">
+                        <div className="relative w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center">
                             <Image
                                 src={s.icon}
                                 alt={s.label}
-                                width={36}
-                                height={36}
-                                className={`w-full h-full object-contain transition-all duration-300 ${isActive ? 'brightness-0 invert' : 'opacity-50 group-hover:opacity-80'}`}
+                                width={48}
+                                height={48}
+                                className={`w-full h-full object-contain transition-all duration-300 ${isActive ? 'brightness-0 invert' : 'opacity-75 group-hover:opacity-100'}`}
                             />
                         </div>
                         <span className={`text-[7.5px] md:text-[9px] font-body uppercase tracking-[0.05em] font-bold truncate w-full text-center px-0.5 transition-colors duration-300
-                            ${isActive ? 'text-charcoal' : 'text-charcoal/40 group-hover:text-charcoal/70'}`}>
+                            ${isActive ? 'text-charcoal' : 'text-charcoal/60 group-hover:text-charcoal/90'}`}>
                             {s.label}
                         </span>
                     </button>
@@ -278,7 +293,7 @@ export default function SanctuarySection() {
                 </div>
 
                 {/* Right column — photo cascade — optimized for mobile */}
-                <div className="col-span-1 md:col-span-7 relative min-h-[500px] md:min-h-[820px] mt-12 md:mt-0" onMouseLeave={() => setHoveredId(null)}>
+                <div className="col-span-1 md:col-span-7 relative min-h-[750px] md:min-h-[820px] mt-12 md:mt-0" onMouseLeave={() => setHoveredId(null)}>
 
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -289,25 +304,25 @@ export default function SanctuarySection() {
                             transition={{ duration: 0.25, ease: "easeOut" }}
                             className="absolute inset-0 w-full h-full pointer-events-none"
                         >
-                            <div className="absolute top-0 left-0 w-[65%] md:w-[60%] aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
+                            <div className="absolute top-0 left-0 w-[65%] md:w-[60%] aspect-[4/5] md:aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
                                 style={getTransform('1', '-2deg', 'top-left')} onMouseEnter={() => setHoveredId('1')}>
                                 <Photo id="sanctuary-1" src={currentImages.img1} className="w-full h-full" aspect="aspect-[4/3]"
                                     alt={activeService ? `${activeService} — image 1` : 'The Welcome Glow'} />
                             </div>
 
-                            <div className="absolute top-16 md:top-24 right-0 w-[65%] aspect-video transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
+                            <div className="absolute top-[180px] md:top-24 right-0 w-[65%] aspect-[4/5] md:aspect-video transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
                                 style={getTransform('2', '1deg', 'mid-right')} onMouseEnter={() => setHoveredId('2')}>
                                 <Photo id="sanctuary-2" src={currentImages.img2} className="w-full h-full" aspect="aspect-video"
                                     alt={activeService ? `${activeService} — image 2` : 'Come on in...'} />
                             </div>
 
-                            <div className="absolute top-[200px] md:top-[280px] left-8 md:left-12 w-[60%] md:w-[55%] aspect-square transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
+                            <div className="absolute top-[380px] md:top-[280px] left-8 md:left-12 w-[60%] md:w-[55%] aspect-[4/5] md:aspect-square transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
                                 style={getTransform('3', '-1deg', 'bottom-left')} onMouseEnter={() => setHoveredId('3')}>
                                 <Photo id="sanctuary-3" src={currentImages.img3} className="w-full h-full" aspect="aspect-square"
                                     alt={activeService ? `${activeService} — image 3` : 'Rainbow over the sauna'} />
                             </div>
 
-                            <div className="absolute bottom-[-40px] md:bottom-[-60px] right-2 md:right-8 z-40 pointer-events-auto"
+                            <div className="absolute bottom-[-160px] md:bottom-[-60px] right-2 md:right-8 z-40 pointer-events-auto"
                                 style={{ transform: 'rotate(3deg)' }}>
                                 <div className="relative inline-block overflow-visible">
                                     <Polaroid src={currentImages.polaroid} label={currentImages.polaroidLabel}

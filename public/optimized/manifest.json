@@ -1,278 +1,590 @@
 {
   "bald-bearded-man.jpg": {
     "webp": "/optimized/photographs/webp/bald-bearded-man.webp",
-    "jpeg": "/optimized/photographs/jpg/bald-bearded-man.jpg"
+    "jpeg": "/optimized/photographs/jpg/bald-bearded-man.jpg",
+    "webpPortrait": "/optimized/photographs/webp/bald-bearded-man-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/bald-bearded-man-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/bald-bearded-man-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/bald-bearded-man-landscape.jpg"
   },
   "bare-chested-man.jpg": {
     "webp": "/optimized/photographs/webp/bare-chested-man.webp",
-    "jpeg": "/optimized/photographs/jpg/bare-chested-man.jpg"
+    "jpeg": "/optimized/photographs/jpg/bare-chested-man.jpg",
+    "webpPortrait": "/optimized/photographs/webp/bare-chested-man-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/bare-chested-man-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/bare-chested-man-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/bare-chested-man-landscape.jpg"
   },
   "bearded-man-smiling.jpg": {
     "webp": "/optimized/photographs/webp/bearded-man-smiling.webp",
-    "jpeg": "/optimized/photographs/jpg/bearded-man-smiling.jpg"
+    "jpeg": "/optimized/photographs/jpg/bearded-man-smiling.jpg",
+    "webpPortrait": "/optimized/photographs/webp/bearded-man-smiling-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/bearded-man-smiling-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/bearded-man-smiling-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/bearded-man-smiling-landscape.jpg"
   },
   "bearded-men-smiling-out.jpg": {
     "webp": "/optimized/photographs/webp/bearded-men-smiling-out.webp",
-    "jpeg": "/optimized/photographs/jpg/bearded-men-smiling-out.jpg"
+    "jpeg": "/optimized/photographs/jpg/bearded-men-smiling-out.jpg",
+    "webpPortrait": "/optimized/photographs/webp/bearded-men-smiling-out-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/bearded-men-smiling-out-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/bearded-men-smiling-out-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/bearded-men-smiling-out-landscape.jpg"
   },
   "dark-gray-brushed-diagonal.jpg": {
     "webp": "/optimized/photographs/webp/dark-gray-brushed-diagonal.webp",
-    "jpeg": "/optimized/photographs/jpg/dark-gray-brushed-diagonal.jpg"
+    "jpeg": "/optimized/photographs/jpg/dark-gray-brushed-diagonal.jpg",
+    "webpPortrait": "/optimized/photographs/webp/dark-gray-brushed-diagonal-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/dark-gray-brushed-diagonal-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/dark-gray-brushed-diagonal-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/dark-gray-brushed-diagonal-landscape.jpg"
   },
   "dark-skinned-person-sitting.jpg": {
     "webp": "/optimized/photographs/webp/dark-skinned-person-sitting.webp",
-    "jpeg": "/optimized/photographs/jpg/dark-skinned-person-sitting.jpg"
+    "jpeg": "/optimized/photographs/jpg/dark-skinned-person-sitting.jpg",
+    "webpPortrait": "/optimized/photographs/webp/dark-skinned-person-sitting-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/dark-skinned-person-sitting-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/dark-skinned-person-sitting-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/dark-skinned-person-sitting-landscape.jpg"
   },
   "diverse-adults-socializing.jpg": {
     "webp": "/optimized/photographs/webp/diverse-adults-socializing.webp",
-    "jpeg": "/optimized/photographs/jpg/diverse-adults-socializing.jpg"
+    "jpeg": "/optimized/photographs/jpg/diverse-adults-socializing.jpg",
+    "webpPortrait": "/optimized/photographs/webp/diverse-adults-socializing-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/diverse-adults-socializing-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/diverse-adults-socializing-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/diverse-adults-socializing-landscape.jpg"
   },
   "elderly-men-nude.jpg": {
     "webp": "/optimized/photographs/webp/elderly-men-nude.webp",
-    "jpeg": "/optimized/photographs/jpg/elderly-men-nude.jpg"
+    "jpeg": "/optimized/photographs/jpg/elderly-men-nude.jpg",
+    "webpPortrait": "/optimized/photographs/webp/elderly-men-nude-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/elderly-men-nude-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/elderly-men-nude-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/elderly-men-nude-landscape.jpg"
   },
   "four-nude-people-festival.jpg": {
     "webp": "/optimized/photographs/webp/four-nude-people-festival.webp",
-    "jpeg": "/optimized/photographs/jpg/four-nude-people-festival.jpg"
+    "jpeg": "/optimized/photographs/jpg/four-nude-people-festival.jpg",
+    "webpPortrait": "/optimized/photographs/webp/four-nude-people-festival-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/four-nude-people-festival-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/four-nude-people-festival-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/four-nude-people-festival-landscape.jpg"
   },
   "four-smiling-adults-at.jpg": {
     "webp": "/optimized/photographs/webp/four-smiling-adults-at.webp",
-    "jpeg": "/optimized/photographs/jpg/four-smiling-adults-at.jpg"
+    "jpeg": "/optimized/photographs/jpg/four-smiling-adults-at.jpg",
+    "webpPortrait": "/optimized/photographs/webp/four-smiling-adults-at-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/four-smiling-adults-at-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/four-smiling-adults-at-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/four-smiling-adults-at-landscape.jpg"
   },
   "guru-man-arms-outstretched.jpg": {
     "webp": "/optimized/photographs/webp/guru-man-arms-outstretched.webp",
-    "jpeg": "/optimized/photographs/jpg/guru-man-arms-outstretched.jpg"
+    "jpeg": "/optimized/photographs/jpg/guru-man-arms-outstretched.jpg",
+    "webpPortrait": "/optimized/photographs/webp/guru-man-arms-outstretched-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/guru-man-arms-outstretched-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/guru-man-arms-outstretched-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/guru-man-arms-outstretched-landscape.jpg"
   },
   "happy-couple-bathing-outdoor.jpg": {
     "webp": "/optimized/photographs/webp/happy-couple-bathing-outdoor.webp",
-    "jpeg": "/optimized/photographs/jpg/happy-couple-bathing-outdoor.jpg"
+    "jpeg": "/optimized/photographs/jpg/happy-couple-bathing-outdoor.jpg",
+    "webpPortrait": "/optimized/photographs/webp/happy-couple-bathing-outdoor-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/happy-couple-bathing-outdoor-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/happy-couple-bathing-outdoor-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/happy-couple-bathing-outdoor-landscape.jpg"
   },
   "happy-man-arms-raised.jpg": {
     "webp": "/optimized/photographs/webp/happy-man-arms-raised.webp",
-    "jpeg": "/optimized/photographs/jpg/happy-man-arms-raised.jpg"
+    "jpeg": "/optimized/photographs/jpg/happy-man-arms-raised.jpg",
+    "webpPortrait": "/optimized/photographs/webp/happy-man-arms-raised-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/happy-man-arms-raised-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/happy-man-arms-raised-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/happy-man-arms-raised-landscape.jpg"
   },
   "hello-sunshine-sauna.jpg": {
     "webp": "/optimized/photographs/webp/hello-sunshine-sauna.webp",
-    "jpeg": "/optimized/photographs/jpg/hello-sunshine-sauna.jpg"
+    "jpeg": "/optimized/photographs/jpg/hello-sunshine-sauna.jpg",
+    "webpPortrait": "/optimized/photographs/webp/hello-sunshine-sauna-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/hello-sunshine-sauna-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/hello-sunshine-sauna-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/hello-sunshine-sauna-landscape.jpg"
   },
   "hello-sunshine.jpg": {
     "webp": "/optimized/photographs/webp/hello-sunshine.webp",
-    "jpeg": "/optimized/photographs/jpg/hello-sunshine.jpg"
+    "jpeg": "/optimized/photographs/jpg/hello-sunshine.jpg",
+    "webpPortrait": "/optimized/photographs/webp/hello-sunshine-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/hello-sunshine-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/hello-sunshine-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/hello-sunshine-landscape.jpg"
   },
   "hippie-painting-man.jpg": {
     "webp": "/optimized/photographs/webp/hippie-painting-man.webp",
-    "jpeg": "/optimized/photographs/jpg/hippie-painting-man.jpg"
+    "jpeg": "/optimized/photographs/jpg/hippie-painting-man.jpg",
+    "webpPortrait": "/optimized/photographs/webp/hippie-painting-man-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/hippie-painting-man-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/hippie-painting-man-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/hippie-painting-man-landscape.jpg"
   },
   "man-bathes-plunge-sunshine.png": {
     "webp": "/optimized/photographs/webp/man-bathes-plunge-sunshine.webp",
-    "jpeg": "/optimized/photographs/jpg/man-bathes-plunge-sunshine.jpg"
+    "jpeg": "/optimized/photographs/jpg/man-bathes-plunge-sunshine.jpg",
+    "webpPortrait": "/optimized/photographs/webp/man-bathes-plunge-sunshine-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/man-bathes-plunge-sunshine-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/man-bathes-plunge-sunshine-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/man-bathes-plunge-sunshine-landscape.jpg"
   },
   "man-sunning-back-outdoor.jpg": {
     "webp": "/optimized/photographs/webp/man-sunning-back-outdoor.webp",
-    "jpeg": "/optimized/photographs/jpg/man-sunning-back-outdoor.jpg"
+    "jpeg": "/optimized/photographs/jpg/man-sunning-back-outdoor.jpg",
+    "webpPortrait": "/optimized/photographs/webp/man-sunning-back-outdoor-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/man-sunning-back-outdoor-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/man-sunning-back-outdoor-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/man-sunning-back-outdoor-landscape.jpg"
   },
   "men-naked-sunbathing-field.jpg": {
     "webp": "/optimized/photographs/webp/men-naked-sunbathing-field.webp",
-    "jpeg": "/optimized/photographs/jpg/men-naked-sunbathing-field.jpg"
+    "jpeg": "/optimized/photographs/jpg/men-naked-sunbathing-field.jpg",
+    "webpPortrait": "/optimized/photographs/webp/men-naked-sunbathing-field-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/men-naked-sunbathing-field-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/men-naked-sunbathing-field-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/men-naked-sunbathing-field-landscape.jpg"
   },
   "mother-holding-child-outdoor.jpg": {
     "webp": "/optimized/photographs/webp/mother-holding-child-outdoor.webp",
-    "jpeg": "/optimized/photographs/jpg/mother-holding-child-outdoor.jpg"
+    "jpeg": "/optimized/photographs/jpg/mother-holding-child-outdoor.jpg",
+    "webpPortrait": "/optimized/photographs/webp/mother-holding-child-outdoor-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/mother-holding-child-outdoor-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/mother-holding-child-outdoor-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/mother-holding-child-outdoor-landscape.jpg"
   },
   "naked-man-sitting-cross.jpg": {
     "webp": "/optimized/photographs/webp/naked-man-sitting-cross.webp",
-    "jpeg": "/optimized/photographs/jpg/naked-man-sitting-cross.jpg"
+    "jpeg": "/optimized/photographs/jpg/naked-man-sitting-cross.jpg",
+    "webpPortrait": "/optimized/photographs/webp/naked-man-sitting-cross-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/naked-man-sitting-cross-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/naked-man-sitting-cross-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/naked-man-sitting-cross-landscape.jpg"
   },
   "naked-painting-man.jpg": {
     "webp": "/optimized/photographs/webp/naked-painting-man.webp",
-    "jpeg": "/optimized/photographs/jpg/naked-painting-man.jpg"
+    "jpeg": "/optimized/photographs/jpg/naked-painting-man.jpg",
+    "webpPortrait": "/optimized/photographs/webp/naked-painting-man-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/naked-painting-man-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/naked-painting-man-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/naked-painting-man-landscape.jpg"
   },
   "naked-woman-lying-on.jpg": {
     "webp": "/optimized/photographs/webp/naked-woman-lying-on.webp",
-    "jpeg": "/optimized/photographs/jpg/naked-woman-lying-on.jpg"
+    "jpeg": "/optimized/photographs/jpg/naked-woman-lying-on.jpg",
+    "webpPortrait": "/optimized/photographs/webp/naked-woman-lying-on-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/naked-woman-lying-on-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/naked-woman-lying-on-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/naked-woman-lying-on-landscape.jpg"
   },
   "nude-festival-woman.jpg": {
     "webp": "/optimized/photographs/webp/nude-festival-woman.webp",
-    "jpeg": "/optimized/photographs/jpg/nude-festival-woman.jpg"
+    "jpeg": "/optimized/photographs/jpg/nude-festival-woman.jpg",
+    "webpPortrait": "/optimized/photographs/webp/nude-festival-woman-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/nude-festival-woman-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/nude-festival-woman-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/nude-festival-woman-landscape.jpg"
   },
   "nude-people-relaxing.jpg": {
     "webp": "/optimized/photographs/webp/nude-people-relaxing.webp",
-    "jpeg": "/optimized/photographs/jpg/nude-people-relaxing.jpg"
+    "jpeg": "/optimized/photographs/jpg/nude-people-relaxing.jpg",
+    "webpPortrait": "/optimized/photographs/webp/nude-people-relaxing-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/nude-people-relaxing-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/nude-people-relaxing-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/nude-people-relaxing-landscape.jpg"
   },
   "nude-people.jpg": {
     "webp": "/optimized/photographs/webp/nude-people.webp",
-    "jpeg": "/optimized/photographs/jpg/nude-people.jpg"
+    "jpeg": "/optimized/photographs/jpg/nude-people.jpg",
+    "webpPortrait": "/optimized/photographs/webp/nude-people-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/nude-people-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/nude-people-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/nude-people-landscape.jpg"
   },
   "open-sign-smiley-sun.jpg": {
     "webp": "/optimized/photographs/webp/open-sign-smiley-sun.webp",
-    "jpeg": "/optimized/photographs/jpg/open-sign-smiley-sun.jpg"
+    "jpeg": "/optimized/photographs/jpg/open-sign-smiley-sun.jpg",
+    "webpPortrait": "/optimized/photographs/webp/open-sign-smiley-sun-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/open-sign-smiley-sun-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/open-sign-smiley-sun-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/open-sign-smiley-sun-landscape.jpg"
   },
   "ornate-wooden-portable.jpg": {
     "webp": "/optimized/photographs/webp/ornate-wooden-portable.webp",
-    "jpeg": "/optimized/photographs/jpg/ornate-wooden-portable.jpg"
+    "jpeg": "/optimized/photographs/jpg/ornate-wooden-portable.jpg",
+    "webpPortrait": "/optimized/photographs/webp/ornate-wooden-portable-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/ornate-wooden-portable-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/ornate-wooden-portable-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/ornate-wooden-portable-landscape.jpg"
   },
   "people-relaxing-sunbathing.jpg": {
     "webp": "/optimized/photographs/webp/people-relaxing-sunbathing.webp",
-    "jpeg": "/optimized/photographs/jpg/people-relaxing-sunbathing.jpg"
+    "jpeg": "/optimized/photographs/jpg/people-relaxing-sunbathing.jpg",
+    "webpPortrait": "/optimized/photographs/webp/people-relaxing-sunbathing-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/people-relaxing-sunbathing-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/people-relaxing-sunbathing-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/people-relaxing-sunbathing-landscape.jpg"
   },
   "shirtless-man-meditating.jpg": {
     "webp": "/optimized/photographs/webp/shirtless-man-meditating.webp",
-    "jpeg": "/optimized/photographs/jpg/shirtless-man-meditating.jpg"
+    "jpeg": "/optimized/photographs/jpg/shirtless-man-meditating.jpg",
+    "webpPortrait": "/optimized/photographs/webp/shirtless-man-meditating-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/shirtless-man-meditating-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/shirtless-man-meditating-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/shirtless-man-meditating-landscape.jpg"
   },
   "shirtless-man-standing.jpg": {
     "webp": "/optimized/photographs/webp/shirtless-man-standing.webp",
-    "jpeg": "/optimized/photographs/jpg/shirtless-man-standing.jpg"
+    "jpeg": "/optimized/photographs/jpg/shirtless-man-standing.jpg",
+    "webpPortrait": "/optimized/photographs/webp/shirtless-man-standing-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/shirtless-man-standing-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/shirtless-man-standing-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/shirtless-man-standing-landscape.jpg"
   },
   "six-nude-women.jpg": {
     "webp": "/optimized/photographs/webp/six-nude-women.webp",
-    "jpeg": "/optimized/photographs/jpg/six-nude-women.jpg"
+    "jpeg": "/optimized/photographs/jpg/six-nude-women.jpg",
+    "webpPortrait": "/optimized/photographs/webp/six-nude-women-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/six-nude-women-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/six-nude-women-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/six-nude-women-landscape.jpg"
   },
   "smiling-couple-outdoor-festival.jpg": {
     "webp": "/optimized/photographs/webp/smiling-couple-outdoor-festival.webp",
-    "jpeg": "/optimized/photographs/jpg/smiling-couple-outdoor-festival.jpg"
+    "jpeg": "/optimized/photographs/jpg/smiling-couple-outdoor-festival.jpg",
+    "webpPortrait": "/optimized/photographs/webp/smiling-couple-outdoor-festival-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/smiling-couple-outdoor-festival-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/smiling-couple-outdoor-festival-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/smiling-couple-outdoor-festival-landscape.jpg"
   },
   "smiling-couple-relaxing-outdoor.jpg": {
     "webp": "/optimized/photographs/webp/smiling-couple-relaxing-outdoor.webp",
-    "jpeg": "/optimized/photographs/jpg/smiling-couple-relaxing-outdoor.jpg"
+    "jpeg": "/optimized/photographs/jpg/smiling-couple-relaxing-outdoor.jpg",
+    "webpPortrait": "/optimized/photographs/webp/smiling-couple-relaxing-outdoor-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/smiling-couple-relaxing-outdoor-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/smiling-couple-relaxing-outdoor-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/smiling-couple-relaxing-outdoor-landscape.jpg"
   },
   "smiling-man-orange-shaw.jpg": {
     "webp": "/optimized/photographs/webp/smiling-man-orange-shaw.webp",
-    "jpeg": "/optimized/photographs/jpg/smiling-man-orange-shaw.jpg"
+    "jpeg": "/optimized/photographs/jpg/smiling-man-orange-shaw.jpg",
+    "webpPortrait": "/optimized/photographs/webp/smiling-man-orange-shaw-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/smiling-man-orange-shaw-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/smiling-man-orange-shaw-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/smiling-man-orange-shaw-landscape.jpg"
   },
   "smiling-man-shirtless-outdoor.jpg": {
     "webp": "/optimized/photographs/webp/smiling-man-shirtless-outdoor.webp",
-    "jpeg": "/optimized/photographs/jpg/smiling-man-shirtless-outdoor.jpg"
+    "jpeg": "/optimized/photographs/jpg/smiling-man-shirtless-outdoor.jpg",
+    "webpPortrait": "/optimized/photographs/webp/smiling-man-shirtless-outdoor-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/smiling-man-shirtless-outdoor-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/smiling-man-shirtless-outdoor-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/smiling-man-shirtless-outdoor-landscape.jpg"
   },
   "smiling-shirtless-man-vintage.jpg": {
     "webp": "/optimized/photographs/webp/smiling-shirtless-man-vintage.webp",
-    "jpeg": "/optimized/photographs/jpg/smiling-shirtless-man-vintage.jpg"
+    "jpeg": "/optimized/photographs/jpg/smiling-shirtless-man-vintage.jpg",
+    "webpPortrait": "/optimized/photographs/webp/smiling-shirtless-man-vintage-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/smiling-shirtless-man-vintage-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/smiling-shirtless-man-vintage-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/smiling-shirtless-man-vintage-landscape.jpg"
   },
   "smiling-wet-man-beside.jpg": {
     "webp": "/optimized/photographs/webp/smiling-wet-man-beside.webp",
-    "jpeg": "/optimized/photographs/jpg/smiling-wet-man-beside.jpg"
+    "jpeg": "/optimized/photographs/jpg/smiling-wet-man-beside.jpg",
+    "webpPortrait": "/optimized/photographs/webp/smiling-wet-man-beside-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/smiling-wet-man-beside-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/smiling-wet-man-beside-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/smiling-wet-man-beside-landscape.jpg"
   },
   "smiling-woman-face-painting.jpg": {
     "webp": "/optimized/photographs/webp/smiling-woman-face-painting.webp",
-    "jpeg": "/optimized/photographs/jpg/smiling-woman-face-painting.jpg"
+    "jpeg": "/optimized/photographs/jpg/smiling-woman-face-painting.jpg",
+    "webpPortrait": "/optimized/photographs/webp/smiling-woman-face-painting-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/smiling-woman-face-painting-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/smiling-woman-face-painting-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/smiling-woman-face-painting-landscape.jpg"
   },
   "sun-face-sculpture.jpg": {
     "webp": "/optimized/photographs/webp/sun-face-sculpture.webp",
-    "jpeg": "/optimized/photographs/jpg/sun-face-sculpture.jpg"
+    "jpeg": "/optimized/photographs/jpg/sun-face-sculpture.jpg",
+    "webpPortrait": "/optimized/photographs/webp/sun-face-sculpture-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/sun-face-sculpture-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/sun-face-sculpture-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/sun-face-sculpture-landscape.jpg"
   },
   "tattooed-man-headstand.jpg": {
     "webp": "/optimized/photographs/webp/tattooed-man-headstand.webp",
-    "jpeg": "/optimized/photographs/jpg/tattooed-man-headstand.jpg"
+    "jpeg": "/optimized/photographs/jpg/tattooed-man-headstand.jpg",
+    "webpPortrait": "/optimized/photographs/webp/tattooed-man-headstand-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/tattooed-man-headstand-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/tattooed-man-headstand-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/tattooed-man-headstand-landscape.jpg"
   },
   "tattooed-man-headstanding.jpg": {
     "webp": "/optimized/photographs/webp/tattooed-man-headstanding.webp",
-    "jpeg": "/optimized/photographs/jpg/tattooed-man-headstanding.jpg"
+    "jpeg": "/optimized/photographs/jpg/tattooed-man-headstanding.jpg",
+    "webpPortrait": "/optimized/photographs/webp/tattooed-man-headstanding-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/tattooed-man-headstanding-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/tattooed-man-headstanding-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/tattooed-man-headstanding-landscape.jpg"
   },
   "three-friends-brushing.jpg": {
     "webp": "/optimized/photographs/webp/three-friends-brushing.webp",
-    "jpeg": "/optimized/photographs/jpg/three-friends-brushing.jpg"
+    "jpeg": "/optimized/photographs/jpg/three-friends-brushing.jpg",
+    "webpPortrait": "/optimized/photographs/webp/three-friends-brushing-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/three-friends-brushing-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/three-friends-brushing-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/three-friends-brushing-landscape.jpg"
   },
   "three-men-hugging.jpg": {
     "webp": "/optimized/photographs/webp/three-men-hugging.webp",
-    "jpeg": "/optimized/photographs/jpg/three-men-hugging.jpg"
+    "jpeg": "/optimized/photographs/jpg/three-men-hugging.jpg",
+    "webpPortrait": "/optimized/photographs/webp/three-men-hugging-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/three-men-hugging-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/three-men-hugging-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/three-men-hugging-landscape.jpg"
   },
   "three-men-soaking.jpg": {
     "webp": "/optimized/photographs/webp/three-men-soaking.webp",
-    "jpeg": "/optimized/photographs/jpg/three-men-soaking.jpg"
+    "jpeg": "/optimized/photographs/jpg/three-men-soaking.jpg",
+    "webpPortrait": "/optimized/photographs/webp/three-men-soaking-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/three-men-soaking-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/three-men-soaking-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/three-men-soaking-landscape.jpg"
   },
   "three-smiling-women-h.jpg": {
     "webp": "/optimized/photographs/webp/three-smiling-women-h.webp",
-    "jpeg": "/optimized/photographs/jpg/three-smiling-women-h.jpg"
+    "jpeg": "/optimized/photographs/jpg/three-smiling-women-h.jpg",
+    "webpPortrait": "/optimized/photographs/webp/three-smiling-women-h-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/three-smiling-women-h-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/three-smiling-women-h-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/three-smiling-women-h-landscape.jpg"
   },
   "three-women-hugging-posing.jpg": {
     "webp": "/optimized/photographs/webp/three-women-hugging-posing.webp",
-    "jpeg": "/optimized/photographs/jpg/three-women-hugging-posing.jpg"
+    "jpeg": "/optimized/photographs/jpg/three-women-hugging-posing.jpg",
+    "webpPortrait": "/optimized/photographs/webp/three-women-hugging-posing-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/three-women-hugging-posing-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/three-women-hugging-posing-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/three-women-hugging-posing-landscape.jpg"
   },
   "two-blonde-women-brush.jpg": {
     "webp": "/optimized/photographs/webp/two-blonde-women-brush.webp",
-    "jpeg": "/optimized/photographs/jpg/two-blonde-women-brush.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-blonde-women-brush.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-blonde-women-brush-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-blonde-women-brush-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-blonde-women-brush-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-blonde-women-brush-landscape.jpg"
   },
   "two-blonde-women.jpg": {
     "webp": "/optimized/photographs/webp/two-blonde-women.webp",
-    "jpeg": "/optimized/photographs/jpg/two-blonde-women.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-blonde-women.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-blonde-women-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-blonde-women-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-blonde-women-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-blonde-women-landscape.jpg"
   },
   "two-happy-women-brush.jpg": {
     "webp": "/optimized/photographs/webp/two-happy-women-brush.webp",
-    "jpeg": "/optimized/photographs/jpg/two-happy-women-brush.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-happy-women-brush.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-happy-women-brush-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-happy-women-brush-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-happy-women-brush-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-happy-women-brush-landscape.jpg"
   },
   "two-men-hugging-smiling.jpg": {
     "webp": "/optimized/photographs/webp/two-men-hugging-smiling.webp",
-    "jpeg": "/optimized/photographs/jpg/two-men-hugging-smiling.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-men-hugging-smiling.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-men-hugging-smiling-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-men-hugging-smiling-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-men-hugging-smiling-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-men-hugging-smiling-landscape.jpg"
   },
   "two-men-talking-sauna.jpg": {
     "webp": "/optimized/photographs/webp/two-men-talking-sauna.webp",
-    "jpeg": "/optimized/photographs/jpg/two-men-talking-sauna.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-men-talking-sauna.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-men-talking-sauna-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-men-talking-sauna-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-men-talking-sauna-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-men-talking-sauna-landscape.jpg"
   },
   "two-nude-men-relax.jpg": {
     "webp": "/optimized/photographs/webp/two-nude-men-relax.webp",
-    "jpeg": "/optimized/photographs/jpg/two-nude-men-relax.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-nude-men-relax.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-nude-men-relax-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-nude-men-relax-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-nude-men-relax-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-nude-men-relax-landscape.jpg"
   },
   "two-shirtless-men-kiss.jpg": {
     "webp": "/optimized/photographs/webp/two-shirtless-men-kiss.webp",
-    "jpeg": "/optimized/photographs/jpg/two-shirtless-men-kiss.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-shirtless-men-kiss.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-shirtless-men-kiss-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-shirtless-men-kiss-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-shirtless-men-kiss-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-shirtless-men-kiss-landscape.jpg"
   },
   "two-smiling-men-n.jpg": {
     "webp": "/optimized/photographs/webp/two-smiling-men-n.webp",
-    "jpeg": "/optimized/photographs/jpg/two-smiling-men-n.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-smiling-men-n.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-smiling-men-n-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-smiling-men-n-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-smiling-men-n-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-smiling-men-n-landscape.jpg"
   },
   "two-smiling-men-outdoor.jpg": {
     "webp": "/optimized/photographs/webp/two-smiling-men-outdoor.webp",
-    "jpeg": "/optimized/photographs/jpg/two-smiling-men-outdoor.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-smiling-men-outdoor.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-smiling-men-outdoor-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-smiling-men-outdoor-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-smiling-men-outdoor-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-smiling-men-outdoor-landscape.jpg"
   },
   "two-women-embracing-out.jpg": {
     "webp": "/optimized/photographs/webp/two-women-embracing-out.webp",
-    "jpeg": "/optimized/photographs/jpg/two-women-embracing-out.jpg"
+    "jpeg": "/optimized/photographs/jpg/two-women-embracing-out.jpg",
+    "webpPortrait": "/optimized/photographs/webp/two-women-embracing-out-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/two-women-embracing-out-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/two-women-embracing-out-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/two-women-embracing-out-landscape.jpg"
   },
   "vintage-blue-camper-clothes.jpg": {
     "webp": "/optimized/photographs/webp/vintage-blue-camper-clothes.webp",
-    "jpeg": "/optimized/photographs/jpg/vintage-blue-camper-clothes.jpg"
+    "jpeg": "/optimized/photographs/jpg/vintage-blue-camper-clothes.jpg",
+    "webpPortrait": "/optimized/photographs/webp/vintage-blue-camper-clothes-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/vintage-blue-camper-clothes-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/vintage-blue-camper-clothes-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/vintage-blue-camper-clothes-landscape.jpg"
   },
   "woman-doing-face-paint.jpg": {
     "webp": "/optimized/photographs/webp/woman-doing-face-paint.webp",
-    "jpeg": "/optimized/photographs/jpg/woman-doing-face-paint.jpg"
+    "jpeg": "/optimized/photographs/jpg/woman-doing-face-paint.jpg",
+    "webpPortrait": "/optimized/photographs/webp/woman-doing-face-paint-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/woman-doing-face-paint-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/woman-doing-face-paint-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/woman-doing-face-paint-landscape.jpg"
   },
   "woman-lying-melon.jpg": {
     "webp": "/optimized/photographs/webp/woman-lying-melon.webp",
-    "jpeg": "/optimized/photographs/jpg/woman-lying-melon.jpg"
+    "jpeg": "/optimized/photographs/jpg/woman-lying-melon.jpg",
+    "webpPortrait": "/optimized/photographs/webp/woman-lying-melon-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/woman-lying-melon-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/woman-lying-melon-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/woman-lying-melon-landscape.jpg"
   },
   "woman-painting-face.jpg": {
     "webp": "/optimized/photographs/webp/woman-painting-face.webp",
-    "jpeg": "/optimized/photographs/jpg/woman-painting-face.jpg"
+    "jpeg": "/optimized/photographs/jpg/woman-painting-face.jpg",
+    "webpPortrait": "/optimized/photographs/webp/woman-painting-face-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/woman-painting-face-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/woman-painting-face-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/woman-painting-face-landscape.jpg"
   },
   "woman-playing-guitar.jpg": {
     "webp": "/optimized/photographs/webp/woman-playing-guitar.webp",
-    "jpeg": "/optimized/photographs/jpg/woman-playing-guitar.jpg"
+    "jpeg": "/optimized/photographs/jpg/woman-playing-guitar.jpg",
+    "webpPortrait": "/optimized/photographs/webp/woman-playing-guitar-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/woman-playing-guitar-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/woman-playing-guitar-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/woman-playing-guitar-landscape.jpg"
   },
   "young-woman-smoking-at.jpg": {
     "webp": "/optimized/photographs/webp/young-woman-smoking-at.webp",
-    "jpeg": "/optimized/photographs/jpg/young-woman-smoking-at.jpg"
+    "jpeg": "/optimized/photographs/jpg/young-woman-smoking-at.jpg",
+    "webpPortrait": "/optimized/photographs/webp/young-woman-smoking-at-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/young-woman-smoking-at-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/young-woman-smoking-at-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/young-woman-smoking-at-landscape.jpg"
   },
   "off-grid-trailer-hidden.jpg": {
     "webp": "/optimized/polaroids/webp/off-grid-trailer-hidden.webp",
-    "jpeg": "/optimized/polaroids/jpg/off-grid-trailer-hidden.jpg"
+    "jpeg": "/optimized/polaroids/jpg/off-grid-trailer-hidden.jpg",
+    "webpPortrait": "/optimized/polaroids/webp/off-grid-trailer-hidden-portrait.webp",
+    "jpegPortrait": "/optimized/polaroids/webp/off-grid-trailer-hidden-portrait.jpg",
+    "webpLandscape": "/optimized/polaroids/webp/off-grid-trailer-hidden-landscape.webp",
+    "jpegLandscape": "/optimized/polaroids/webp/off-grid-trailer-hidden-landscape.jpg"
   },
   "outdoor.jpg": {
     "webp": "/optimized/polaroids/webp/outdoor.webp",
-    "jpeg": "/optimized/polaroids/jpg/outdoor.jpg"
+    "jpeg": "/optimized/polaroids/jpg/outdoor.jpg",
+    "webpPortrait": "/optimized/polaroids/webp/outdoor-portrait.webp",
+    "jpegPortrait": "/optimized/polaroids/webp/outdoor-portrait.jpg",
+    "webpLandscape": "/optimized/polaroids/webp/outdoor-landscape.webp",
+    "jpegLandscape": "/optimized/polaroids/webp/outdoor-landscape.jpg"
   },
   "seamless-medium-brown-vertical.jpg": {
     "webp": "/optimized/polaroids/webp/seamless-medium-brown-vertical.webp",
-    "jpeg": "/optimized/polaroids/jpg/seamless-medium-brown-vertical.jpg"
+    "jpeg": "/optimized/polaroids/jpg/seamless-medium-brown-vertical.jpg",
+    "webpPortrait": "/optimized/polaroids/webp/seamless-medium-brown-vertical-portrait.webp",
+    "jpegPortrait": "/optimized/polaroids/webp/seamless-medium-brown-vertical-portrait.jpg",
+    "webpLandscape": "/optimized/polaroids/webp/seamless-medium-brown-vertical-landscape.webp",
+    "jpegLandscape": "/optimized/polaroids/webp/seamless-medium-brown-vertical-landscape.jpg"
   },
   "three-naked-adults.jpg": {
     "webp": "/optimized/polaroids/webp/three-naked-adults.webp",
-    "jpeg": "/optimized/polaroids/jpg/three-naked-adults.jpg"
+    "jpeg": "/optimized/polaroids/jpg/three-naked-adults.jpg",
+    "webpPortrait": "/optimized/polaroids/webp/three-naked-adults-portrait.webp",
+    "jpegPortrait": "/optimized/polaroids/webp/three-naked-adults-portrait.jpg",
+    "webpLandscape": "/optimized/polaroids/webp/three-naked-adults-landscape.webp",
+    "jpegLandscape": "/optimized/polaroids/webp/three-naked-adults-landscape.jpg"
   },
   "young-woman-soaking-in.jpg": {
     "webp": "/optimized/polaroids/webp/young-woman-soaking-in.webp",
-    "jpeg": "/optimized/polaroids/jpg/young-woman-soaking-in.jpg"
+    "jpeg": "/optimized/polaroids/jpg/young-woman-soaking-in.jpg",
+    "webpPortrait": "/optimized/polaroids/webp/young-woman-soaking-in-portrait.webp",
+    "jpegPortrait": "/optimized/polaroids/webp/young-woman-soaking-in-portrait.jpg",
+    "webpLandscape": "/optimized/polaroids/webp/young-woman-soaking-in-landscape.webp",
+    "jpegLandscape": "/optimized/polaroids/webp/young-woman-soaking-in-landscape.jpg"
   },
   "nude-people-caravan-sanctuary.png": {
     "webp": "/optimized/photographs/webp/nude-people-caravan-sanctuary.webp",
-    "jpeg": "/optimized/photographs/jpg/nude-people-caravan-sanctuary.jpg"
+    "jpeg": "/optimized/photographs/jpg/nude-people-caravan-sanctuary.jpg",
+    "webpPortrait": "/optimized/photographs/webp/nude-people-caravan-sanctuary-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/webp/nude-people-caravan-sanctuary-portrait.jpg",
+    "webpLandscape": "/optimized/photographs/webp/nude-people-caravan-sanctuary-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/webp/nude-people-caravan-sanctuary-landscape.jpg"
+  },
+  "nude-people-caravan-sanctuary-mobile.png": {
+    "webp": "/optimized/misc/webp/nude-people-caravan-sanctuary-mobile.webp",
+    "jpeg": "/optimized/misc/jpg/nude-people-caravan-sanctuary-mobile.jpg"
+  },
+  "test-image.webp": {
+    "webp": "/optimized/misc/webp/test-image.webp",
+    "jpeg": "/optimized/misc/jpg/test-image.jpg",
+    "webpLandscape": "/optimized/misc/webp/test-image-landscape.webp",
+    "jpegLandscape": "/optimized/misc/jpg/test-image-landscape.jpg",
+    "webpPortrait": "/optimized/misc/webp/test-image-portrait.webp",
+    "jpegPortrait": "/optimized/misc/jpg/test-image-portrait.jpg"
+  },
+  "20220519_235807.webp": {
+    "webp": "/optimized/misc/webp/20220519_235807.webp",
+    "jpeg": "/optimized/misc/jpg/20220519_235807.jpg",
+    "webpLandscape": "/optimized/misc/webp/20220519_235807-landscape.webp",
+    "jpegLandscape": "/optimized/misc/jpg/20220519_235807-landscape.jpg",
+    "webpPortrait": "/optimized/misc/webp/20220519_235807-portrait.webp",
+    "jpegPortrait": "/optimized/misc/jpg/20220519_235807-portrait.jpg"
+  },
+  "301182689_496044919194095_8165369422444873796_n.webp": {
+    "webp": "/optimized/misc/webp/301182689_496044919194095_8165369422444873796_n.webp",
+    "jpeg": "/optimized/misc/jpg/301182689_496044919194095_8165369422444873796_n.jpg",
+    "webpLandscape": "/optimized/misc/webp/301182689_496044919194095_8165369422444873796_n-landscape.webp",
+    "jpegLandscape": "/optimized/misc/jpg/301182689_496044919194095_8165369422444873796_n-landscape.jpg",
+    "webpPortrait": "/optimized/misc/webp/301182689_496044919194095_8165369422444873796_n-portrait.webp",
+    "jpegPortrait": "/optimized/misc/jpg/301182689_496044919194095_8165369422444873796_n-portrait.jpg"
+  },
+  "70260507_505234013589128_7562339928147755008_n.webp": {
+    "webp": "/optimized/misc/webp/70260507_505234013589128_7562339928147755008_n.webp",
+    "jpeg": "/optimized/misc/jpg/70260507_505234013589128_7562339928147755008_n.jpg",
+    "webpLandscape": "/optimized/misc/webp/70260507_505234013589128_7562339928147755008_n-landscape.webp",
+    "jpegLandscape": "/optimized/misc/jpg/70260507_505234013589128_7562339928147755008_n-landscape.jpg",
+    "webpPortrait": "/optimized/misc/webp/70260507_505234013589128_7562339928147755008_n-portrait.webp",
+    "jpegPortrait": "/optimized/misc/jpg/70260507_505234013589128_7562339928147755008_n-portrait.jpg"
   }
 }

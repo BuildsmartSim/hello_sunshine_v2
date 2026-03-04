@@ -62,7 +62,7 @@ export default function TicketingSection() {
 
   return (
     <StandardSection id="ticketing" variant="naturalPaper">
-      <div className="md:mb-16 border-b border-charcoal/10 pb-12">
+      <div className="md:mb-16 border-b border-charcoal/10 pb-8 md:pb-12 mb-8 md:mb-0">
         <SectionHeader
           line1="Festival"
           line2="Season"
@@ -70,7 +70,7 @@ export default function TicketingSection() {
         />
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative mt-12">
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative mt-0 md:mt-12">
         {/* Left Column: Typographic List */}
         <div className="flex-1 flex flex-col">
           {/* Header Row */}

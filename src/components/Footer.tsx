@@ -68,7 +68,7 @@ export default function Footer() {
                         ></div>
 
                         <h3 className="hearth-glow mb-2 relative z-10" style={{
-                            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                            fontSize: 'clamp(2.75rem, 6vw, 3.5rem)',
                             lineHeight: '1.05',
                             letterSpacing: '0.02em',
                             fontFamily: 'var(--font-chicle, cursive)'
