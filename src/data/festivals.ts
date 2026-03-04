@@ -91,9 +91,12 @@ export const SERVICE_ICONS: Record<string, string> = {
     towels: '/icons/towels.png'
 };
 
-export const getFestivalData = async (): Promise<EventData[]> => {
+import { unstable_cache } from 'next/cache';
+
+// Inner function that does the actual DB fetching
+const fetchEventsFromDB = async (): Promise<EventData[]> => {
     try {
-        console.log('[DEBUG] getFestivalData: Querying app_events...');
+        console.log('[DEBUG] fetchEventsFromDB: Querying app_events directly...');
         const { data, error } = await supabaseAdmin
             .from('app_events')
             .select('*')
@@ -101,16 +104,16 @@ export const getFestivalData = async (): Promise<EventData[]> => {
             .order('created_at', { ascending: true });
 
         if (error) {
-            console.error("[DEBUG] getFestivalData: Supabase Error during fetch:", error.message || error);
+            console.error("[DEBUG] fetchEventsFromDB: Supabase Error during fetch:", error.message || error);
             return [];
         }
 
         if (!data) {
-            console.warn("[DEBUG] getFestivalData: Supabase returned null data.");
+            console.warn("[DEBUG] fetchEventsFromDB: Supabase returned null data.");
             return [];
         }
 
-        console.log(`[DEBUG] getFestivalData: Successfully received ${data.length} raw events.`);
+        console.log(`[DEBUG] fetchEventsFromDB: Successfully received ${data.length} raw events.`);
 
         return data.map((event: any): EventData => ({
             id: event.id,
@@ -130,8 +133,24 @@ export const getFestivalData = async (): Promise<EventData[]> => {
             seoDescription: event.seo_description || '',
         }));
     } catch (err) {
-        console.error("Failed to fetch festival data:", err);
+        console.error("Failed to fetch festival data from DB:", err);
         return [];
     }
 };
+
+/**
+ * Fetches all active events.
+ * Wrapped in Next.js unstable_cache to prevent overwhelming Supabase.
+ * Revalidates automatically every 60 seconds.
+ */
+export const getFestivalData = unstable_cache(
+    async () => {
+        return await fetchEventsFromDB();
+    },
+    ['festival-data-cache'],
+    {
+        revalidate: 60,
+        tags: ['events']
+    }
+);
 

@@ -84,7 +84,7 @@ export function FestivalPass({ data, index, className = "", style = {}, onSelect
                     {!isTeaser && (
                         <>
                             <div className="flex-1 border-y border-charcoal/10 py-4 flex flex-col gap-4">
-                                <p className="text-sm text-charcoal/80 leading-relaxed handwritten-text">
+                                <p className="text-sm text-charcoal/80 leading-relaxed font-body italic tracking-wide">
                                     &quot;{data.description}&quot;
                                 </p>
 

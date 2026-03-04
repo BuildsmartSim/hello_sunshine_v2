@@ -75,7 +75,7 @@ export default function Footer() {
                         }}>
                             Hello Sunshine
                         </h3>
-                        <p className="text-2xl text-[#EBE5CE]/60 -rotate-1 relative z-10 handwritten-text">
+                        <p className="text-xs font-body uppercase tracking-[0.2em] text-[#EBE5CE]/60 relative z-10 mt-2">
                             Hand-built stories in steam.
                         </p>
                     </div>

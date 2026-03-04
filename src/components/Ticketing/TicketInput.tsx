@@ -16,7 +16,7 @@ export function TicketInput({ label, ...props }: TicketInputProps) {
             <div className="relative">
                 <input
                     {...props}
-                    className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30 handwritten-text"
+                    className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30 font-body"
                 />
                 <div className="absolute inset-0 border-2 border-primary/0 rounded-2xl pointer-events-none group-focus-within:border-primary/20 transition-all scale-[1.02]"></div>
             </div>

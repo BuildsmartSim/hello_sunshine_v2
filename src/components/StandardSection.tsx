@@ -74,10 +74,10 @@ export function StandardSection({
             `}</style>
 
             {/* Texture Layer */}
-            <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply"
+            <div className={`absolute inset-0 pointer-events-none mix-blend-multiply ${variant === 'cedar' ? 'opacity-40' : 'opacity-[0.85]'}`}
                 style={{
                     backgroundImage: `url('${variant === 'cedar' ? textures.cedar : textures.paper}')`,
-                    backgroundSize: '400px',
+                    backgroundSize: '300px',
                 }}></div>
 
             {/* Content Container */}

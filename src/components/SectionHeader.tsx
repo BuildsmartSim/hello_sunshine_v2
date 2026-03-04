@@ -44,7 +44,7 @@ export function SectionHeader({
                     <svg width="40" height="12" viewBox="0 0 40 12" className="stroke-charcoal fill-none shrink-0" role="img" aria-hidden="true">
                         <path d="M0 6 Q10 -2 20 6 T40 6" strokeWidth="1" />
                     </svg>
-                    <span className="text-xl md:text-2xl text-charcoal handwritten-text">
+                    <span className="text-sm md:text-base font-body uppercase tracking-[0.2em] text-charcoal/80">
                         {handwriting}
                     </span>
                     {centered && (

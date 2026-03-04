@@ -42,7 +42,7 @@ export function FestivalGuide({ event, onContinue, onBack }: FestivalGuideProps)
                 <div className="flex-1 flex flex-col">
                     <div className="mb-10">
                         <span className="text-xs uppercase font-bold tracking-[0.3em] text-charcoal/60 mb-4 block">The Experience</span>
-                        <p className="text-2xl text-charcoal/70 leading-relaxed handwritten-text">
+                        <p className="text-xl text-charcoal/80 leading-relaxed font-body italic tracking-wide">
                             &quot;{event.description}&quot;
                         </p>
                         <a

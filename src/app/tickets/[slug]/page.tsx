@@ -200,14 +200,14 @@ export default function SingleTicketPage() {
             <DeskBackground />
             <Header />
 
-            <main className="flex-1 pt-32 pb-20 relative z-10 px-4 md:px-8">
+            <main className="flex-1 pt-28 pb-12 relative z-10 px-4 md:px-8">
                 <div className="max-w-7xl mx-auto">
                     <StandardSection
                         id="ticket-view"
                         variant="naturalPaper"
                         className="rounded-[32px] md:rounded-[48px] shadow-2xl border border-charcoal/10 relative z-10"
                     >
-                        <div className="relative z-10 min-h-[600px] py-8 md:py-12">
+                        <div className="relative z-10 min-h-[400px] py-4 md:py-6">
                             <AnimatePresence mode="wait">
                                 {currentStep === "overview" && (
                                     <motion.div
@@ -217,22 +217,23 @@ export default function SingleTicketPage() {
                                         exit={{ opacity: 0, scale: 0.98 }}
                                         transition={{ duration: 0.5, ease: "anticipate" }}
                                     >
-                                        <div className="text-center mb-0">
-                                            <button
-                                                onClick={() => router.push("/tickets")}
-                                                className="text-charcoal/40 hover:text-charcoal font-bold uppercase tracking-widest text-[10px] mb-8 transition-colors"
-                                            >
-                                                ← Back to All Events
-                                            </button>
-                                        </div>
-
-                                        <div id="tiers-section" className="mt-8">
+                                        <div id="tiers-section" className="mt-0">
                                             <UnifiedEventPanel
                                                 event={event}
                                                 selectedTierId={selectedSubTier?.id}
                                                 onSelect={handleTierSelect}
                                                 inventory={inventory}
                                             />
+                                        </div>
+
+                                        <div className="mt-16 text-center">
+                                            <button
+                                                onClick={() => router.push("/tickets")}
+                                                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-charcoal/20 text-charcoal/60 hover:text-charcoal hover:border-charcoal/40 hover:bg-charcoal/5 font-bold uppercase tracking-[0.2em] text-[11px] transition-all duration-300 group"
+                                            >
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:-translate-x-1 transition-transform"><path d="M19 12H5" /><path d="M12 19l-7-7 7-7" /></svg>
+                                                Back to All Events
+                                            </button>
                                         </div>
                                     </motion.div>
                                 )}

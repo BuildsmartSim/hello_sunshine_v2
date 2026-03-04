@@ -69,7 +69,7 @@ export function DappledHeaderShadow({ line1, line2 = "", subtitle, description, 
                 <div className="relative z-10 flex flex-col border-t" style={{ borderColor: 'rgba(44, 44, 44, 0.1)', gap: '24px', paddingTop: '12px' }}>
                     {subtitle && (
                         <div className="space-y-3">
-                            <p className="text-3xl text-secondary leading-snug handwritten-text">{subtitle}</p>
+                            <p className="text-sm md:text-base font-body uppercase tracking-[0.2em] text-secondary">{subtitle}</p>
                             <div className="h-[2px] w-12 bg-secondary"></div>
                         </div>
                     )}
@@ -84,33 +84,53 @@ export function DappledHeaderShadow({ line1, line2 = "", subtitle, description, 
 
 // Option C2: Yellow Text + Delicate Charcoal Stroke
 export function DappledHeaderStroke({ line1, line2 = "", subtitle, description, className = "", centered = false, line1Size = '50px', line2Size = '95px', strokeWidth = '1px' }: HeaderProps) {
-    const textStyle = {
+    const fillStyle = {
         fontFamily: fonts.accent,
         color: 'var(--hss-primary, #F8C630)',
-        WebkitTextStroke: `${strokeWidth} var(--hss-charcoal, #2C2C2C)`,
         textShadow: '0 2px 8px rgba(248,198,48,0.3)' // very subtle self-glow
+    };
+
+    const strokeStyle = {
+        fontFamily: fonts.accent,
+        color: 'transparent',
+        WebkitTextStroke: `${strokeWidth} var(--hss-charcoal, #2C2C2C)`
     };
 
     return (
         <div className={`relative overflow-hidden p-8 -m-8 ${className} ${centered ? 'items-center text-center' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <DappledOverlay />
 
-            <div className="relative z-10 flex flex-col">
-                <span className="block" style={{ ...textStyle, fontSize: line1Size, lineHeight: 1 }}>
-                    {line1}
-                </span>
-                {line2 && (
-                    <span className="block" style={{ ...textStyle, fontSize: line2Size, lineHeight: 0.95, marginTop: '-5px' }}>
-                        {line2}
+            <div className="relative grid">
+                {/* 1. Fill Layer (Z-10: Behind the Z-20 DappledOverlay) */}
+                <div className="col-start-1 row-start-1 relative z-10 flex flex-col">
+                    <span className="block" style={{ ...fillStyle, fontSize: line1Size, lineHeight: 1 }}>
+                        {line1}
                     </span>
-                )}
+                    {line2 && (
+                        <span className="block" style={{ ...fillStyle, fontSize: line2Size, lineHeight: 0.95, marginTop: '-5px' }}>
+                            {line2}
+                        </span>
+                    )}
+                </div>
+
+                {/* 2. Stroke Layer (Z-30: Above the Z-20 DappledOverlay) */}
+                <div className="col-start-1 row-start-1 relative z-30 flex flex-col pointer-events-none" aria-hidden="true">
+                    <span className="block" style={{ ...strokeStyle, fontSize: line1Size, lineHeight: 1 }}>
+                        {line1}
+                    </span>
+                    {line2 && (
+                        <span className="block" style={{ ...strokeStyle, fontSize: line2Size, lineHeight: 0.95, marginTop: '-5px' }}>
+                            {line2}
+                        </span>
+                    )}
+                </div>
             </div>
 
             {(subtitle || description) && (
-                <div className="relative z-10 flex flex-col border-t" style={{ borderColor: 'rgba(44, 44, 44, 0.1)', gap: '24px', paddingTop: '12px' }}>
+                <div className="relative z-30 flex flex-col border-t" style={{ borderColor: 'rgba(44, 44, 44, 0.1)', gap: '24px', paddingTop: '12px' }}>
                     {subtitle && (
                         <div className="space-y-3">
-                            <p className="text-3xl text-secondary leading-snug handwritten-text">{subtitle}</p>
+                            <p className="text-sm md:text-base font-body uppercase tracking-[0.2em] text-secondary">{subtitle}</p>
                             <div className="h-[2px] w-12 bg-secondary"></div>
                         </div>
                     )}
@@ -152,7 +172,7 @@ export function DappledHeaderGradient({ line1, line2 = "", subtitle, description
                 <div className="relative z-10 flex flex-col border-t" style={{ borderColor: 'rgba(44, 44, 44, 0.1)', gap: '24px', paddingTop: '12px' }}>
                     {subtitle && (
                         <div className="space-y-3">
-                            <p className="text-3xl text-secondary leading-snug handwritten-text">{subtitle}</p>
+                            <p className="text-sm md:text-base font-body uppercase tracking-[0.2em] text-secondary">{subtitle}</p>
                             <div className="h-[2px] w-12 bg-secondary"></div>
                         </div>
                     )}

@@ -7,6 +7,7 @@ import { Button } from '@/components/Button';
 import { PINOverrideModal } from '@/components/PINOverrideModal';
 import { CommunityMap } from '../CommunityMap';
 import { useAdminRole } from '@/hooks/useAdminRole';
+import { AdminTodoList } from '../AdminTodoList';
 
 export default function BroadcastStudio() {
     const isAdmin = useAdminRole();
@@ -152,6 +153,10 @@ export default function BroadcastStudio() {
                         </button>
                     )}
                 </div>
+            </div>
+
+            <div className="mb-6">
+                <AdminTodoList />
             </div>
 
             <div className="mb-6">

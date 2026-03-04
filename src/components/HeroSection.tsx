@@ -29,13 +29,13 @@ function HeroPhoto() {
 
     return (
         <div className="relative mt-12 md:mt-24">
-            {/* Polaroid — scaled down on mobile */}
-            <div className="absolute -top-12 md:-top-32 -right-4 md:-right-8 z-20" style={{ transform: 'rotate(6deg)' }}>
+            {/* Polaroid — moved to bottom left on mobile, kept top right on desktop */}
+            <div className="absolute -bottom-8 left-2 md:-bottom-auto md:left-auto md:-top-32 md:-right-8 z-20" style={{ transform: 'rotate(6deg)' }}>
                 <Polaroid
                     src={POLAROID_SRC}
                     label="Inside the warmth."
                     rotation="rotate-0"
-                    size="w-32 sm:w-48 md:w-80"
+                    size="w-48 md:w-80"
                     forcePlaceholder={false}
                 />
             </div>
@@ -63,9 +63,9 @@ function HeroPhoto() {
                 }}>
                 <div className="w-full h-full relative overflow-hidden rounded-sm">
                     {/* Desktop Image */}
-                    <Image src={PHOTO_SRC} alt="Hello Sunshine sauna exterior" fill className="object-cover object-center hidden md:block" />
+                    <Image priority sizes="(min-width: 768px) 100vw, 0vw" src={PHOTO_SRC} alt="Hello Sunshine sauna exterior" fill className="object-cover object-center hidden md:block" />
                     {/* Mobile Image */}
-                    <Image src={MOBILE_PHOTO_SRC} alt="Hello Sunshine sauna exterior" fill className="object-cover object-center block md:hidden" />
+                    <Image priority sizes="(max-width: 767px) 100vw, 0vw" src={MOBILE_PHOTO_SRC} alt="Hello Sunshine sauna exterior" fill className="object-cover object-center block md:hidden" />
                 </div>
             </motion.div>
 
@@ -81,23 +81,22 @@ export default function HeroSection() {
     if (!hasMounted) return null;
 
     return (
-        <StandardSection id="hero" variant="naturalPaper" className="pt-16 md:pt-60 pb-8 md:pb-16 relative z-20" containerPadding="px-4 md:px-8" overflowVisible={true}>
+        <StandardSection id="hero" variant="naturalPaper" className="pt-16 md:pt-60 pb-0 relative z-20" containerPadding="px-4 md:px-8" overflowVisible={true}>
 
-            {/* Headline — adjusted size for mobile overlay prevention */}
-            <div className="pt-4 md:pt-14">
+            <div className="pt-4 md:pt-14 -mx-4 md:mx-0">
                 <DappledHeaderStroke
                     line1="Hello Sunshine"
-                    line1Size="clamp(48px, 15vw, 142px)"
+                    line1Size="clamp(40px, 12vw, 100px)"
                     centered={false}
-                    strokeWidth="2.5px"
-                    className="!p-0 !m-0"
+                    strokeWidth="2px"
+                    className="!p-0 !m-0 !items-center !text-center md:!items-start md:!text-left w-full overflow-visible whitespace-nowrap tracking-tight"
                 />
             </div>
 
             {/* Editorial strip — stacked on mobile if narrow enough, but flex-wrap/shrink usually works */}
-            <div className="flex items-center gap-3 md:gap-6 my-6 md:my-10 overflow-hidden">
+            <div className="flex items-center gap-3 md:gap-6 mt-2 mb-6 md:my-10 overflow-hidden">
                 <div className="h-px flex-1 bg-charcoal/30 hidden sm:block" />
-                <p className="text-lg md:text-2xl text-charcoal/80 shrink-0 text-center w-full sm:w-auto handwritten-text">
+                <p className="text-sm md:text-sm font-body uppercase tracking-[0.2em] text-charcoal/80 shrink-0 text-center w-full sm:w-auto">
                     Hand-built pine.&nbsp;·&nbsp;Authentic steam.
                 </p>
                 <div className="h-px flex-1 bg-charcoal/30 hidden sm:block" />
@@ -107,7 +106,7 @@ export default function HeroSection() {
             <HeroPhoto />
 
             {/* Kicker */}
-            <p className="mt-6 md:mt-4 text-right text-xl md:text-xs handwritten-text md:font-body md:uppercase text-charcoal/90 md:tracking-[0.4em] md:opacity-30">
+            <p className="mt-6 md:mt-4 text-right text-xs md:text-xs font-body uppercase tracking-[0.1em] text-charcoal/90 md:tracking-[0.4em] md:opacity-30">
                 A quiet escape into nature.
             </p>
 

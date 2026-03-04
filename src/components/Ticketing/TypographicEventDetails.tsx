@@ -30,7 +30,7 @@ export function TypographicEventDetails({ event }: TypographicEventDetailsProps)
                             <Image src={event.logoSrc} alt={event.title} fill className="object-contain p-4" />
                         </div>
                         <div className="absolute bottom-4 left-0 w-full text-center">
-                            <span className="handwritten-text text-charcoal/70 text-lg">{event.title}</span>
+                            <span className="font-body uppercase tracking-[0.2em] text-charcoal/70 text-sm">{event.title}</span>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@ export function TypographicEventDetails({ event }: TypographicEventDetailsProps)
 
                     <div className="mb-12">
                         <span className="text-xs uppercase font-bold tracking-[0.3em] text-charcoal/60 mb-4 block">The Experience</span>
-                        <p className="text-2xl text-charcoal/70 leading-relaxed handwritten-text">
+                        <p className="text-xl text-charcoal/80 leading-relaxed font-body italic tracking-wide">
                             &quot;{event.description}&quot;
                         </p>
                         <a

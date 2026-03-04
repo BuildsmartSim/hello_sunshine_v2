@@ -106,7 +106,7 @@ export default function TicketingSection() {
 
                 {/* Title & Desktop Location */}
                 <div className="flex flex-col gap-1 flex-1">
-                  <h3 className="h3 group-hover:text-primary transition-colors text-xl sm:text-2xl lg:text-3xl uppercase">
+                  <h3 className="h3 group-hover:text-primary transition-colors text-2xl sm:text-3xl lg:text-4xl uppercase">
                     {pass.title}
                   </h3>
                   <p className="text-[10px] font-mono text-charcoal/50 font-bold tracking-[0.2em] uppercase hidden md:block group-hover:text-charcoal/70 transition-colors">

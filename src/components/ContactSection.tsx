@@ -13,9 +13,7 @@ import { Polaroid } from './Polaroid';
    ───────────────────────────────────────────── */
 
 
-const HANDWRITING: React.CSSProperties = {
-    fontFamily: 'var(--font-handwriting, var(--font-caveat))',
-};
+
 
 export function ContactSection() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -82,7 +80,7 @@ export function ContactSection() {
                     </p>
 
                     {/* Tim's voice */}
-                    <p className="text-2xl mt-4 text-charcoal/70" style={{ ...HANDWRITING, transform: 'rotate(-1deg)' }}>
+                    <p className="text-2xl mt-4 text-charcoal/70 handwritten-text" style={{ transform: 'rotate(-1deg)' }}>
                         "The fire's always on — drop us a note."
                     </p>
 
@@ -160,8 +158,7 @@ export function ContactSection() {
                                             id="name"
                                             name="name"
                                             required
-                                            className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30"
-                                            style={HANDWRITING}
+                                            className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30 font-body block"
                                             placeholder="First & last"
                                         />
                                     </div>
@@ -176,8 +173,7 @@ export function ContactSection() {
                                             id="email"
                                             name="email"
                                             required
-                                            className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30"
-                                            style={HANDWRITING}
+                                            className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30 font-body block"
                                             placeholder="hello@example.com"
                                         />
                                     </div>
@@ -192,8 +188,7 @@ export function ContactSection() {
                                             name="message"
                                             rows={4}
                                             required
-                                            className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30 resize-none"
-                                            style={HANDWRITING}
+                                            className="w-full bg-white/50 border border-charcoal/10 rounded-2xl px-6 py-4 text-xl text-charcoal outline-none transition-all focus:bg-white focus:shadow-xl focus:border-primary/50 group-hover:border-charcoal/30 resize-none font-body block"
                                             placeholder="How can we help?"
                                         />
                                     </div>

@@ -72,20 +72,20 @@ export default function Header() {
                     {/* Center: Desktop Nav OR Mobile CTA */}
                     <div className="flex-1 flex justify-center items-center">
                         {/* Desktop Nav */}
-                        <nav className="hidden lg:flex items-center gap-12 font-body text-[14px] font-bold uppercase tracking-[0.4em]">
+                        <nav className="hidden lg:flex items-center gap-12 font-body text-[15px] font-extrabold uppercase tracking-[0.3em]">
                             {navItems.map(it => (
-                                <Link key={it.label} href={`/${it.href}`} onClick={(e) => handleNavClick(e, it.href)} className="text-charcoal/60 hover:text-charcoal transition-all relative group">
+                                <Link key={it.label} href={`/${it.href}`} onClick={(e) => handleNavClick(e, it.href)} className="text-charcoal/80 hover:text-primary transition-colors relative group">
                                     {it.label}
-                                    <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                                    <span className="absolute -bottom-2 left-0 w-full h-[3px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
                                 </Link>
                             ))}
                         </nav>
 
                         {/* Mobile CTA (Hidden on Desktop, shown in center on Mobile) */}
-                        <div className="lg:hidden relative z-50">
+                        <div className="lg:hidden relative z-50 w-full px-1 max-w-[160px] sm:max-w-[200px]">
                             <Button
                                 variant="deepDry"
-                                className="!px-4 !py-1.5 !text-[10px]"
+                                className="w-full !px-0 !py-2.5 !text-[12px] sm:!text-[13px]"
                                 onClick={() => {
                                     setIsMenuOpen(false);
                                     if (pathname === '/') {

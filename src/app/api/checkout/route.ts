@@ -4,8 +4,48 @@ export const dynamic = 'force-dynamic';
 
 import { stripe } from '@/lib/stripe';
 
+// Simple in-memory rate limiter (10 requests per minute per IP)
+const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60000;
+
+function checkRateLimit(ip: string): boolean {
+    const now = Date.now();
+    const record = rateLimitMap.get(ip);
+
+    if (!record) {
+        rateLimitMap.set(ip, { count: 1, timestamp: now });
+        return true;
+    }
+
+    if (now - record.timestamp > RATE_LIMIT_WINDOW_MS) {
+        // Reset window
+        rateLimitMap.set(ip, { count: 1, timestamp: now });
+        return true;
+    }
+
+    if (record.count >= RATE_LIMIT_MAX) {
+        return false; // Rate limited
+    }
+
+    record.count += 1;
+    return true;
+}
+
 export async function POST(req: Request) {
     try {
+        // Get IP from headers for rate limiting and geolocation
+        const forwardedFor = req.headers.get('x-forwarded-for');
+        const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : 'unknown-ip';
+
+        if (ip !== 'unknown-ip' && !checkRateLimit(ip)) {
+            console.warn(`[SECURITY] Rate limit exceeded for IP: ${ip} on Checkout Route`);
+            return NextResponse.json(
+                { error: "Too many checkout requests. Please wait a minute and try again." },
+                { status: 429 }
+            );
+        }
+
         const body = await req.json();
         const { priceId, email, name, quantity = 1, metadata, unitAmount: clientUnitAmount } = body;
         const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
@@ -16,23 +56,29 @@ export async function POST(req: Request) {
         let location_city = null;
         let location_country = null;
         try {
-            // Get IP from headers (works on Vercel, DO, most proxies)
-            const forwardedFor = req.headers.get('x-forwarded-for');
-            const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : null;
+            if (ip !== 'unknown-ip') {
+                // Quick free API call to get location with a strict timeout so it doesn't hang checkout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 1500); // 1.5s timeout
 
-            if (ip) {
-                // Quick free API call to get location (doesn't require an API key)
                 const geoRes = await fetch(`http://ip-api.com/json/${ip}?fields=city,country`, {
+                    signal: controller.signal,
                     next: { revalidate: 3600 } // cache for IP if somehow called repeatedly
                 });
+                clearTimeout(timeoutId);
+
                 if (geoRes.ok) {
                     const geoData = await geoRes.json();
                     location_city = geoData.city;
                     location_country = geoData.country;
                 }
             }
-        } catch (geoErr) {
-            console.error('Failed to fetch geolocation in background:', geoErr);
+        } catch (geoErr: any) {
+            if (geoErr.name === 'AbortError') {
+                console.warn('Geolocation fetch timed out after 1.5s, proceeding with checkout...');
+            } else {
+                console.error('Failed to fetch geolocation in background:', geoErr);
+            }
             // Non-blocking error, we still proceed with checkout
         }
 

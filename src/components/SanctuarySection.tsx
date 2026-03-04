@@ -49,7 +49,7 @@ const SERVICE_COPY: Record<ServiceType | 'Default', { subtitle: string; body: st
         body: 'The caravan is a 1969 Thomson Glenn, able to seat up to 12 guests, beautifully renovated to visually stand out at any event, and fastidiously insulated to maintain a good heat throughout the day.\n\nHeated by an industry standard Harvia M3 stove, we responsibly source kiln-dried oak and ash from local suppliers. Open the door & you step into a world of wood, fire, stones & steam.',
     },
     'Hot Tub': {
-        subtitle: 'A communal soak under out in nature.',
+        subtitle: 'A communal soak out in nature.',
         body: 'Warm, communal, and unpretentious—our handcrafted wood-fired hot tub offers a relaxing sanctuary. \n\nHand-built carefully to reflect the natural environment, we keep the fire roaring all evening. Soak, socialize, and gaze at the sky.',
     },
     'Plunge Pool': {
@@ -232,7 +232,7 @@ function LeftColumn({ activeService, onSelect }: { activeService: ServiceType | 
                             <svg width="40" height="12" viewBox="0 0 40 12" className="stroke-charcoal fill-none shrink-0" role="img" aria-hidden="true">
                                 <path d="M0 6 Q10 -2 20 6 T40 6" strokeWidth="1" />
                             </svg>
-                            <span className={`text-xl md:text-2xl leading-snug handwritten-text ${isPlaceholder ? 'text-charcoal/40 italic' : 'text-charcoal'}`}>
+                            <span className={`text-sm md:text-base font-body uppercase tracking-[0.2em] ${isPlaceholder ? 'text-charcoal/40 italic' : 'text-charcoal'}`}>
                                 {copy.subtitle}
                             </span>
                         </div>
