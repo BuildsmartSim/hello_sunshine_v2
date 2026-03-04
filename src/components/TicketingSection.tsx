@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { SectionHeader } from "@/components/SectionHeader";
 import { StandardSection } from "@/components/StandardSection";
-import { EventData } from "@/data/festivals";
+import { EventData, createSlug } from "@/data/festivals";
 import { getEventsAction } from "@/app/actions/events";
 import { checkInventoryAction } from "@/app/actions/inventory";
 import { useHasMounted } from "@/design-system/MediaContext";
@@ -89,7 +89,7 @@ export default function TicketingSection() {
           {events.map((pass) => (
             <Link
               key={pass.id}
-              href={`/tickets/${pass.id}`}
+              href={`/tickets/${createSlug(pass.title)}`}
               className="block group border-b border-charcoal/10 hover:bg-black/[0.02] transition-colors md:px-6 py-8"
               onMouseEnter={() => setHoveredEvent(pass)}
             >

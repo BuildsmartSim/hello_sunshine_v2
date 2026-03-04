@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TicketSubTier, EventData, sortTiersByType } from '@/data/festivals';
+import { TicketSubTier, EventData, sortTiersByType, formatTicketPrice } from '@/data/festivals';
 import { fonts } from '@/design-system/tokens';
 import { SectionHeader } from '@/components/SectionHeader';
 
@@ -58,7 +58,7 @@ export function TierPicker({ event, selectedTierId, onSelect, inventory = {} }: 
                                     </div>
                                     <div className="text-right ml-4">
                                         <span className={`text-2xl font-bold ${isSoldOut ? 'text-gray-400 line-through' : selectedTierId === tier.id ? 'text-primary' : 'text-charcoal'}`} style={{ fontFamily: fonts.body }}>
-                                            {tier.price}
+                                            {formatTicketPrice(tier.price)}
                                         </span>
                                     </div>
                                 </motion.button>

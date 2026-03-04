@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TicketSubTier, EventData, sortTiersByType } from '@/data/festivals';
+import { TicketSubTier, EventData, sortTiersByType, formatTicketPrice } from '@/data/festivals';
 import { fonts } from '@/design-system/tokens';
 import { Button } from '@/components/Button';
 
@@ -82,7 +82,7 @@ export function TypographicTierList({ event, selectedTierId, onSelect, inventory
                                 <div className="flex items-center gap-4 md:gap-8 w-full md:w-[200px] justify-between md:justify-end shrink-0">
                                     <div className="flex flex-row md:flex-col items-baseline md:items-end gap-2 md:gap-0">
                                         <span className={`text-2xl font-bold ${isSoldOut ? 'text-charcoal/40 line-through' : 'text-charcoal'}`} style={{ fontFamily: fonts.body }}>
-                                            {tier.price}
+                                            {formatTicketPrice(tier.price)}
                                         </span>
                                     </div>
                                     <Button

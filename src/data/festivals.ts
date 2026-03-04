@@ -27,6 +27,34 @@ export function sortTiersByType(tiers: TicketSubTier[]): TicketSubTier[] {
     });
 }
 
+/**
+ * Safely formats a ticket price string to ensure it has a £ symbol if it is a monetary value.
+ * Ignores empty values and strings like "Free" or "Donate".
+ */
+export function formatTicketPrice(price: string): string {
+    if (!price) return "";
+
+    const trimmed = price.trim();
+    // If it already has a pound sign, or it's a non-numeric word like "Free"
+    if (trimmed.startsWith('£') || isNaN(Number(trimmed.replace(/,/g, '')))) {
+        return trimmed;
+    }
+
+    return `£${trimmed}`;
+}
+
+/**
+ * Creates a URL-friendly slug from an event title.
+ * e.g. "Avalon Dance Odyssey" -> "avalon-dance-odyssey"
+ */
+export function createSlug(title: string): string {
+    if (!title) return "";
+    return title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
+        .replace(/(^-|-$)+/g, ''); // Remove leading and trailing hyphens
+}
+
 export type TicketSubTier = {
     id: string;
     name: string;

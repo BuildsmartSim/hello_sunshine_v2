@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TicketSubTier, EventData, SERVICE_ICONS, sortTiersByType } from '@/data/festivals';
+import { TicketSubTier, EventData, SERVICE_ICONS, sortTiersByType, formatTicketPrice } from '@/data/festivals';
 import { fonts } from '@/design-system/tokens';
 import { Button } from '@/components/Button';
 import Image from 'next/image';
@@ -157,7 +157,7 @@ export function UnifiedEventPanel({ event, selectedTierId, onSelect, inventory =
                                 {/* Col 4: Price & Button */}
                                 <div className="flex items-center gap-6 md:gap-8 w-full lg:flex-1 justify-between lg:justify-end shrink-0 pt-4 lg:pt-0 lg:pr-4">
                                     <span className={`text-2xl font-black ${isSoldOut ? 'text-charcoal/50 line-through' : 'text-charcoal'}`} style={{ fontFamily: fonts.body }}>
-                                        {tier.price}
+                                        {formatTicketPrice(tier.price)}
                                     </span>
                                     <Button
                                         variant={isSelected ? "primary" : "deepDry"}

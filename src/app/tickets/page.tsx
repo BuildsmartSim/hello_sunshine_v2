@@ -11,7 +11,7 @@ import { Button } from "@/components/Button";
 import { fonts } from "@/design-system/tokens";
 import { getEventsAction } from "@/app/actions/events";
 import { checkInventoryAction } from "@/app/actions/inventory";
-import { EventData } from "@/data/festivals";
+import { EventData, createSlug } from "@/data/festivals";
 import { useHasMounted } from "@/design-system/MediaContext";
 
 export default function EventsListPage() {
@@ -94,7 +94,7 @@ export default function EventsListPage() {
                                 {events.map((pass) => (
                                     <Link
                                         key={pass.id}
-                                        href={`/tickets/${pass.id}`}
+                                        href={`/tickets/${createSlug(pass.title)}`}
                                         className="block group border-b border-charcoal/10 hover:bg-black/[0.02] transition-colors md:px-6 py-8"
                                     >
                                         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">

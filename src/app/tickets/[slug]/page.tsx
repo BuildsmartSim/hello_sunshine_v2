@@ -12,7 +12,7 @@ import { UnifiedEventPanel } from "@/components/Ticketing/UnifiedEventPanel";
 import { DeskBackground } from "@/components/Ticketing/DeskBackground";
 import { checkInventoryAction } from "@/app/actions/inventory";
 import { getEventsAction } from "@/app/actions/events";
-import { EventData, TicketSubTier } from "@/data/festivals";
+import { EventData, TicketSubTier, createSlug } from "@/data/festivals";
 import { Schema } from "@/components/Schema";
 
 type Step = "overview" | "details" | "confirmation";
@@ -20,7 +20,7 @@ type Step = "overview" | "details" | "confirmation";
 export default function SingleTicketPage() {
     const params = useParams();
     const router = useRouter();
-    const eventId = params.id as string;
+    const eventSlug = params.slug as string;
 
     const [currentStep, setCurrentStep] = useState<Step>("overview");
     const [event, setEvent] = useState<EventData | null>(null);
@@ -63,7 +63,7 @@ export default function SingleTicketPage() {
         setIsLoadingData(true);
         getEventsAction()
             .then((data) => {
-                const foundEvent = data.find((e) => e.id === eventId);
+                const foundEvent = data.find((e) => createSlug(e.title) === eventSlug);
                 if (foundEvent) {
                     setEvent(foundEvent);
                 } else {
@@ -78,7 +78,7 @@ export default function SingleTicketPage() {
             .finally(() => {
                 setIsLoadingData(false);
             });
-    }, [eventId, router]);
+    }, [eventSlug, router]);
 
     // Fetch inventory when event loads
     useEffect(() => {
@@ -190,7 +190,7 @@ export default function SingleTicketPage() {
             "name": tier.name,
             "price": tier.price.replace(/[^0-9.]/g, ''), // Strip currency symbols
             "priceCurrency": "GBP",
-            "url": `https://hellosunshinesauna.com/tickets/${event.id}`
+            "url": `https://hellosunshinesauna.com/tickets/${createSlug(event.title)}`
         }))
     };
 

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getFestivalData } from '@/data/festivals';
+import { getFestivalData, createSlug } from '@/data/festivals';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hellosunshinesauna.com';
@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const events = await getFestivalData();
 
         const eventPages: MetadataRoute.Sitemap = events.map((event) => ({
-            url: `${baseUrl}/tickets/${event.id}`,
+            url: `${baseUrl}/tickets/${createSlug(event.title)}`,
             lastModified: new Date(), // Could be created_at if available
             changeFrequency: 'daily',
             priority: 0.8,
