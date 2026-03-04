@@ -59,7 +59,7 @@ export default function Footer() {
             >
                 {/* Top Row: Brand & Nav Header */}
                 <div className="flex flex-col md:flex-row justify-between items-center border-b border-[#EBE5CE]/10 pb-8 mb-8">
-                    <div className="text-center md:text-left mb-6 md:mb-0 relative py-4">
+                    <div className="text-center md:text-left mb-10 md:mb-0 relative py-4">
                         {/* Light Spill Background */}
                         <div className="absolute inset-0 z-0 pointer-events-none opacity-20 blur-3xl scale-125 translate-y-[-10%]"
                             style={{

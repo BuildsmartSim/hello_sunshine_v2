@@ -122,7 +122,7 @@ export function ContactSection() {
                             }}
                         />
 
-                        <div className="relative z-10 p-8 md:p-10">
+                        <div className="relative z-10 p-5 sm:p-8 md:p-10">
                             {status === 'success' ? (
                                 <div className="flex flex-col items-center justify-center text-center py-12 gap-5">
                                     <div

@@ -67,13 +67,13 @@ export default function HeroSection() {
     if (!hasMounted) return null;
 
     return (
-        <StandardSection id="hero" variant="naturalPaper" className="pt-24 md:pt-60 pb-8 md:pb-16 relative z-20" containerPadding="px-4 md:px-8" overflowVisible={true}>
+        <StandardSection id="hero" variant="naturalPaper" className="pt-16 md:pt-60 pb-8 md:pb-16 relative z-20" containerPadding="px-4 md:px-8" overflowVisible={true}>
 
             {/* Headline — adjusted size for mobile overlay prevention */}
             <div className="pt-4 md:pt-14">
                 <DappledHeaderStroke
                     line1="Hello Sunshine"
-                    line1Size="clamp(64px, 15vw, 142px)"
+                    line1Size="clamp(48px, 15vw, 142px)"
                     centered={false}
                     strokeWidth="2.5px"
                     className="!p-0 !m-0"
@@ -81,7 +81,7 @@ export default function HeroSection() {
             </div>
 
             {/* Editorial strip — stacked on mobile if narrow enough, but flex-wrap/shrink usually works */}
-            <div className="flex items-center gap-3 md:gap-6 my-2 md:my-6 overflow-hidden">
+            <div className="flex items-center gap-3 md:gap-6 my-6 md:my-10 overflow-hidden">
                 <div className="h-px flex-1 bg-charcoal/30 hidden sm:block" />
                 <p className="text-lg md:text-2xl text-charcoal/80 shrink-0 text-center w-full sm:w-auto handwritten-text">
                     Hand-built pine.&nbsp;·&nbsp;Authentic steam.

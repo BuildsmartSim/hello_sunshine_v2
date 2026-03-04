@@ -152,7 +152,7 @@ function ServiceTabs({ services, activeService, onSelect }: {
     onSelect: (s: ServiceType) => void;
 }) {
     return (
-        <div className="flex md:grid md:grid-cols-6 gap-3 md:gap-2 overflow-x-auto overflow-y-visible pb-6 md:pb-6 pt-2 -mx-6 px-6 md:mx-0 md:px-0 scrollbar-hide">
+        <div className="flex md:grid md:grid-cols-6 gap-4 md:gap-2 overflow-x-auto overflow-y-visible pb-6 md:pb-6 pt-2 -mx-6 px-6 md:mx-0 md:px-0 scrollbar-hide">
             {services.map((s) => {
                 const isActive = activeService === s.label;
                 return (
@@ -160,7 +160,7 @@ function ServiceTabs({ services, activeService, onSelect }: {
                         key={s.label}
                         onClick={() => onSelect(s.label)}
                         title={s.label}
-                        className={`flex flex-col items-center gap-1 py-1.5 md:py-3 px-2 md:px-2 rounded-full border transition-all duration-300 focus:outline-none group min-w-[64px] md:min-w-0 flex-shrink-0 relative z-10
+                        className={`flex flex-col items-center gap-1.5 py-2 md:py-3 px-3 md:px-2 rounded-full border transition-all duration-300 focus:outline-none group min-w-[76px] md:min-w-0 flex-shrink-0 relative z-10
                             ${isActive
                                 ? 'bg-primary border-primary shadow-md scale-105 z-20'
                                 : 'bg-charcoal/[0.03] border-charcoal/10 hover:bg-primary/10 hover:border-primary/30 hover:scale-105'
