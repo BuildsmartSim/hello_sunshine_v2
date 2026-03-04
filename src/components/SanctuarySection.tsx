@@ -289,21 +289,21 @@ export default function SanctuarySection() {
                             transition={{ duration: 0.25, ease: "easeOut" }}
                             className="absolute inset-0 w-full h-full pointer-events-none"
                         >
-                            <div className="absolute top-0 left-0 w-[65%] md:w-[60%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
+                            <div className="absolute top-0 left-0 w-[65%] md:w-[60%] aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
                                 style={getTransform('1', '-2deg', 'top-left')} onMouseEnter={() => setHoveredId('1')}>
-                                <Photo id="sanctuary-1" src={currentImages.img1} className="aspect-[4/3] w-full" aspect="aspect-[4/3]"
+                                <Photo id="sanctuary-1" src={currentImages.img1} className="w-full h-full" aspect="aspect-[4/3]"
                                     alt={activeService ? `${activeService} — image 1` : 'The Welcome Glow'} />
                             </div>
 
-                            <div className="absolute top-16 md:top-24 right-0 w-[65%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
+                            <div className="absolute top-16 md:top-24 right-0 w-[65%] aspect-video transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
                                 style={getTransform('2', '1deg', 'mid-right')} onMouseEnter={() => setHoveredId('2')}>
-                                <Photo id="sanctuary-2" src={currentImages.img2} className="aspect-video w-full" aspect="aspect-video"
+                                <Photo id="sanctuary-2" src={currentImages.img2} className="w-full h-full" aspect="aspect-video"
                                     alt={activeService ? `${activeService} — image 2` : 'Come on in...'} />
                             </div>
 
-                            <div className="absolute top-[200px] md:top-[280px] left-8 md:left-12 w-[60%] md:w-[55%] transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
+                            <div className="absolute top-[200px] md:top-[280px] left-8 md:left-12 w-[60%] md:w-[55%] aspect-square transition-all duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] pointer-events-auto"
                                 style={getTransform('3', '-1deg', 'bottom-left')} onMouseEnter={() => setHoveredId('3')}>
-                                <Photo id="sanctuary-3" src={currentImages.img3} className="aspect-square w-full" aspect="aspect-square"
+                                <Photo id="sanctuary-3" src={currentImages.img3} className="w-full h-full" aspect="aspect-square"
                                     alt={activeService ? `${activeService} — image 3` : 'Rainbow over the sauna'} />
                             </div>
 
