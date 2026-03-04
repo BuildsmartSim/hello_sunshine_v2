@@ -28,14 +28,14 @@ function HeroPhoto() {
     const isShowingGhost = isActive || (isTransitioning && !activeMedia);
 
     return (
-        <div className="relative mt-12 md:mt-24">
-            {/* Polaroid — moved to bottom left on mobile, kept top right on desktop */}
-            <div className="absolute -bottom-8 left-2 md:-bottom-auto md:left-auto md:-top-32 md:-right-8 z-20" style={{ transform: 'rotate(6deg)' }}>
+        <div className="relative mt-8 md:mt-8">
+            {/* Polaroid — mobile only (bottom left) */}
+            <div className="block md:hidden absolute -bottom-8 left-2 z-20" style={{ transform: 'rotate(6deg)' }}>
                 <Polaroid
                     src={POLAROID_SRC}
                     label="Inside the warmth."
                     rotation="rotate-0"
-                    size="w-48 md:w-80"
+                    size="w-48"
                     forcePlaceholder={false}
                 />
             </div>
@@ -81,25 +81,34 @@ export default function HeroSection() {
     if (!hasMounted) return null;
 
     return (
-        <StandardSection id="hero" variant="naturalPaper" className="pt-16 md:pt-60 pb-0 relative z-20" containerPadding="px-4 md:px-8" overflowVisible={true}>
+        <StandardSection id="hero" variant="naturalPaper" className="pt-16 md:pt-40 pb-0 relative z-20" containerPadding="px-4 md:px-8" overflowVisible={true}>
 
-            <div className="pt-4 md:pt-14 -mx-4 md:mx-0">
-                <DappledHeaderStroke
-                    line1="Hello Sunshine"
-                    line1Size="clamp(40px, 12vw, 100px)"
-                    centered={false}
-                    strokeWidth="2px"
-                    className="!p-0 !m-0 !items-center !text-center md:!items-start md:!text-left w-full overflow-visible whitespace-nowrap tracking-tight"
-                />
-            </div>
+            <div className="pt-4 md:pt-8 -mx-4 md:mx-0 flex flex-col items-start px-4 md:px-0 z-30 relative w-full h-auto overflow-visible pointer-events-none">
+                <div className="flex flex-col items-start w-full md:w-auto pointer-events-auto">
+                    <DappledHeaderStroke
+                        line1="Hello Sunshine"
+                        line1Size="clamp(60px, 16vw, 140px)"
+                        centered={false}
+                        strokeWidth="2px"
+                        className="!p-0 !m-0 !items-start !text-left w-full overflow-visible whitespace-nowrap tracking-tight"
+                    />
 
-            {/* Editorial strip — stacked on mobile if narrow enough, but flex-wrap/shrink usually works */}
-            <div className="flex items-center gap-3 md:gap-6 mt-2 mb-6 md:my-10 overflow-hidden">
-                <div className="h-px flex-1 bg-charcoal/30 hidden sm:block" />
-                <p className="text-sm md:text-sm font-body uppercase tracking-[0.2em] text-charcoal/80 shrink-0 text-center w-full sm:w-auto">
-                    Hand-built pine.&nbsp;·&nbsp;Authentic steam.
-                </p>
-                <div className="h-px flex-1 bg-charcoal/30 hidden sm:block" />
+                    {/* Handwritten sub-header directly under main header */}
+                    <p className="handwritten-text text-4xl md:text-5xl text-charcoal/90 mt-[-5px] md:mt-[2px] w-full text-left origin-left whitespace-nowrap" style={{ transform: 'rotate(-2deg)' }}>
+                        Hand-built pine.&nbsp;·&nbsp;Authentic steam.
+                    </p>
+                </div>
+
+                {/* Desktop Polaroid - to the right of header */}
+                <div className="hidden md:flex absolute right-12 lg:right-24 top-0 bottom-auto mt-[40px] shrink-0 z-40 justify-center md:justify-end w-full md:w-auto pointer-events-auto" style={{ transform: 'rotate(6deg)' }}>
+                    <Polaroid
+                        src={POLAROID_SRC}
+                        label="Inside the warmth."
+                        rotation="rotate-0"
+                        size="w-64 lg:w-[300px]"
+                        forcePlaceholder={false}
+                    />
+                </div>
             </div>
 
             {/* Panoramic photo + sauna interior polaroid */}
