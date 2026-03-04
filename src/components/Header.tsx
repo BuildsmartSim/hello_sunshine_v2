@@ -59,62 +59,86 @@ export default function Header() {
                     }}></div>
 
                 <div
-                    className="mx-auto py-2 md:py-3 flex items-center justify-between relative z-10"
+                    className="mx-auto py-2 flex items-center justify-between relative z-10 w-full"
                     style={{ maxWidth: 'var(--hss-site-width)' }}
                 >
-                    {/* Mobile Menu Toggle */}
-                    <button
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="lg:hidden relative z-50 w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none"
-                        aria-label="Toggle Menu"
-                    >
-                        <motion.span
-                            animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-                            className="w-6 h-0.5 bg-charcoal block transition-transform"
-                        />
-                        <motion.span
-                            animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                            className="w-6 h-0.5 bg-charcoal block transition-opacity"
-                        />
-                        <motion.span
-                            animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                            className="w-6 h-0.5 bg-charcoal block transition-transform"
-                        />
-                    </button>
-
-                    {/* Identity Column - Centered on mobile, balanced flex on desktop */}
-                    <Link href="/" className="flex items-center gap-3 md:gap-6 group/logo relative z-50 lg:static flex-grow lg:flex-1 justify-center lg:justify-start">
-                        <div className="relative w-12 h-12 md:w-20 md:h-20 transform -rotate-3 group-hover/logo:rotate-0 transition-transform duration-500 shrink-0">
+                    {/* Left: Logo */}
+                    <Link href="/" className="flex items-center gap-3 md:gap-6 group/logo relative z-50 flex-1 justify-start">
+                        <div className="relative w-10 h-10 md:w-20 md:h-20 transform -rotate-3 group-hover/logo:rotate-0 transition-transform duration-500 shrink-0">
                             <Image src={LOGO_SRC} alt="Hello Sunshine" fill className="object-contain" priority />
                         </div>
                     </Link>
 
-                    {/* Refined Navigation Column (Studio Style) - Desktop Only */}
-                    <nav className="hidden lg:flex items-center gap-12 font-body text-[14px] font-bold uppercase tracking-[0.4em]">
-                        {navItems.map(it => (
-                            <Link key={it.label} href={`/${it.href}`} onClick={(e) => handleNavClick(e, it.href)} className="text-charcoal/60 hover:text-charcoal transition-all relative group">
-                                {it.label}
-                                <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
-                            </Link>
-                        ))}
-                    </nav>
+                    {/* Center: Desktop Nav OR Mobile CTA */}
+                    <div className="flex-1 flex justify-center items-center">
+                        {/* Desktop Nav */}
+                        <nav className="hidden lg:flex items-center gap-12 font-body text-[14px] font-bold uppercase tracking-[0.4em]">
+                            {navItems.map(it => (
+                                <Link key={it.label} href={`/${it.href}`} onClick={(e) => handleNavClick(e, it.href)} className="text-charcoal/60 hover:text-charcoal transition-all relative group">
+                                    {it.label}
+                                    <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                                </Link>
+                            ))}
+                        </nav>
 
-                    {/* Right: Strong Call to Action */}
-                    <div className="flex items-center gap-4 relative z-50 flex-none lg:flex-1 justify-end">
-                        <Button
-                            variant="deepDry"
-                            className="!px-4 !py-2 !text-[11px] md:!text-[14px] md:!px-8 md:!py-3"
-                            onClick={() => {
-                                setIsMenuOpen(false);
-                                if (pathname === '/') {
-                                    document.querySelector('#ticketing')?.scrollIntoView({ behavior: 'smooth' });
-                                } else {
-                                    router.push('/#ticketing');
-                                }
-                            }}
+                        {/* Mobile CTA (Hidden on Desktop, shown in center on Mobile) */}
+                        <div className="lg:hidden relative z-50">
+                            <Button
+                                variant="deepDry"
+                                className="!px-4 !py-1.5 !text-[10px]"
+                                onClick={() => {
+                                    setIsMenuOpen(false);
+                                    if (pathname === '/') {
+                                        document.querySelector('#ticketing')?.scrollIntoView({ behavior: 'smooth' });
+                                    } else {
+                                        router.push('/#ticketing');
+                                    }
+                                }}
+                            >
+                                Book Now
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Right: Hamburger Menu (Mobile) OR CTA (Desktop) */}
+                    <div className="flex-1 flex justify-end items-center gap-4 relative z-50">
+                        {/* Desktop CTA */}
+                        <div className="hidden lg:block">
+                            <Button
+                                variant="deepDry"
+                                className="!text-[14px] md:!px-8 md:!py-3"
+                                onClick={() => {
+                                    setIsMenuOpen(false);
+                                    if (pathname === '/') {
+                                        document.querySelector('#ticketing')?.scrollIntoView({ behavior: 'smooth' });
+                                    } else {
+                                        router.push('/#ticketing');
+                                    }
+                                }}
+                            >
+                                Book Now
+                            </Button>
+                        </div>
+
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none"
+                            aria-label="Toggle Menu"
                         >
-                            Book Now
-                        </Button>
+                            <motion.span
+                                animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                                className="w-6 h-0.5 bg-charcoal block transition-transform"
+                            />
+                            <motion.span
+                                animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                                className="w-6 h-0.5 bg-charcoal block transition-opacity"
+                            />
+                            <motion.span
+                                animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                                className="w-6 h-0.5 bg-charcoal block transition-transform"
+                            />
+                        </button>
                     </div>
                 </div>
             </header>
