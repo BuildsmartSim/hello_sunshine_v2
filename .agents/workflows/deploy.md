@@ -38,6 +38,11 @@ Provide the user exactly this message using the `notify_user` tool:
 cd /root/hello_sunshine_v2
 git pull
 npm install
+# Ensure swap space exists to prevent OOM kills during the next build
+sudo fallocate -l 2G /swapfile || true
+sudo chmod 600 /swapfile || true
+sudo mkswap /swapfile || true
+sudo swapon /swapfile || true
 npm run build
 pm2 reload hellosunshine
 ```
@@ -52,6 +57,11 @@ cd /root/hello_sunshine_v2
 git fetch origin main
 git reset --hard origin/main
 npm install
+# Ensure swap space exists to prevent OOM kills during the next build
+sudo fallocate -l 2G /swapfile || true
+sudo chmod 600 /swapfile || true
+sudo mkswap /swapfile || true
+sudo swapon /swapfile || true
 npm run build
 pm2 reload hellosunshine
 ```
