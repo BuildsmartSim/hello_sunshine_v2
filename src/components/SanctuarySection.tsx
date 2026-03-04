@@ -103,7 +103,7 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
         img1: "/optimized/photographs/webp/Fire Pit/5612af0f-fe77-4ee9-97d9-f6b066c2aab7.webp",
         img2: "/optimized/photographs/webp/Fire Pit/screenshot-2024-05-16-054512.webp",
         img3: "/optimized/photographs/webp/Fire Pit/caravan-camp-fire-pit-gathering.webp",
-        polaroid: "/optimized/photographs/webp/Fire Pit/caravan-camp-fire-pit-gathering.webp",
+        polaroid: "/optimized/polaroids/webp/night-fire-pit-heart-decor-chairs.webp",
         polaroidLabel: "Singalongs & Starlight",
     },
     'Shower': {
