@@ -24,7 +24,7 @@ export default function Home() {
     // Spread 0 (Cover) - Landing page polaroids
     [
       { src: "/optimized/photographs/webp/diverse-adults-socializing.webp", label: "Good Vibes" },
-      { src: "/optimized/photographs/webp/smiling-man-orange-shaw.webp", label: "Radiance" },
+      { src: "/optimized/photographs/webp/naked-woman-lying-on.webp", label: "Radiance" },
       { src: "/optimized/photographs/webp/three-women-hugging-posing.webp", label: "Together" }
     ],
     // Spread 1 (Page 1)
@@ -36,12 +36,12 @@ export default function Home() {
     // Spread 2 (Page 2)
     [
       { src: "/optimized/photographs/webp/two-women-embracing-out.webp", label: "Embrace" },
-      { src: "/optimized/photographs/webp/happy-man-arms-raised.webp", label: "Free Spirit" },
+      { src: "/optimized/photographs/webp/woman-painting-face.webp", label: "Free Spirit" },
       { src: "/optimized/photographs/webp/tattooed-man-headstand.webp", label: "Balance" }
     ],
     // Spread 3 (Back cover)
     [
-      { src: "/optimized/photographs/webp/four-smiling-adults-at.webp", label: "Sun kissed" },
+      { src: "/optimized/photographs/webp/three-friends-brushing.webp", label: "Sun kissed" },
       { src: "/optimized/photographs/webp/smiling-couple-outdoor-festival.webp", label: "Festival Smiles" },
       { src: "/optimized/photographs/webp/bearded-man-smiling.webp", label: "Inner peace" }
     ]

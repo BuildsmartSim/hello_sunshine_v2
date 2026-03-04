@@ -70,7 +70,7 @@ export default function TicketingSection() {
         />
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative mt-12 min-h-[600px]">
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative mt-12">
         {/* Left Column: Typographic List */}
         <div className="flex-1 flex flex-col">
           {/* Header Row */}
@@ -162,7 +162,7 @@ export default function TicketingSection() {
                   className="origin-bottom"
                 >
                   <Polaroid
-                    src={hoveredEvent.logoSrc || "/canvas-background.png"}
+                    src={hoveredEvent.title.toLowerCase().includes('avalon') ? "/optimized/photographs/webp/ticketing/Avalon-people-dancing.webp" : (hoveredEvent.logoSrc || "/canvas-background.png")}
                     label={hoveredEvent.title}
                     size="w-full max-w-[320px] mx-auto"
                     rotation="rotate-[-2deg]"

@@ -63,6 +63,10 @@
     "webp": "/optimized/photographs/webp/hippie-painting-man.webp",
     "jpeg": "/optimized/photographs/jpg/hippie-painting-man.jpg"
   },
+  "man-bathes-plunge-sunshine.png": {
+    "webp": "/optimized/photographs/webp/man-bathes-plunge-sunshine.webp",
+    "jpeg": "/optimized/photographs/jpg/man-bathes-plunge-sunshine.jpg"
+  },
   "man-sunning-back-outdoor.jpg": {
     "webp": "/optimized/photographs/webp/man-sunning-back-outdoor.webp",
     "jpeg": "/optimized/photographs/jpg/man-sunning-back-outdoor.jpg"
@@ -266,5 +270,9 @@
   "young-woman-soaking-in.jpg": {
     "webp": "/optimized/polaroids/webp/young-woman-soaking-in.webp",
     "jpeg": "/optimized/polaroids/jpg/young-woman-soaking-in.jpg"
+  },
+  "nude-people-caravan-sanctuary.png": {
+    "webp": "/optimized/photographs/webp/nude-people-caravan-sanctuary.webp",
+    "jpeg": "/optimized/photographs/jpg/nude-people-caravan-sanctuary.jpg"
   }
 }

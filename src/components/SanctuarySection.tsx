@@ -79,7 +79,7 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
     'Default': {
         img1: "/optimized/photographs/webp/Sanctuary/img-0013.webp",
         img2: "/optimized/photographs/webp/Sanctuary/d07f230b-848b-44c6-90bf-b31e1b505b7d-enhanced.webp",
-        img3: "/optimized/photographs/webp/Sanctuary/nude-people.webp",
+        img3: "/optimized/photographs/webp/Sanctuary/outdoor.webp",
         polaroid: "/optimized/photographs/webp/Sanctuary/hippie-painting-man.webp",
         polaroidLabel: "Come on in...",
     },

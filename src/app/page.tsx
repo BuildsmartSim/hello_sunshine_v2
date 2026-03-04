@@ -1,71 +1,152 @@
 "use client";
 
+import React, { useState } from "react";
 import Image from "next/image";
+import SanctuarySection from "@/components/SanctuarySection";
+import HeroSection from "@/components/HeroSection";
+import TicketingSection from "@/components/TicketingSection";
+import Guestbook from "@/components/Guestbook";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Polaroid } from "@/components/Polaroid";
+import { SectionHeader } from "@/components/SectionHeader";
+import { StandardSection } from "@/components/StandardSection";
 import { useDesign } from "@/design-system/DesignContext";
-import { textures, fonts } from "@/design-system/tokens";
-import { Button } from "@/components/Button";
+import { ContactSection } from "@/components/ContactSection";
+import { Schema } from "@/components/Schema";
+import { AnimatePresence, motion } from "framer-motion";
 
-const LOGO_SRC = "/HSSLOGO black YELLOW.png";
+export default function Home() {
+  const { state } = useDesign();
+  const [guestbookSpread, setGuestbookSpread] = useState(0);
 
-export default function ComingSoon() {
-    const { state } = useDesign();
+  const guestbookPolaroidSets = [
+    // Spread 0 (Cover) - Landing page polaroids
+    [
+      { src: "/optimized/photographs/webp/Plunge/man-bathes-plunge-sunshine-avalon.webp", label: "Community" },
+      { src: "/optimized/photographs/webp/naked-woman-lying-on.webp", label: "Radiance" },
+      { src: "/optimized/photographs/webp/three-women-hugging-posing.webp", label: "Together" }
+    ],
+    // Spread 1 (Page 1)
+    [
+      { src: "/optimized/photographs/webp/man-bathes-plunge-sunshine.webp", label: "Cold Plunge" },
+      { src: "/optimized/photographs/webp/Tim/bearded-men-smiling-out.webp", label: "Good Times" },
+      { src: "/optimized/photographs/webp/Tim/three-men-hugging.webp", label: "Brothers" }
+    ],
+    // Spread 2 (Page 2)
+    [
+      { src: "/optimized/photographs/webp/two-women-embracing-out.webp", label: "Embrace" },
+      { src: "/optimized/photographs/webp/woman-painting-face.webp", label: "Free Spirit" },
+      { src: "/optimized/photographs/webp/tattooed-man-headstand.webp", label: "Balance" }
+    ],
+    // Spread 3 (Back cover)
+    [
+      { src: "/optimized/photographs/webp/three-friends-brushing.webp", label: "Sun kissed" },
+      { src: "/optimized/photographs/webp/smiling-couple-outdoor-festival.webp", label: "Festival Smiles" },
+      { src: "/optimized/photographs/webp/bearded-man-smiling.webp", label: "Inner peace" }
+    ]
+  ];
 
-    return (
-        <div className="min-h-screen bg-[#FDFCF9] flex flex-col items-center justify-between text-[#2D2D2D] font-sans relative overflow-hidden px-4 md:px-0">
+  // Safeguard array index
+  const activePolaroids = guestbookPolaroidSets[guestbookSpread] || guestbookPolaroidSets[0];
 
-            {/* Background Texture Overlay */}
-            <div
-                className="absolute inset-0 pointer-events-none opacity-40 z-0"
-                style={{
-                    backgroundImage: `url('${textures.paper}')`,
-                    backgroundSize: '400px',
-                    backgroundRepeat: 'repeat'
-                }}
-            />
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "HealthAndBeautyBusiness",
+    "name": "Hello Sunshine Sauna",
+    "image": "https://hellosunshinesauna.com/optimized/photographs/webp/man-bathes-plunge-sunshine.webp",
+    "description": "Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
+    "url": "https://hellosunshinesauna.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "London",
+      "addressCountry": "UK"
+    },
+    "priceRange": "$$"
+  };
 
-            {/* Massive Warm Yellow Accents */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary rounded-full blur-[120px] opacity-20 -translate-y-1/2 translate-x-1/3 z-0" />
-            <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-[#E1EEDE] rounded-full blur-[150px] opacity-30 translate-y-1/3 -translate-x-1/3 z-0" />
-            <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-primary rounded-full blur-[100px] opacity-10 -translate-x-1/2 -translate-y-1/2 z-0" />
+  return (
+    <div className="min-h-screen bg-[#FDFCF9]">
+      <Schema data={localBusinessSchema} />
+      <Header />
 
-            {/* Content Container */}
-            <main className="flex-1 flex flex-col items-center justify-center py-12 w-full max-w-4xl text-center relative z-10">
+      <main>
+        {/* HERO SECTION */}
+        <HeroSection />
 
-                {/* Logo Section */}
-                <div className="mb-4 relative w-72 h-72 md:w-96 md:h-96 drop-shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                    <Image
-                        src={LOGO_SRC}
-                        alt="Hello Sunshine Sauna"
-                        fill
-                        className="object-contain"
-                        priority
+
+        {/* SANCTUARY SECTION */}
+        <SanctuarySection />
+
+        {/* GUESTBOOK SECTION */}
+        <StandardSection id="guestbook" variant="naturalPaper">
+          {/* Content row: polaroids left, book right */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+
+            {/* Left: Polaroid stack — 3 cols */}
+            <div className="hidden lg:flex lg:col-span-3 flex-col items-center pb-12">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={guestbookSpread}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  className="flex flex-col items-center w-full relative"
+                >
+                  <Polaroid
+                    src={activePolaroids[0].src}
+                    label={activePolaroids[0].label}
+                    rotation="rotate-[-5deg]"
+                    size="w-48 md:w-80"
+                    className="z-10"
+                  />
+                  <div className="-mt-16 md:-mt-32 translate-x-3 md:translate-x-6 z-20">
+                    <Polaroid
+                      src={activePolaroids[1].src}
+                      label={activePolaroids[1].label}
+                      rotation="rotate-[4deg]"
+                      size="w-48 md:w-80"
                     />
-                </div>
+                  </div>
+                  <div className="relative inline-block overflow-visible -translate-x-3 md:-translate-x-6 -mt-16 md:-mt-32 z-30">
+                    <Polaroid
+                      src={activePolaroids[2].src}
+                      label={activePolaroids[2].label}
+                      rotation="rotate-[-3deg]"
+                      size="w-48 md:w-80"
+                    />
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-                {/* Coming Soon Box (Panel removed, better balance) */}
-                <div className="w-full max-w-2xl relative animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
-                    <div className="relative z-10 flex flex-col items-center">
+            {/* Right: Header (centered) + rule + book — 9 cols */}
+            <div className="lg:col-span-9 flex flex-col items-center">
+              <SectionHeader
+                centered={true}
+                line1="The"
+                line2="Guestbook"
+                handwriting="Voices from the steam. Moments captured in the wild."
+                withSeparator={true}
+              />
+              <div className="w-full">
+                <Guestbook onSpreadChange={setGuestbookSpread} />
+              </div>
+            </div>
 
-                        <h2
-                            className="text-6xl md:text-8xl text-charcoal mb-12 -rotate-3 hover:rotate-0 transition-transform duration-500 cursor-default"
-                            style={{ fontFamily: fonts.handwriting }}
-                        >
-                            coming soon...
-                        </h2>
+          </div>
+        </StandardSection>
 
-                        <a href="mailto:hello@hellosunshinesauna.com" className="group">
-                            <Button variant="primary" className="shadow-lg hover:shadow-xl transform group-hover:-translate-y-1 transition-all duration-300">
-                                Email Us
-                            </Button>
-                        </a>
-                    </div>
-                </div>
+        {/* TICKETING SECTION */}
+        <TicketingSection />
 
-            </main>
+        {/* CONTACT SECTION */}
+        <ContactSection />
+      </main>
 
-            <footer className="w-full p-8 text-center text-[10px] md:text-xs tracking-[0.2em] uppercase font-mono text-charcoal/40 relative z-10">
-                &copy; {new Date().getFullYear()} Hello Sunshine Sauna. All rights reserved.
-            </footer>
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 }
+

@@ -45,7 +45,7 @@ interface DesignContextType {
 }
 
 const DEFAULT_VALUES: DesignValues = {
-    sectionPaddingDesktop: 128,
+    sectionPaddingDesktop: 100,
     sectionPaddingMobile: 80,
     headerGapDesktop: 48,
     headerGapMobile: 32,
@@ -80,7 +80,7 @@ export function DesignProvider({ children }: { children: React.ReactNode }) {
 
     // Initialize from localStorage
     useEffect(() => {
-        const saved = localStorage.getItem('hss-design-state-v10');
+        const saved = localStorage.getItem('hss-design-state-v11');
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -108,7 +108,7 @@ export function DesignProvider({ children }: { children: React.ReactNode }) {
         root.style.setProperty('--hss-site-width', `${v.siteWidth}px`);
 
         if (isLoaded) {
-            localStorage.setItem('hss-design-state-v9', JSON.stringify(state));
+            localStorage.setItem('hss-design-state-v11', JSON.stringify(state));
         }
     }, [state, isLoaded]);
 
@@ -142,7 +142,7 @@ export function DesignProvider({ children }: { children: React.ReactNode }) {
 
     const resetDesign = () => {
         setState(DEFAULT_STATE);
-        localStorage.removeItem('hss-design-state-v10');
+        localStorage.removeItem('hss-design-state-v11');
     };
 
     return (

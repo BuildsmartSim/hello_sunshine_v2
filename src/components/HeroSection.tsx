@@ -13,11 +13,11 @@ import { StandardSection } from '@/components/StandardSection';
    CHAMPION HERO v4 — Headline top, editorial bridge, photo below
 
    Hello Sunshine
-   ━━━  Hand-built cedar. · Authentic steam.  ━━━
+   ━━━  Hand-built pine. · Authentic steam.  ━━━
    [panoramic photo + sauna interior polaroid top-right]
    ───────────────────────────────────────────────────── */
 
-const PHOTO_SRC = "/northern-retreat-sauna-exterior.jpg";
+const PHOTO_SRC = "/optimized/photographs/webp/nude-people-caravan-sanctuary.webp";
 const POLAROID_SRC = "/optimized/polaroids/webp/sauna-interior-wood-stove-glow.webp";
 
 function HeroPhoto() {
@@ -83,7 +83,7 @@ export default function HeroSection() {
             <div className="flex items-center gap-3 md:gap-6 my-4 md:my-6 overflow-hidden">
                 <div className="h-px flex-1 bg-charcoal/15 hidden sm:block" />
                 <p className="text-lg md:text-2xl opacity-50 shrink-0 text-center w-full sm:w-auto handwritten-text">
-                    Hand-built cedar.&nbsp;·&nbsp;Authentic steam.
+                    Hand-built pine.&nbsp;·&nbsp;Authentic steam.
                 </p>
                 <div className="h-px flex-1 bg-charcoal/15 hidden sm:block" />
             </div>

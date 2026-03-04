@@ -74,7 +74,7 @@ export const IMAGE_COLLECTIONS = {
         { src: "/optimized/photographs/webp/three-smiling-women-h.webp", label: "Three of a kind" },
         { src: "/optimized/photographs/webp/two-men-hugging-smiling.webp", label: "Brothers" },
         { src: "/optimized/photographs/webp/two-women-embracing-out.webp", label: "Embrace" },
-        { src: "/optimized/photographs/webp/happy-man-arms-raised.webp", label: "Free Spirit" },
+        { src: "/optimized/photographs/webp/woman-painting-face.webp", label: "Free Spirit" },
         { src: "/optimized/photographs/webp/tattooed-man-headstand.webp", label: "Balance" }
     ],
 
@@ -83,7 +83,7 @@ export const IMAGE_COLLECTIONS = {
         "/optimized/photographs/webp/bald-bearded-man.webp",
         "/optimized/photographs/webp/bearded-men-smiling-out.webp",
         "/optimized/photographs/webp/dark-skinned-person-sitting.webp",
-        "/optimized/photographs/webp/four-smiling-adults-at.webp",
+        "/optimized/photographs/webp/three-friends-brushing.webp",
         "/optimized/photographs/webp/hippie-painting-man.webp",
         "/optimized/photographs/webp/mother-holding-child-outdoor.webp",
         "/optimized/photographs/webp/smiling-couple-outdoor-festival.webp",
