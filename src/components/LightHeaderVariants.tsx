@@ -11,6 +11,7 @@ interface HeaderProps {
     centered?: boolean;
     line1Size?: string;
     line2Size?: string;
+    strokeWidth?: string;
 }
 
 // Helper for the animated dappled overlay (we reuse this across all 3 options)
@@ -82,11 +83,11 @@ export function DappledHeaderShadow({ line1, line2 = "", subtitle, description, 
 }
 
 // Option C2: Yellow Text + Delicate Charcoal Stroke
-export function DappledHeaderStroke({ line1, line2 = "", subtitle, description, className = "", centered = false, line1Size = '50px', line2Size = '95px' }: HeaderProps) {
+export function DappledHeaderStroke({ line1, line2 = "", subtitle, description, className = "", centered = false, line1Size = '50px', line2Size = '95px', strokeWidth = '1px' }: HeaderProps) {
     const textStyle = {
         fontFamily: fonts.accent,
         color: 'var(--hss-primary, #F8C630)',
-        WebkitTextStroke: '1px var(--hss-charcoal, #2C2C2C)',
+        WebkitTextStroke: `${strokeWidth} var(--hss-charcoal, #2C2C2C)`,
         textShadow: '0 2px 8px rgba(248,198,48,0.3)' // very subtle self-glow
     };
 

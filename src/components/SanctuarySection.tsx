@@ -34,7 +34,6 @@ const SERVICES = [
     { icon: icons.plungePool, label: "Plunge Pool" },
     { icon: icons.firePit, label: "Fire Pit" },
     { icon: icons.shower, label: "Shower" },
-    { icon: icons.towels, label: "Towels" },
 ] as const;
 
 type ServiceType = typeof SERVICES[number]['label'];
@@ -50,8 +49,8 @@ const SERVICE_COPY: Record<ServiceType | 'Default', { subtitle: string; body: st
         body: 'The caravan is a 1969 Thomson Glenn, able to seat up to 12 guests, beautifully renovated to visually stand out at any event, and fastidiously insulated to maintain a good heat throughout the day.\n\nHeated by an industry standard Harvia M3 stove, we responsibly source kiln-dried oak and ash from local suppliers. Open the door & you step into a world of wood, fire, stones & steam.',
     },
     'Hot Tub': {
-        subtitle: '[ Copy needed — please fill in. ]',
-        body: '[ This section needs copy. Describe the hot tub experience in Tim\'s voice — warm, communal, unpretentious. ]',
+        subtitle: 'A communal soak under out in nature.',
+        body: 'Warm, communal, and unpretentious—our handcrafted wood-fired hot tub offers a relaxing sanctuary. \n\nHand-built carefully to reflect the natural environment, we keep the fire roaring all evening. Soak, socialize, and gaze at the sky.',
     },
     'Plunge Pool': {
         subtitle: 'Cold is the counterbalance.',
@@ -64,10 +63,6 @@ const SERVICE_COPY: Record<ServiceType | 'Default', { subtitle: string; body: st
     'Shower': {
         subtitle: 'Hidden behind bamboo.',
         body: 'The showers are hidden behind bamboo fencing, maintaining privacy during the act of washing & cleaning oneself. Depending on the size of event, up to six showers can be provided.\n\nGuests wash with the provided biodegradable tea tree or lavender body wash — mindful of the land we borrow.',
-    },
-    'Towels': {
-        subtitle: '[ Copy needed — please fill in. ]',
-        body: '[ This section needs copy. Mention the 2-towel rule: one to sit on, one to dry. Towels available to buy on site. Keep it warm and practical. ]',
     },
 };
 
@@ -118,13 +113,6 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
         polaroid: "/optimized/photographs/webp/Showers/smiling-shirtless-man-vintage.webp",
         polaroidLabel: "Art of the Sauna",
     },
-    'Towels': {
-        img1: "/optimized/photographs/webp/Towels/happy-man-arms-raised.webp",
-        img2: "/optimized/photographs/webp/Towels/20220519_235539.webp",
-        img3: "/optimized/photographs/webp/Towels/0b1a91d1-9593-4683-a883-cb6518e4ac33.webp",
-        polaroid: "/optimized/photographs/webp/Towels/happy-man-arms-raised.webp",
-        polaroidLabel: "Garlands & Good vibes",
-    },
 };
 
 /* ── Photo component ─────────────────────────────── */
@@ -164,7 +152,7 @@ function ServiceTabs({ services, activeService, onSelect }: {
     onSelect: (s: ServiceType) => void;
 }) {
     return (
-        <div className="flex md:grid md:grid-cols-6 gap-3 md:gap-2 overflow-x-auto no-scrollbar pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0">
+        <div className="flex md:grid md:grid-cols-6 gap-3 md:gap-2 overflow-x-auto overflow-y-visible pb-6 md:pb-6 pt-2 -mx-6 px-6 md:mx-0 md:px-0 scrollbar-hide">
             {services.map((s) => {
                 const isActive = activeService === s.label;
                 return (
@@ -172,9 +160,9 @@ function ServiceTabs({ services, activeService, onSelect }: {
                         key={s.label}
                         onClick={() => onSelect(s.label)}
                         title={s.label}
-                        className={`flex flex-col items-center gap-1 py-1.5 md:py-3 px-2 md:px-2 rounded-full border transition-all duration-300 focus:outline-none group min-w-[64px] md:min-w-0 flex-shrink-0
+                        className={`flex flex-col items-center gap-1 py-1.5 md:py-3 px-2 md:px-2 rounded-full border transition-all duration-300 focus:outline-none group min-w-[64px] md:min-w-0 flex-shrink-0 relative z-10
                             ${isActive
-                                ? 'bg-primary border-primary shadow-md scale-105'
+                                ? 'bg-primary border-primary shadow-md scale-105 z-20'
                                 : 'bg-charcoal/[0.03] border-charcoal/10 hover:bg-primary/10 hover:border-primary/30 hover:scale-105'
                             }`}
                     >
