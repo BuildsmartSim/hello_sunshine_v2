@@ -166,7 +166,7 @@ function ServiceTabs({ services, activeService, onSelect }: {
                                 : 'bg-charcoal/[0.03] border-charcoal/10 hover:bg-primary/10 hover:border-primary/30 hover:scale-105'
                             }`}
                     >
-                        <div className="relative w-5 h-5 md:w-9 md:h-9 flex items-center justify-center">
+                        <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center">
                             <Image
                                 src={s.icon}
                                 alt={s.label}
