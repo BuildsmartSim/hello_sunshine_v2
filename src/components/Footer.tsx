@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 import { textures, icons, pencil } from '@/design-system/tokens';
 import { LayeredPencil } from '@/components/LayeredPencil';
 import { useHasMounted } from '@/design-system/MediaContext';

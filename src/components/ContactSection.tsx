@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 import { StandardSection } from './StandardSection';
 import { submitContactForm } from '@/app/actions/contact';
 import { Button } from './Button';

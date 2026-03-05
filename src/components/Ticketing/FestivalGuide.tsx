@@ -4,7 +4,7 @@ import React from 'react';
 import { EventData } from '@/data/festivals';
 import { fonts, textures } from '@/design-system/tokens';
 import { Button } from '@/components/Button';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 
 interface FestivalGuideProps {
     event: EventData;

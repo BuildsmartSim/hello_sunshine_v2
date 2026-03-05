@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 import { motion } from 'framer-motion';
 import { textures, fonts } from '@/design-system/tokens';
 import { Button } from '@/components/Button';

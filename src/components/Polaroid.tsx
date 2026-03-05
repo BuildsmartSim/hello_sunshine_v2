@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from 'react';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 import { shadows, textures } from '@/design-system/tokens';
 
 /* ─────────────────────────────────────────────────────
@@ -96,6 +96,7 @@ export interface PolaroidProps {
     size?: string;
     className?: string;
     forcePlaceholder?: boolean;
+    disableHiding?: boolean;
 }
 
 import { motion } from 'framer-motion';
@@ -109,6 +110,7 @@ export const Polaroid = React.memo(function Polaroid({
     size = "w-72",
     className = "",
     forcePlaceholder = false,
+    disableHiding = false,
 }: PolaroidProps) {
     const { openMedia, activeMedia, isTransitioning } = useMedia();
     const hasMounted = useHasMounted();
@@ -125,12 +127,12 @@ export const Polaroid = React.memo(function Polaroid({
     const composedShadow = `${woodShadow}, ${r.embossHighlight}, ${r.embossLowlight}`;
 
     const isCurrentActive = activeMedia?.id === id;
-    const isShowingGhost = isCurrentActive || (isTransitioning && !activeMedia);
+    const isShowingGhost = !disableHiding && (isCurrentActive || (isTransitioning && !activeMedia));
 
     return (
         <div className={`relative ${size} ${rotation} ${className} [container-type:inline-size]`}>
             {/* ── THE GHOST (BASE LAYER) ──────────────────── */}
-            {(isCurrentActive || isShowingGhost) && (
+            {isShowingGhost && (
                 <div
                     className="absolute inset-0 z-0 rounded-[2px] pointer-events-none"
                     style={{ backgroundColor: 'rgba(50,43,40,0.03)', boxShadow: 'inset 0 4px 12px rgba(0,0,0,0.05)' }}
@@ -156,9 +158,9 @@ export const Polaroid = React.memo(function Polaroid({
                     borderRadius: '2px',
                     variant: v
                 })}
-                className={`relative z-10 group cursor-zoom-in ${isCurrentActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                className={`relative z-10 group cursor-zoom-in ${!disableHiding && isCurrentActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                 style={{
-                    visibility: isCurrentActive ? 'hidden' : 'visible'
+                    visibility: (!disableHiding && isCurrentActive) ? 'hidden' : 'visible'
                 }}
             >
                 {/* ── THE FRAME ──────────────────────────── */}

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMedia } from '@/design-system/MediaContext';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 
 import { RECIPES, textures } from './Polaroid';
 import { useHasMounted } from '@/design-system/MediaContext';

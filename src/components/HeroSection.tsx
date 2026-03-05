@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 import { Polaroid } from '@/components/Polaroid';
 import { DappledHeaderStroke } from '@/components/LightHeaderVariants';
 import { fonts } from '@/design-system/tokens';
@@ -37,6 +37,7 @@ function HeroPhoto() {
                     rotation="rotate-0"
                     size="w-48"
                     forcePlaceholder={false}
+                    disableHiding={true}
                 />
             </div>
 
@@ -84,7 +85,7 @@ export default function HeroSection() {
         <StandardSection id="hero" variant="naturalPaper" className="pt-16 md:pt-40 pb-0 relative z-20" containerPadding="px-4 md:px-8" overflowVisible={true}>
 
             <div className="pt-4 md:pt-8 -mx-4 md:mx-0 flex flex-col items-start px-4 md:px-0 z-30 relative w-full h-auto overflow-visible pointer-events-none">
-                <div className="flex flex-col items-start w-full md:w-auto pointer-events-auto">
+                <div className="flex flex-col items-start w-full md:w-auto pointer-events-auto relative z-40">
                     <DappledHeaderStroke
                         line1="Hello Sunshine"
                         line1Size="clamp(45px, 14vw, 140px)"
@@ -94,19 +95,20 @@ export default function HeroSection() {
                     />
 
                     {/* Handwritten sub-header directly under main header */}
-                    <p className="handwritten-text text-3xl md:text-5xl text-charcoal/90 mt-[-5px] md:mt-[2px] w-full text-left origin-left whitespace-normal md:whitespace-nowrap leading-[1.2] md:leading-normal" style={{ transform: 'rotate(-2deg)' }}>
-                        Hand-built pine.&nbsp;·&nbsp;Authentic steam.
+                    <p className="handwritten-text text-2xl md:text-4xl text-charcoal/90 mt-[-5px] md:mt-[2px] w-full text-left origin-left whitespace-normal md:whitespace-nowrap leading-[1.2] md:leading-normal" style={{ transform: 'rotate(-2deg)' }}>
+                        Hand-built pine.&nbsp;&nbsp;Authentic steam.
                     </p>
                 </div>
 
                 {/* Desktop Polaroid - to the right of header */}
-                <div className="hidden md:flex absolute right-12 lg:right-24 top-0 bottom-auto mt-[40px] shrink-0 z-40 justify-center md:justify-end w-full md:w-auto pointer-events-auto" style={{ transform: 'rotate(6deg)' }}>
+                <div className="hidden md:flex absolute right-4 lg:right-24 top-0 mt-[40px] shrink-0 z-50 justify-center md:justify-end w-full md:w-auto pointer-events-auto" style={{ transform: 'rotate(6deg)' }}>
                     <Polaroid
                         src={POLAROID_SRC}
                         label="Inside the warmth."
                         rotation="rotate-0"
                         size="w-64 lg:w-[300px]"
                         forcePlaceholder={false}
+                        disableHiding={true}
                     />
                 </div>
             </div>

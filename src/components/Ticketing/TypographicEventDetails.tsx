@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { EventData } from '@/data/festivals';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 
 interface TypographicEventDetailsProps {
     event: EventData;

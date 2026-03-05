@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { shadows, fonts, icons } from '@/design-system/tokens';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 import { Polaroid } from '@/components/Polaroid';
 import { SectionHeader } from '@/components/SectionHeader';
 import { StandardSection } from '@/components/StandardSection';

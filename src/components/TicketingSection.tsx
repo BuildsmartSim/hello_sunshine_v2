@@ -93,9 +93,9 @@ export default function TicketingSection() {
               className="block group border-b border-charcoal/10 hover:bg-black/[0.02] transition-colors md:px-6 py-8"
               onMouseEnter={() => setHoveredEvent(pass)}
             >
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6 lg:gap-8 w-full">
                 {/* Dates & Mobile Location */}
-                <div className="flex flex-col gap-1 w-[120px] lg:w-1/4">
+                <div className="flex flex-col gap-1 w-[120px] lg:w-1/4 shrink-0">
                   <h4 className="text-charcoal/60 text-[10px] sm:text-[11px] uppercase font-mono tracking-[0.2em] font-bold">
                     {pass.dates}
                   </h4>
@@ -105,8 +105,8 @@ export default function TicketingSection() {
                 </div>
 
                 {/* Title & Desktop Location */}
-                <div className="flex flex-col gap-1 flex-1">
-                  <h3 className="h3 group-hover:text-primary transition-colors text-2xl sm:text-3xl lg:text-4xl uppercase">
+                <div className="flex flex-col gap-1 flex-1 min-w-0">
+                  <h3 className="h3 group-hover:text-primary transition-colors text-2xl sm:text-3xl lg:text-4xl uppercase truncate whitespace-normal">
                     {pass.title}
                   </h3>
                   <p className="text-[10px] font-mono text-charcoal/50 font-bold tracking-[0.2em] uppercase hidden md:block group-hover:text-charcoal/70 transition-colors">
@@ -115,7 +115,7 @@ export default function TicketingSection() {
                 </div>
 
                 {/* Availability & Button */}
-                <div className="flex items-center gap-4 md:gap-8 w-full md:w-[160px] justify-between md:justify-end shrink-0">
+                <div className="flex items-center gap-4 md:gap-8 w-full md:w-auto md:min-w-[160px] justify-between md:justify-end shrink-0">
                   <div className="flex flex-row md:flex-col items-baseline md:items-end gap-2 md:gap-0">
                     <span
                       className={`text-[11px] md:text-[13px] font-bold uppercase tracking-widest ${getEventAvailability(pass) === "Sold Out"
@@ -130,7 +130,7 @@ export default function TicketingSection() {
                   </div>
                   <Button
                     variant="deepDry"
-                    className="!px-4 !py-2 !text-[11px] md:!text-[14px] md:!px-8 md:!py-3"
+                    className="!px-4 !py-2 !text-[11px] md:!text-[14px] md:!px-8 md:!py-3 shrink-0"
                   >
                     Explore
                   </Button>

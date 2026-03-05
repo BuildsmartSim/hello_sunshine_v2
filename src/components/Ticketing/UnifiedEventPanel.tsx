@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { TicketSubTier, EventData, SERVICE_ICONS, sortTiersByType, formatTicketPrice } from '@/data/festivals';
 import { fonts } from '@/design-system/tokens';
 import { Button } from '@/components/Button';
-import Image from 'next/image';
+import { SmartImage as Image } from '@/components/SmartImage';
 
 interface UnifiedEventPanelProps {
     event: EventData;
@@ -137,14 +137,14 @@ export function UnifiedEventPanel({ event, selectedTierId, onSelect, inventory =
                             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-8 xl:gap-12 lg:px-4">
 
                                 {/* Col 1: Availability */}
-                                <div className="flex flex-col gap-1 w-full lg:w-[260px] xl:w-[300px] shrink-0">
+                                <div className="flex flex-col gap-1 w-full lg:w-[150px] xl:w-[200px] shrink-0">
                                     <h4 className={`text-[12px] sm:text-[13px] font-black uppercase tracking-widest ${availabilityColorClass}`}>
                                         {availabilityText}
                                     </h4>
                                 </div>
 
                                 {/* Col 2 & 3: Title & Description Blurb */}
-                                <div className="flex flex-col gap-1 flex-1 w-full lg:max-w-[400px]">
+                                <div className="flex flex-col gap-1 flex-1 w-full lg:max-w-[460px]">
                                     <div className="flex items-center gap-3">
                                         <h3 className={`h3 transition-colors uppercase ${isSelected ? 'text-primary' : 'text-charcoal'}`}>
                                             {tier.name}
