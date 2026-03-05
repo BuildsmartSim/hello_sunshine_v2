@@ -12,8 +12,8 @@ export async function submitContactForm(formData: { name: string; email: string;
         }
 
         const { data, error } = await resend.emails.send({
-            from: 'Hello Sunshine Sauna <hello@hellosunshinesauna.com>', // Replace with 'ticket@' or 'contact@' once custom domain is verified
-            to: ['hello@hellosunshinesauna.com'], // Send to the owners
+            from: 'Hello Sunshine Contact Form <hello@hellosunshinesauna.com>',
+            to: ['info@hellosunshinesauna.com'], // Send to the owners
             replyTo: formData.email,
             subject: `New Visitor Inquiry from ${formData.name}`,
             text: `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`,
