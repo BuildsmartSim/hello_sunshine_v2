@@ -20,11 +20,12 @@ export interface SmartImageProps extends Omit<ImageProps, 'alt'> {
  * Automatically looks up the best AI-generated SEO alt text from the manifest
  * based on the image's src path.
  */
-function findAltText(src: string | any): string {
-    if (typeof src !== 'string') return '';
+function findAltText(src: string | any): string | null {
+    if (typeof src !== 'string') return null;
 
     // Search the manifest values to see if our src matches any output path
     for (const data of Object.values(manifest)) {
+        if (!data) continue;
         if (
             src === data.webp ||
             src === data.jpeg ||
@@ -33,10 +34,10 @@ function findAltText(src: string | any): string {
             src === data.webpPortrait ||
             src === data.jpegPortrait
         ) {
-            return data.altText || '';
+            return data.altText || null;
         }
     }
-    return '';
+    return null;
 }
 
 /**
@@ -50,7 +51,7 @@ export function SmartImage(props: SmartImageProps) {
 
     // If no explicit alt was provided, try to find the smart SEO alt text
     if (!finalAlt) {
-        finalAlt = findAltText(src);
+        finalAlt = findAltText(src) || undefined;
     }
 
     // Fallback if not in manifest
