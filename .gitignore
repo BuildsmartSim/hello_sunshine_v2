@@ -58,8 +58,8 @@ scripts/.optimize-cache.json
 # Raw Media Assets avoiding Bloat
 HS Promotion Material.zip
 HS_Promotion_Material/
-CARAVAN*
-Caravan*
+/CARAVAN*
+/Caravan*
 sauna+garden.png
 
 scripts/
