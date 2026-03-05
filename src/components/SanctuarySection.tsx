@@ -81,7 +81,7 @@ const SERVICE_GALLERY: Record<ServiceType | 'Default', {
     'Sauna': {
         img1: "/optimized/photographs/webp/Sauna/IMG-20230727-WA0006.webp",
         img2: "/optimized/polaroids/webp/TIM+STOVE.jpg",
-        img3: "/optimized/photographs/webp/Sauna/caravan-leaves-outdoors.webp",
+        img3: "/optimized/photographs/webp/hello-sunshine-sauna-vintage-caravan-sign-sunrise.webp",
         polaroid: "/optimized/photographs/webp/Sauna/woman-doing-face-paint.webp",
         polaroidLabel: "The sign says it all.",
     },
