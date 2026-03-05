@@ -87,14 +87,14 @@ export default function HeroSection() {
                 <div className="flex flex-col items-start w-full md:w-auto pointer-events-auto">
                     <DappledHeaderStroke
                         line1="Hello Sunshine"
-                        line1Size="clamp(60px, 16vw, 140px)"
+                        line1Size="clamp(45px, 14vw, 140px)"
                         centered={false}
                         strokeWidth="2px"
                         className="!p-0 !m-0 !items-start !text-left w-full overflow-visible whitespace-nowrap tracking-tight"
                     />
 
                     {/* Handwritten sub-header directly under main header */}
-                    <p className="handwritten-text text-4xl md:text-5xl text-charcoal/90 mt-[-5px] md:mt-[2px] w-full text-left origin-left whitespace-nowrap" style={{ transform: 'rotate(-2deg)' }}>
+                    <p className="handwritten-text text-3xl md:text-5xl text-charcoal/90 mt-[-5px] md:mt-[2px] w-full text-left origin-left whitespace-normal md:whitespace-nowrap leading-[1.2] md:leading-normal" style={{ transform: 'rotate(-2deg)' }}>
                         Hand-built pine.&nbsp;·&nbsp;Authentic steam.
                     </p>
                 </div>
