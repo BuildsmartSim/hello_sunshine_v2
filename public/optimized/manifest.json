@@ -51,6 +51,14 @@
     "webp": "/optimized/photographs/webp/happy-man-arms-raised.webp",
     "jpeg": "/optimized/photographs/jpg/happy-man-arms-raised.jpg"
   },
+  "hello-sunshine-sauna-vintage-caravan-sign-sunrise.jpeg": {
+    "webp": "/optimized/photographs/webp/hello-sunshine-sauna-vintage-caravan-sign-sunrise.webp",
+    "jpeg": "/optimized/photographs/jpg/hello-sunshine-sauna-vintage-caravan-sign-sunrise.jpg",
+    "webpLandscape": "/optimized/photographs/webp/hello-sunshine-sauna-vintage-caravan-sign-sunrise-landscape.webp",
+    "jpegLandscape": "/optimized/photographs/jpg/hello-sunshine-sauna-vintage-caravan-sign-sunrise-landscape.jpg",
+    "webpPortrait": "/optimized/photographs/webp/hello-sunshine-sauna-vintage-caravan-sign-sunrise-portrait.webp",
+    "jpegPortrait": "/optimized/photographs/jpg/hello-sunshine-sauna-vintage-caravan-sign-sunrise-portrait.jpg"
+  },
   "hello-sunshine-sauna.jpg": {
     "webp": "/optimized/photographs/webp/hello-sunshine-sauna.webp",
     "jpeg": "/optimized/photographs/jpg/hello-sunshine-sauna.jpg"
@@ -166,14 +174,6 @@
   "sun-face-sculpture.jpg": {
     "webp": "/optimized/photographs/webp/sun-face-sculpture.webp",
     "jpeg": "/optimized/photographs/jpg/sun-face-sculpture.jpg"
-  },
-  "sunrisa-caravan-sign.jpeg": {
-    "webp": "/optimized/photographs/webp/sunrisa-caravan-sign.webp",
-    "jpeg": "/optimized/photographs/jpg/sunrisa-caravan-sign.jpg",
-    "webpLandscape": "/optimized/photographs/webp/sunrisa-caravan-sign-landscape.webp",
-    "jpegLandscape": "/optimized/photographs/jpg/sunrisa-caravan-sign-landscape.jpg",
-    "webpPortrait": "/optimized/photographs/webp/sunrisa-caravan-sign-portrait.webp",
-    "jpegPortrait": "/optimized/photographs/jpg/sunrisa-caravan-sign-portrait.jpg"
   },
   "tattooed-man-headstand.jpg": {
     "webp": "/optimized/photographs/webp/tattooed-man-headstand.webp",
