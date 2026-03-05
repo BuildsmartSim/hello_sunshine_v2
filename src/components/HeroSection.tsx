@@ -19,7 +19,7 @@ import { StandardSection } from '@/components/StandardSection';
 
 const PHOTO_SRC = "/optimized/photographs/webp/nude-people-caravan-sanctuary.webp";
 const MOBILE_PHOTO_SRC = "/optimized/photographs/webp/nude-people-caravan-sanctuary-mobile.webp";
-const POLAROID_SRC = "/optimized/polaroids/webp/sauna-interior-wood-stove-glow.webp";
+const POLAROID_SRC = "/optimized/polaroids/webp/young-woman-soaking-in.webp";
 
 function HeroPhoto() {
     const { openMedia, activeMedia, isTransitioning } = useMedia();
