@@ -19,6 +19,7 @@
     "@mendable/firecrawl-js": "^4.15.1",
     "@next/third-parties": "^16.1.6",
     "@react-email/components": "^1.0.7",
+    "@react-email/render": "^2.0.4",
     "@resvg/resvg-js": "^2.6.2",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.96.0",

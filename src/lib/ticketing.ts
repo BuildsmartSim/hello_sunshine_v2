@@ -154,6 +154,22 @@ export async function sendTicketEmail(ticketId: string) {
     const customerEmail = ticket.profile?.email;
     if (!customerEmail) throw new Error('Customer email missing');
 
+    let displayDate = 'Season Pass';
+    if (ticket.slot) {
+        displayDate = new Date(ticket.slot.start_time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    } else {
+        const locationName = ticket.product?.location?.name;
+        if (locationName) {
+            const { data: events } = await supabaseAdmin
+                .from('app_events')
+                .select('title, location, dates');
+            const matchedEvent = events?.find((e: any) => e.title === locationName || e.location === locationName);
+            if (matchedEvent?.dates) {
+                displayDate = matchedEvent.dates;
+            }
+        }
+    }
+
     const { data, error } = await resend.emails.send({
         from: 'Hello Sunshine Sauna <hello@hellosunshinesauna.com>',
         to: [customerEmail],
@@ -162,7 +178,7 @@ export async function sendTicketEmail(ticketId: string) {
             customerName: ticket.profile?.full_name || 'Guest',
             eventTitle: ticket.product?.location?.name || ticket.slot?.product?.location?.name || 'Hello Sunshine Sauna',
             passName: ticket.product?.name || ticket.slot?.product?.name || 'General Entry',
-            date: ticket.slot ? new Date(ticket.slot.start_time).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Season Pass',
+            date: displayDate,
             ticketId: ticket.id,
         }) as React.ReactElement,
     });
