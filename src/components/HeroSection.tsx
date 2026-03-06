@@ -19,7 +19,8 @@ import { StandardSection } from '@/components/StandardSection';
 
 const PHOTO_SRC = "/optimized/photographs/webp/nude-people-caravan-sanctuary.webp";
 const MOBILE_PHOTO_SRC = "/optimized/photographs/webp/nude-people-caravan-sanctuary-mobile.webp";
-const POLAROID_SRC = "/optimized/polaroids/webp/young-woman-soaking-in.webp";
+// CRITICAL: This MUST be the sauna interior image. Do not change it without design approval.
+const POLAROID_SRC = "/optimized/polaroids/webp/sauna-interior-wood-stove-glow.webp";
 
 function HeroPhoto() {
     const { openMedia, activeMedia, isTransitioning } = useMedia();
@@ -32,6 +33,7 @@ function HeroPhoto() {
             {/* Polaroid — mobile only (bottom left) */}
             <div className="block md:hidden absolute -bottom-8 left-2 z-20" style={{ transform: 'rotate(6deg)' }}>
                 <Polaroid
+                    id="hero-polaroid-mobile"
                     src={POLAROID_SRC}
                     label="Inside the warmth."
                     rotation="rotate-0"
@@ -103,6 +105,7 @@ export default function HeroSection() {
                 {/* Desktop Polaroid - to the right of header */}
                 <div className="hidden md:flex absolute right-4 lg:right-24 top-0 mt-[40px] shrink-0 z-50 justify-center md:justify-end w-full md:w-auto pointer-events-auto" style={{ transform: 'rotate(6deg)' }}>
                     <Polaroid
+                        id="hero-polaroid-desktop"
                         src={POLAROID_SRC}
                         label="Inside the warmth."
                         rotation="rotate-0"

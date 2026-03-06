@@ -91,6 +91,7 @@ function hashToVariant(seed: string): Variant {
 export interface PolaroidProps {
     src: string;
     label: string;
+    id?: string;
     variant?: Variant;
     rotation?: string;
     size?: string;
@@ -105,6 +106,7 @@ import { useMedia, useHasMounted } from '@/design-system/MediaContext';
 export const Polaroid = React.memo(function Polaroid({
     src,
     label,
+    id: customId,
     variant,
     rotation = "rotate-[-2deg]",
     size = "w-72",
@@ -114,7 +116,7 @@ export const Polaroid = React.memo(function Polaroid({
 }: PolaroidProps) {
     const { openMedia, activeMedia, isTransitioning } = useMedia();
     const hasMounted = useHasMounted();
-    const id = `polaroid-${src}-${label}`;
+    const id = customId || `polaroid-${src}-${label}`;
 
     /* Pick variant: explicit override or deterministic random */
     const v = useMemo(() => variant ?? hashToVariant(label), [variant, label]);
