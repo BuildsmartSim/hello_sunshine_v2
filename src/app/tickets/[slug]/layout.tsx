@@ -5,22 +5,21 @@ type Props = {
     params: Promise<{ slug: string }>;
 };
 
+import { getFestivalData } from '@/data/festivals';
+import { createSlug } from '@/data/festivals';
+
 export async function generateMetadata(
     { params }: Props,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     const { slug } = await params;
 
-    // Fetch data
-    const { data: event } = await supabaseAdmin
-        .from('app_events')
-        .select('title, description, seo_title, seo_description, logo_src')
-        .eq('id', slug)
-        .single();
+    // Fetch data using the cached getFestivalData to match the slug
+    const events = await getFestivalData();
+    const event = events.find((e) => createSlug(e.title) === slug);
 
     if (!event) {
-        // Fallback: try to reconstruct title from the slug (id)
-        // because app_events might not be seeded but local data has the event
+        // Fallback: try to reconstruct title from the slug
         const fallbackTitle = slug
             ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
             : 'Event';
@@ -32,22 +31,25 @@ export async function generateMetadata(
     }
 
     // Fallback to standard title/description if SEO specific ones aren't provided
-    const title = event.seo_title || event.title;
-    const description = event.seo_description || event.description;
-    const images = event.logo_src ? [{ url: event.logo_src }] : [];
+    const title = event.seoTitle || event.title;
+    const description = event.seoDescription || event.description;
+
+    // Ensure image URL is absolute
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hellosunshinesauna.com';
+    const images = event.logoSrc ? [{ url: `${baseUrl}${event.logoSrc}` }] : [];
 
     return {
-        title,
+        title: `${title} | Hello Sunshine Sauna`,
         description,
         openGraph: {
-            title,
+            title: `${title} | Hello Sunshine Sauna`,
             description,
             images,
             type: 'website',
         },
         twitter: {
             card: 'summary_large_image',
-            title,
+            title: `${title} | Hello Sunshine Sauna`,
             description,
             images,
         },

@@ -25,13 +25,13 @@ const chicle = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://hellosunshinesauna.com'),
   title: {
-    default: "Hello Sunshine Sauna - Elemental Minimalist",
+    default: "Hello Sunshine Sauna | Mobile Wood-Fired Sauna in the South West",
     template: "%s | Hello Sunshine Sauna",
   },
-  description: "Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
+  description: "Mobile wood-fired sauna in the South West of England. Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
   openGraph: {
-    title: "Hello Sunshine Sauna",
-    description: "Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
+    title: "Hello Sunshine Sauna | Mobile Wood-Fired Sauna in the South West",
+    description: "Mobile wood-fired sauna in the South West of England. Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
     url: "/",
     siteName: "Hello Sunshine",
     locale: "en_GB",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Hello Sunshine Sauna",
-    description: "Hand-built saunas for the wandering soul.",
+    description: "Mobile wood-fired sauna in the South West of England. Hand-built saunas for the wandering soul.",
   },
 };
 

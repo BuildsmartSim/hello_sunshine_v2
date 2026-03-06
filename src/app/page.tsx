@@ -55,11 +55,11 @@ export default function Home() {
     "@type": "HealthAndBeautyBusiness",
     "name": "Hello Sunshine Sauna",
     "image": "https://hellosunshinesauna.com/optimized/photographs/webp/man-bathes-plunge-sunshine.webp",
-    "description": "Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
+    "description": "Mobile wood-fired sauna in the South West of England. Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
     "url": "https://hellosunshinesauna.com",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "London",
+      "addressRegion": "South West England",
       "addressCountry": "UK"
     },
     "priceRange": "$$"
