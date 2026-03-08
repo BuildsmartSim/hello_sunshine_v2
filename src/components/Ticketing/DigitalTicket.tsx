@@ -41,12 +41,12 @@ export function DigitalTicket({ ticketId, customerName, eventTitle, passName, da
 
                 <div className="relative z-10 flex flex-col items-center">
                     <div className="w-full border-b border-dashed border-charcoal/20 pb-4 mb-6 flex justify-between items-start">
-                        <div className="text-left">
-                            <h3 className="h3 text-xl uppercase">
-                                HELLO SUNSHINE SAUNA
+                        <div className="text-left w-2/3 pr-2">
+                            <h3 className="h3 text-xl uppercase leading-tight">
+                                {eventTitle.toUpperCase()}
                             </h3>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right w-1/3">
                             <span className="text-xs font-mono text-primary font-bold uppercase leading-none">
                                 {date === 'Season Pass' ? (
                                     <>
