@@ -130,6 +130,7 @@ export async function POST(req: Request) {
         // 2. Create Session with Metadata
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
+            expires_at: Math.floor(Date.now() / 1000) + (30 * 60), // Stripe minimum is 30 minutes
             line_items: [
                 {
                     quantity: quantity,
