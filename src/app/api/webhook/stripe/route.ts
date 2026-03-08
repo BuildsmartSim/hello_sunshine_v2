@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { headers } from 'next/headers';
 import { stripe } from '@/lib/stripe';
-import { upsertProfile } from '@/lib/ticketing';
+import { upsertProfile, sendTicketEmail } from '@/lib/ticketing';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function POST(req: Request) {
@@ -107,8 +107,7 @@ export async function POST(req: Request) {
             }
 
             // 5. Update Tickets to Active and Send Emails
-            const { sendTicketEmail } = await import('@/lib/ticketing');
-
+            // We use the statically imported sendTicketEmail from the top of the file
             for (const item of profilesAndTickets) {
                 // Update Ticket
                 const { error: ticketUpdateError } = await supabaseAdmin
