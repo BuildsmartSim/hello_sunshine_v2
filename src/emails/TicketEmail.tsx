@@ -36,11 +36,26 @@ export const TicketEmail = ({
     return (
         <Html>
             <Head>
-                <style>
-                    {`
-                        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=DM+Sans:wght@400;700&display=swap');
-                    `}
-                </style>
+                <Font
+                    fontFamily="Caveat"
+                    fallbackFontFamily="cursive"
+                    webFont={{
+                        url: 'https://fonts.gstatic.com/s/caveat/v23/WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SII.ttf',
+                        format: 'truetype',
+                    }}
+                    fontWeight={700}
+                    fontStyle="normal"
+                />
+                <Font
+                    fontFamily="DM Sans"
+                    fallbackFontFamily="sans-serif"
+                    webFont={{
+                        url: 'https://fonts.gstatic.com/s/dmsans/v17/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAopxhTg.ttf',
+                        format: 'truetype',
+                    }}
+                    fontWeight={400}
+                    fontStyle="normal"
+                />
             </Head>
             <Preview>Your ticket for {eventTitle} is ready!</Preview>
             <Body style={main}>
