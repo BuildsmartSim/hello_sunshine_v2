@@ -69,7 +69,7 @@ export const TicketEmail = ({
                         />
                     </Section>
 
-                    <Heading style={h1}>See you soon, {customerName}</Heading>
+                    <Heading style={{ ...h1, fontFamily: '"Caveat", cursive', fontWeight: 700 }}>See you soon, {customerName}</Heading>
 
                     <Text style={text}>
                         Your place in the heat is secured. We've prepared your digital ticket and entry instructions below.
