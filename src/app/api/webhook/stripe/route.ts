@@ -44,16 +44,19 @@ export async function POST(req: Request) {
             const guestEmails = metadata.guest_emails ? JSON.parse(metadata.guest_emails) : [];
             const guestNames = metadata.guest_names ? JSON.parse(metadata.guest_names) : [];
 
-            // 2. Fetch all pending tickets for this session
-            const { data: pendingTickets, error: fetchError } = await supabaseAdmin
+            // 2. Fetch all tickets for this session
+            // We NO LONGER filter by `status='pending'` here because the frontend `/api/tickets/from-session` 
+            // race-condition fallback might have already flipped the status to 'active' a split second before 
+            // the Stripe webhook arrives. If we filter by pending, the webhook aborts and emails never send!
+            const { data: sessionTickets, error: fetchError } = await supabaseAdmin
                 .from('tickets')
                 .select('*')
                 .eq('stripe_session_id', session.id)
-                .eq('status', 'pending');
+                .order('created_at', { ascending: true });
 
-            if (fetchError || !pendingTickets || pendingTickets.length === 0) {
-                console.error('No pending tickets found for session:', session.id);
-                throw new Error('No pending tickets found');
+            if (fetchError || !sessionTickets || sessionTickets.length === 0) {
+                console.error('No tickets found for session:', session.id);
+                throw new Error('No tickets found');
             }
 
             // 3. Handle Ambassador/Referral Code
@@ -86,14 +89,14 @@ export async function POST(req: Request) {
             });
 
             const profilesAndTickets = [
-                { profile: primaryProfile, ticketId: pendingTickets[0].id, isPrimary: true }
+                { profile: primaryProfile, ticket: sessionTickets[0], isPrimary: true }
             ];
 
             // Process guests
-            for (let i = 0; i < guestEmails.length && i + 1 < pendingTickets.length; i++) {
+            for (let i = 0; i < guestEmails.length && i + 1 < sessionTickets.length; i++) {
                 const guestEmail = guestEmails[i];
                 const guestName = guestNames[i] && guestNames[i].trim() !== '' ? guestNames[i].trim() : `Guest of ${primaryProfile.full_name}`;
-                const ticketId = pendingTickets[i + 1].id;
+                const ticket = sessionTickets[i + 1];
 
                 if (guestEmail && guestEmail.trim() !== '') {
                     // Upsert real guest profile (they will need to sign terms later if they haven't)
@@ -103,17 +106,17 @@ export async function POST(req: Request) {
                         terms_accepted: false, // Must sign at door or via email link later
                         waiver_accepted: false,
                     });
-                    profilesAndTickets.push({ profile: guestProfile, ticketId, isPrimary: false });
+                    profilesAndTickets.push({ profile: guestProfile, ticket, isPrimary: false });
                 } else {
                     // Create Placeholder Guest Profile
-                    const placeholderEmail = `guest-${ticketId}@pending.local`;
+                    const placeholderEmail = `guest-${ticket.id}@pending.local`;
                     const guestProfile = await upsertProfile({
                         email: placeholderEmail,
                         full_name: guestName,
                         terms_accepted: false,
                         waiver_accepted: false,
                     });
-                    profilesAndTickets.push({ profile: guestProfile, ticketId, isPrimary: false });
+                    profilesAndTickets.push({ profile: guestProfile, ticket, isPrimary: false });
                 }
             }
 
@@ -127,22 +130,26 @@ export async function POST(req: Request) {
                         status: 'active',
                         ambassador_id: ambassadorId
                     })
-                    .eq('id', item.ticketId);
+                    .eq('id', item.ticket.id);
 
                 if (ticketUpdateError) {
-                    console.error(`Failed to activate ticket ${item.ticketId}:`, ticketUpdateError);
+                    console.error(`Failed to activate ticket ${item.ticket.id}:`, ticketUpdateError);
                     return; // Skip email if ticket activation fails
                 }
 
-                // Send Email (only if it's not a placeholder)
+                // Send Email (only if it's not a placeholder AND we haven't already sent it)
                 if (!item.profile.email.endsWith('@pending.local')) {
-                    try {
-                        await remoteLog(`Triggering sendTicketEmailStatic for ticket ${item.ticketId} to ${item.profile.email}`);
-                        await sendTicketEmailStatic(item.ticketId);
-                        await remoteLog(`Successfully awaited sendTicketEmailStatic for ticket ${item.ticketId}`);
-                    } catch (emailErr: any) {
-                        await remoteLog(`CATCH: sendTicketEmailStatic THREW ERROR for ${item.profile.email} - ${emailErr?.message}`);
-                        console.error(`Failed to send ticket email to ${item.profile.email}:`, emailErr);
+                    if (item.ticket.email_sent) {
+                        await remoteLog(`Skipping email for ${item.ticket.id} because it was already sent.`);
+                    } else {
+                        try {
+                            await remoteLog(`Triggering sendTicketEmailStatic for ticket ${item.ticket.id} to ${item.profile.email}`);
+                            await sendTicketEmailStatic(item.ticket.id);
+                            await remoteLog(`Successfully awaited sendTicketEmailStatic for ticket ${item.ticket.id}`);
+                        } catch (emailErr: any) {
+                            await remoteLog(`CATCH: sendTicketEmailStatic THREW ERROR for ${item.profile.email} - ${emailErr?.message}`);
+                            console.error(`Failed to send ticket email to ${item.profile.email}:`, emailErr);
+                        }
                     }
                 } else {
                     await remoteLog(`Skipping email for placeholder guest ${item.profile.email}`);
