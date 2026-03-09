@@ -2,14 +2,31 @@ import { resend } from './resend';
 import { TicketEmail } from '@/emails/TicketEmail';
 import { getTicketWithDetails } from './ticketing';
 import { supabaseAdmin } from './supabaseAdmin';
+import fs from 'fs';
+import path from 'path';
+
+function logToFile(msg: string) {
+    try {
+        const logPath = path.join(process.cwd(), 'email_logs.txt');
+        const timestamp = new Date().toISOString();
+        fs.appendFileSync(logPath, `[${timestamp}] ${msg}\n`);
+    } catch (e) { }
+}
 
 export async function sendTicketEmailStatic(ticketId: string) {
-    const ticket = await getTicketWithDetails(ticketId);
+    logToFile(`[sendTicketEmailStatic] START for ticket: ${ticketId}`);
 
-    if (!ticket) throw new Error('Ticket not found for email');
+    const ticket = await getTicketWithDetails(ticketId);
+    if (!ticket) {
+        logToFile(`[sendTicketEmailStatic] ERROR: Ticket not found for ID: ${ticketId}`);
+        throw new Error('Ticket not found for email');
+    }
 
     const customerEmail = ticket.profile?.email;
-    if (!customerEmail) throw new Error('Customer email missing');
+    if (!customerEmail) {
+        logToFile(`[sendTicketEmailStatic] ERROR: Customer email missing for ticket: ${ticketId}`);
+        throw new Error('Customer email missing');
+    }
 
     let displayDate = 'Season Pass';
     let eventTitle = ticket.product?.location?.name || ticket.slot?.product?.location?.name || 'Hello Sunshine Sauna';
@@ -33,7 +50,9 @@ export async function sendTicketEmailStatic(ticketId: string) {
     }
 
     try {
+        logToFile(`[sendTicketEmailStatic] Attempting to send via Resend to ${customerEmail}`);
         console.log(`[EMAIL] Attempting to send ticket email to ${customerEmail} for ticket ${ticketId}`);
+
         const { data, error } = await resend.emails.send({
             from: 'Hello Sunshine Sauna <hello@hellosunshinesauna.com>',
             to: [customerEmail],
@@ -48,10 +67,12 @@ export async function sendTicketEmailStatic(ticketId: string) {
         });
 
         if (error) {
+            logToFile(`[sendTicketEmailStatic] RESEND ERROR: ${JSON.stringify(error)}`);
             console.error('[EMAIL] Resend returned an error:', error);
             throw error;
         }
 
+        logToFile(`[sendTicketEmailStatic] RESEND SUCCESS: ID ${data?.id}`);
         console.log(`[EMAIL] Successfully sent. Resend ID: ${data?.id}`);
 
         const { error: updateError } = await supabaseAdmin
@@ -60,11 +81,15 @@ export async function sendTicketEmailStatic(ticketId: string) {
             .eq('id', ticketId);
 
         if (updateError) {
+            logToFile(`[sendTicketEmailStatic] DB UPDATE ERROR: ${JSON.stringify(updateError)}`);
             console.error('[EMAIL] Failed to update email_sent flag in DB:', updateError);
+        } else {
+            logToFile(`[sendTicketEmailStatic] DB UPDATE SUCCESS (email_sent=true)`);
         }
 
         return data;
     } catch (e: any) {
+        logToFile(`[sendTicketEmailStatic] CRITICAL EXCEPTION: ${e.message} \nStack: ${e.stack}`);
         console.error('[EMAIL] Critical exception caught during sendTicketEmail:', e);
         throw e;
     }
