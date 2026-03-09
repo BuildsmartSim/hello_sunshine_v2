@@ -108,8 +108,7 @@ export async function POST(req: Request) {
             }
 
             // 5. Update Tickets to Active and Send Emails
-            // We use the statically imported sendTicketEmail from the top of the file
-            for (const item of profilesAndTickets) {
+            const postProcessingPromises = profilesAndTickets.map(async (item) => {
                 // Update Ticket
                 const { error: ticketUpdateError } = await supabaseAdmin
                     .from('tickets')
@@ -122,7 +121,7 @@ export async function POST(req: Request) {
 
                 if (ticketUpdateError) {
                     console.error(`Failed to activate ticket ${item.ticketId}:`, ticketUpdateError);
-                    continue; // Try others
+                    return; // Skip email if ticket activation fails
                 }
 
                 // Send Email (only if it's not a placeholder)
@@ -151,7 +150,11 @@ export async function POST(req: Request) {
                 } catch (sweatsErr) {
                     console.error('Failed to increment loyalty sweats:', sweatsErr);
                 }
-            }
+            });
+
+            // Await ALL post-processing to complete before allowing Node.js to return HTTP 200.
+            // This prevents PM2 / Node.js from abandoning pending promises when the connection closes.
+            await Promise.all(postProcessingPromises);
 
         } catch (err) {
             console.error('Error processing webhook success:', err);
