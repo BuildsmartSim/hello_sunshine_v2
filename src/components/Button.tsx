@@ -19,7 +19,7 @@ export function Button({ variant = 'deepDry', children, className = '', ...props
             variantStyles = `
                 px-8 py-3 rounded-full border-2 border-primary
                 bg-primary text-charcoal font-bold
-                hover:bg-transparent hover:text-primary
+                hover:bg-charcoal hover:text-primary hover:border-charcoal
                 transition-all duration-300
             `;
             break;

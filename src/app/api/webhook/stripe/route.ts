@@ -3,7 +3,8 @@ export const dynamic = 'force-dynamic';
 
 import { headers } from 'next/headers';
 import { stripe } from '@/lib/stripe';
-import { upsertProfile, sendTicketEmail } from '@/lib/ticketing';
+import { upsertProfile } from '@/lib/ticketing';
+import { sendTicketEmailStatic } from '@/lib/emails';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function POST(req: Request) {
@@ -127,7 +128,7 @@ export async function POST(req: Request) {
                 // Send Email (only if it's not a placeholder)
                 if (!item.profile.email.endsWith('@pending.local')) {
                     try {
-                        await sendTicketEmail(item.ticketId);
+                        await sendTicketEmailStatic(item.ticketId);
                     } catch (emailErr) {
                         console.error(`Failed to send ticket email to ${item.profile.email}:`, emailErr);
                     }
