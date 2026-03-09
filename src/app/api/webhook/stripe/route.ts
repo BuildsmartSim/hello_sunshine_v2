@@ -6,14 +6,14 @@ import { stripe } from '@/lib/stripe';
 import { upsertProfile } from '@/lib/ticketing';
 import { sendTicketEmailStatic } from '@/lib/emails';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import fs from 'fs';
-import path from 'path';
 
-function logToFile(msg: string) {
+// In PM2 DigitalOcean, file writes often fail due to permissions. 
+// We will write to a dedicated simple table or just rely on the manual script.
+async function remoteLog(msg: string) {
     try {
-        const logPath = path.join(process.cwd(), 'email_logs.txt');
-        const timestamp = new Date().toISOString();
-        fs.appendFileSync(logPath, `[${timestamp}] [WEBHOOK] ${msg}\n`);
+        console.log(`[WEBHOOK TRACE] ${msg}`);
+        // We'll also try to dump it into a dummy ticket for easy reading if we have to, 
+        // but for now, the script will be the source of truth.
     } catch (e) { }
 }
 
@@ -137,15 +137,15 @@ export async function POST(req: Request) {
                 // Send Email (only if it's not a placeholder)
                 if (!item.profile.email.endsWith('@pending.local')) {
                     try {
-                        logToFile(`Triggering sendTicketEmailStatic for ticket ${item.ticketId} to ${item.profile.email}`);
+                        await remoteLog(`Triggering sendTicketEmailStatic for ticket ${item.ticketId} to ${item.profile.email}`);
                         await sendTicketEmailStatic(item.ticketId);
-                        logToFile(`Successfully awaited sendTicketEmailStatic for ticket ${item.ticketId}`);
+                        await remoteLog(`Successfully awaited sendTicketEmailStatic for ticket ${item.ticketId}`);
                     } catch (emailErr: any) {
-                        logToFile(`CATCH: sendTicketEmailStatic THREW ERROR for ${item.profile.email} - ${emailErr?.message}`);
+                        await remoteLog(`CATCH: sendTicketEmailStatic THREW ERROR for ${item.profile.email} - ${emailErr?.message}`);
                         console.error(`Failed to send ticket email to ${item.profile.email}:`, emailErr);
                     }
                 } else {
-                    logToFile(`Skipping email for placeholder guest ${item.profile.email}`);
+                    await remoteLog(`Skipping email for placeholder guest ${item.profile.email}`);
                 }
 
                 // Update Loyalty for Primary Buyer ONLY for now, or for everyone? 
@@ -169,12 +169,12 @@ export async function POST(req: Request) {
 
             // Await ALL post-processing to complete before allowing Node.js to return HTTP 200.
             // This prevents PM2 / Node.js from abandoning pending promises when the connection closes.
-            logToFile(`Awaiting Promise.all for ${postProcessingPromises.length} promises...`);
+            await remoteLog(`Awaiting Promise.all for ${postProcessingPromises.length} promises...`);
             await Promise.all(postProcessingPromises);
-            logToFile(`Promise.all FINISHED. Returning HTTP 200 to Stripe.`);
+            await remoteLog(`Promise.all FINISHED. Returning HTTP 200 to Stripe.`);
 
         } catch (err: any) {
-            logToFile(`WEBHOOK DATABASE SYNC EXCEPTION: ${err.message} \n ${err.stack}`);
+            await remoteLog(`WEBHOOK DATABASE SYNC EXCEPTION: ${err.message} \n ${err.stack}`);
             console.error('Error processing webhook success:', err);
             return NextResponse.json({ error: 'Database sync failed' }, { status: 500 });
         }
