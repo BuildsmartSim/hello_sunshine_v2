@@ -41,9 +41,13 @@ export async function generateMetadata(
     return {
         title: `${title} | Hello Sunshine Sauna`,
         description,
+        alternates: {
+            canonical: `${baseUrl}/tickets/${slug}`,
+        },
         openGraph: {
             title: `${title} | Hello Sunshine Sauna`,
             description,
+            url: `${baseUrl}/tickets/${slug}`,
             images,
             type: 'website',
         },

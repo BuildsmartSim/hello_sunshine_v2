@@ -29,6 +29,17 @@ export const metadata: Metadata = {
     template: "%s | Hello Sunshine Sauna",
   },
   description: "Mobile wood-fired sauna in the South West of England. Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
+  keywords: ["sauna", "mobile sauna", "wood-fired sauna", "South West England", "sauna hire", "wellness", "off-grid", "community sauna"],
+  authors: [{ name: "Hello Sunshine Sauna" }],
+  creator: "Hello Sunshine Sauna",
+  publisher: "Hello Sunshine Sauna",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Hello Sunshine Sauna | Mobile Wood-Fired Sauna in the South West",
     description: "Mobile wood-fired sauna in the South West of England. Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",

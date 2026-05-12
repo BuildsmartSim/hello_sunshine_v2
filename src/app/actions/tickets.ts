@@ -161,7 +161,7 @@ export async function refundTicketAction(ticketId: string, stripeSessionId: stri
         // 4. Telegram Notification
         if (settings?.telegram_bot_token && settings?.telegram_chat_id && ticket) {
             try {
-                const { sendTelegramMessage } = await import('@/lib/notifications');
+                const { sendTelegramMessage } = await import('@/utils/telegram');
                 const message = `
 <b>⚠️ REFUND ISSUED</b>
 <b>Guest:</b> ${ticket.profile?.full_name}

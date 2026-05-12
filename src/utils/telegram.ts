@@ -1,14 +1,11 @@
-export async function sendTelegramMessage(message: string) {
-    const botToken = process.env.TELEGRAM_BOT_TOKEN;
-    const chatId = process.env.TELEGRAM_CHAT_ID;
-
-    if (!botToken || !chatId) {
+export async function sendTelegramMessage(token: string, chatId: string, message: string) {
+    if (!token || !chatId) {
         console.warn("Telegram bot token or chat ID is missing. Message not sent.");
-        return false;
+        return { success: false };
     }
 
     try {
-        const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -24,12 +21,12 @@ export async function sendTelegramMessage(message: string) {
         if (!response.ok) {
             const errorText = await response.text();
             console.error(`Telegram API Error: ${response.status} ${response.statusText} - ${errorText}`);
-            return false;
+            return { success: false };
         }
 
-        return true;
+        return { success: true };
     } catch (error) {
         console.error("Failed to send Telegram message:", error);
-        return false;
+        return { success: false };
     }
 }

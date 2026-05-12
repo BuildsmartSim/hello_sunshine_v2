@@ -65,3 +65,10 @@ sauna+garden.png
 scripts/
 
 Wandering Trees Logo.png
+
+# Secrets
+secrets/
+
+# Untracked media/logs
+.tmp.driveupload/
+analytics-reports/

@@ -57,12 +57,25 @@ export default function Home() {
     "image": "https://hellosunshinesauna.com/optimized/photographs/webp/man-bathes-plunge-sunshine.webp",
     "description": "Mobile wood-fired sauna in the South West of England. Hand-built saunas for the wandering soul. Experience community, warmth, and nature.",
     "url": "https://hellosunshinesauna.com",
+    "email": "hello@hellosunshinesauna.com",
     "address": {
       "@type": "PostalAddress",
       "addressRegion": "South West England",
       "addressCountry": "UK"
     },
-    "priceRange": "$$"
+    "priceRange": "$$",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "09:00",
+        "closes": "21:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.instagram.com/hellosunshinesauna",
+      "https://www.facebook.com/hellosunshinesauna"
+    ]
   };
 
   return (

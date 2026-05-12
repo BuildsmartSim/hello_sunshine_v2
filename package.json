@@ -12,7 +12,8 @@
     "optimize:public": "node scripts/optimize-images.mjs --in-place",
     "optimize:force": "node scripts/optimize-images.mjs --force",
     "clean": "node -e \"const fs = require('fs'); fs.rmSync('.next', { recursive: true, force: true }); console.log('.next cache cleaned');\"",
-    "check-checkouts": "node scripts/check-today-checkouts.js"
+    "check-checkouts": "node scripts/check-today-checkouts.js",
+    "analytics:seo": "tsx scripts/fetch-gsc-rankings.ts"
   },
   "dependencies": {
     "@google/genai": "^1.43.0",
@@ -28,6 +29,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.3.1",
     "framer-motion": "^12.34.0",
+    "googleapis": "^171.4.0",
     "html2canvas": "^1.4.1",
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.576.0",

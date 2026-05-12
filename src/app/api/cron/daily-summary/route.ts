@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import { sendTelegramMessage } from '@/lib/notifications';
+import { sendTelegramMessage } from '@/utils/telegram';
 import { resend } from '@/lib/resend';
 
 export const dynamic = 'force-dynamic';
