@@ -292,13 +292,13 @@ export async function updateSettingsAction(settings: {
     telegram_bot_token: string;
     telegram_chat_id: string;
     manager_pin: string;
+    meta_access_token?: string;
+    meta_fb_page_id?: string;
+    meta_ig_user_id?: string;
 }, pin?: string) {
     try {
         const auth = await requireAdminOrPin(pin);
         if (!auth.authorized) throw new Error(auth.error);
-
-        // Removed native role check since requireAdminOrPin handles it
-
 
         const { createClient } = await import('@/utils/supabase/server');
         const supabase = await createClient();
@@ -311,6 +311,9 @@ export async function updateSettingsAction(settings: {
                 telegram_bot_token: settings.telegram_bot_token,
                 telegram_chat_id: settings.telegram_chat_id,
                 manager_pin: settings.manager_pin,
+                meta_access_token: settings.meta_access_token,
+                meta_fb_page_id: settings.meta_fb_page_id,
+                meta_ig_user_id: settings.meta_ig_user_id,
                 updated_at: new Date().toISOString(),
                 updated_by: user?.id || 'system'
             })
