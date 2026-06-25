@@ -7,6 +7,9 @@ interface AdminSettings {
     telegram_bot_token: string;
     telegram_chat_id: string;
     manager_pin: string;
+    meta_access_token?: string;
+    meta_fb_page_id?: string;
+    meta_ig_user_id?: string;
 }
 
 import { updateSettingsAction, sendTestNotificationAction } from '@/app/actions/tickets';
@@ -145,6 +148,54 @@ export function AdminSettingsManager({ initialSettings }: { initialSettings: Adm
                             <p className="text-[10px] text-neutral-400 font-mono mt-2 lowercase tracking-wide">
                                 must be numbers only. minimum 4 digits.
                             </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Meta API Section */}
+                <div className="bg-white rounded-2xl border border-neutral-200 shadow-xl overflow-hidden">
+                    <div className="p-6 border-b border-neutral-100 bg-neutral-900 flex justify-between items-center">
+                        <h3 className="text-sm font-black text-white tracking-[0.2em] uppercase font-mono">Meta Integration</h3>
+                        <span className="text-[10px] font-black bg-fuchsia-500 text-white px-2 py-1 rounded font-mono uppercase tracking-widest">Social</span>
+                    </div>
+                    <div className="p-8 space-y-6">
+                        <p className="text-xs text-neutral-500 font-mono mb-2 uppercase tracking-widest leading-relaxed italic">
+                            connect facebook and instagram for the social publisher widget.
+                        </p>
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-widest font-mono mb-2">Access Token</label>
+                                <input
+                                    type="password"
+                                    value={settings.meta_access_token || ''}
+                                    onChange={(e) => setSettings({ ...settings, meta_access_token: e.target.value })}
+                                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 outline-none font-mono text-sm transition-all"
+                                    placeholder="EAAG..."
+                                />
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-widest font-mono mb-2">FB Page ID</label>
+                                    <input
+                                        type="text"
+                                        value={settings.meta_fb_page_id || ''}
+                                        onChange={(e) => setSettings({ ...settings, meta_fb_page_id: e.target.value })}
+                                        className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 outline-none font-mono text-sm transition-all"
+                                        placeholder="1234567890"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-widest font-mono mb-2">IG User ID</label>
+                                    <input
+                                        type="text"
+                                        value={settings.meta_ig_user_id || ''}
+                                        onChange={(e) => setSettings({ ...settings, meta_ig_user_id: e.target.value })}
+                                        className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 outline-none font-mono text-sm transition-all"
+                                        placeholder="178414..."
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

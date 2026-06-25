@@ -23,23 +23,23 @@ export async function GET(req: Request) {
         }
 
         // 2. Stuck Tickets Check
-        // We look for tickets that were created more than 15 minutes ago but are still 'pending'
+        // We look for tickets that were created more than 45 minutes ago but are still 'pending'
         // or 'active' but never had an email sent.
-        const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000).toISOString();
-        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+        const fortyFiveMinutesAgo = new Date(Date.now() - 45 * 60 * 1000).toISOString();
+        const twoHoursAgo = new Date(Date.now() - 120 * 60 * 1000).toISOString();
 
         // Find stuck pending tickets (likely dropped checkouts or webhook failures)
         const { data: pendingTickets, error: pendingError } = await supabaseAdmin
             .from('tickets')
             .select('id, created_at, stripe_session_id')
             .eq('status', 'pending')
-            .lte('created_at', fifteenMinutesAgo)
-            .gte('created_at', oneHourAgo); // Only look back 1 hour to avoid repeating older alerts
+            .lte('created_at', fortyFiveMinutesAgo)
+            .gte('created_at', twoHoursAgo); // Look back 2 hours to cover the hourly run
 
         if (pendingError) {
             errors.push(`Failed to query pending tickets: ${pendingError.message}`);
         } else if (pendingTickets && pendingTickets.length > 0) {
-            errors.push(`WARNING: Found ${pendingTickets.length} 'pending' tickets stuck for > 15 minutes.`);
+            errors.push(`WARNING: Found ${pendingTickets.length} 'pending' tickets stuck for > 45 minutes.`);
         }
 
         // Find active tickets that failed to send emails
@@ -48,8 +48,8 @@ export async function GET(req: Request) {
             .select('id, profile:profiles(email)')
             .eq('status', 'active')
             .eq('email_sent', false)
-            .lte('created_at', fifteenMinutesAgo)
-            .gte('created_at', oneHourAgo);
+            .lte('created_at', fortyFiveMinutesAgo)
+            .gte('created_at', twoHoursAgo);
 
         if (unsentError) {
             errors.push(`Failed to query unsent ticket emails: ${unsentError.message}`);
