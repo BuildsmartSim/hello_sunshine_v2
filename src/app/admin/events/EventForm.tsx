@@ -24,6 +24,8 @@ export default function EventForm({ initialData }: { initialData?: any }) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+    const [showZeroTiersModal, setShowZeroTiersModal] = useState(false);
+    const [validatedPin, setValidatedPin] = useState('');
     const [activeTab, setActiveTab] = useState<'general' | 'ticketing' | 'seo'>('general');
 
     // Parse initial opening times from array of strings (e.g. "Mon: 09:00-17:00") into matrix state
@@ -110,17 +112,7 @@ export default function EventForm({ initialData }: { initialData?: any }) {
         }));
     };
 
-    const requestSaveAuth = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (isAdmin) {
-            handleConfirmSave('');
-        } else {
-            setIsPinModalOpen(true);
-        }
-    };
-
-    const handleConfirmSave = async (pin: string) => {
-        setIsPinModalOpen(false);
+    const executeSave = async (pin: string) => {
         setIsLoading(true);
         setErrorMsg('');
 
@@ -136,6 +128,40 @@ export default function EventForm({ initialData }: { initialData?: any }) {
         } else {
             setErrorMsg(res.error || 'Failed to save event');
             setIsLoading(false);
+        }
+    };
+
+    const handleConfirmSave = async (pin: string) => {
+        setIsPinModalOpen(false);
+        setValidatedPin(pin);
+
+        if (formData.is_active && formData.tiers.length === 0) {
+            setShowZeroTiersModal(true);
+            return;
+        }
+
+        await executeSave(pin);
+    };
+
+    const requestSaveAuth = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (formData.is_active && formData.tiers.length === 0) {
+            setShowZeroTiersModal(true);
+            return;
+        }
+        if (isAdmin) {
+            handleConfirmSave('');
+        } else {
+            setIsPinModalOpen(true);
+        }
+    };
+
+    const handleProceedZeroTiers = async () => {
+        setShowZeroTiersModal(false);
+        if (isAdmin || validatedPin) {
+            await executeSave(validatedPin);
+        } else {
+            setIsPinModalOpen(true);
         }
     };
 
@@ -427,6 +453,55 @@ export default function EventForm({ initialData }: { initialData?: any }) {
                 title="Authorization Required"
                 description={`Enter Manager PIN to save this event configuration.`}
             />
+
+            {showZeroTiersModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+                    <div className="bg-white rounded-3xl border border-amber-300 max-w-lg w-full p-8 shadow-2xl space-y-6 text-neutral-900 animate-in zoom-in-95">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 text-2xl flex-shrink-0">
+                                ⚠️
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-black text-neutral-900 uppercase tracking-wide">
+                                    No Ticket Tiers Configured
+                                </h3>
+                                <p className="text-xs font-mono uppercase tracking-widest text-amber-700 font-bold mt-0.5">
+                                    Active Event Warning
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-neutral-700 space-y-2 leading-relaxed">
+                            <p className="font-bold text-amber-900">
+                                You are about to save an <span className="uppercase font-black text-neutral-900 underline">Active</span> event with 0 ticket tiers.
+                            </p>
+                            <p>
+                                Guests visiting the website page for <strong className="text-neutral-900">{formData.title || 'this event'}</strong> will see no ticket packages available to buy.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setShowZeroTiersModal(false);
+                                    setActiveTab('ticketing');
+                                }}
+                                className="flex-1 px-5 py-3.5 bg-neutral-900 text-white font-black rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-800 transition-all shadow-md"
+                            >
+                                + Add Ticket Tiers Now
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleProceedZeroTiers}
+                                className="px-5 py-3.5 border border-neutral-300 text-neutral-600 font-bold rounded-xl text-xs uppercase tracking-wider hover:bg-neutral-100 hover:text-neutral-900 transition-all"
+                            >
+                                Save With 0 Tiers
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
