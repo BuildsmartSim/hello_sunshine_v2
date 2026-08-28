@@ -53,17 +53,18 @@ export async function POST(req: Request) {
         console.log(`Checkout requested for: ${email}, ${priceId}, qty: ${quantity}`);
 
         // Fetch Geolocation data
-        let location_city = null;
-        let location_country = null;
-        try {
-            if (ip !== 'unknown-ip') {
-                // Quick free API call to get location with a strict timeout so it doesn't hang checkout
+        let location_city = req.headers.get('x-vercel-ip-city') ? decodeURIComponent(req.headers.get('x-vercel-ip-city')!) : null;
+        let location_country = req.headers.get('x-vercel-ip-country') || null;
+
+        if (!location_city && ip !== 'unknown-ip' && ip !== '127.0.0.1' && ip !== '::1') {
+            try {
+                // Secure HTTPS fallback call to get location with a strict timeout
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 1500); // 1.5s timeout
 
-                const geoRes = await fetch(`http://ip-api.com/json/${ip}?fields=city,country`, {
+                const geoRes = await fetch(`https://ip-api.com/json/${ip}?fields=city,country`, {
                     signal: controller.signal,
-                    next: { revalidate: 3600 } // cache for IP if somehow called repeatedly
+                    next: { revalidate: 3600 }
                 });
                 clearTimeout(timeoutId);
 
@@ -72,14 +73,13 @@ export async function POST(req: Request) {
                     location_city = geoData.city;
                     location_country = geoData.country;
                 }
+            } catch (geoErr: any) {
+                if (geoErr.name === 'AbortError') {
+                    console.warn('Geolocation fetch timed out after 1.5s, proceeding with checkout...');
+                } else {
+                    console.error('Failed to fetch geolocation in background:', geoErr);
+                }
             }
-        } catch (geoErr: any) {
-            if (geoErr.name === 'AbortError') {
-                console.warn('Geolocation fetch timed out after 1.5s, proceeding with checkout...');
-            } else {
-                console.error('Failed to fetch geolocation in background:', geoErr);
-            }
-            // Non-blocking error, we still proceed with checkout
         }
 
         // 1. Check Inventory

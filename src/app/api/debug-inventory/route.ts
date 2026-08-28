@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireAdmin } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
+    const auth = await requireAdmin();
+    if (!auth.authorized) {
+        return NextResponse.json({ error: auth.error || 'Unauthorized' }, { status: 401 });
+    }
+
     const output: any[] = [];
 
     // 1. Find Avalon events

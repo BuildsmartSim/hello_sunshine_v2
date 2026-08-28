@@ -2,10 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 import { checkInTicket } from '@/lib/ticketing';
+import { requireStaffOrAdmin } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
     try {
-        const { id } = await req.json();
+        const body = await req.json();
+        const { id, pin } = body;
+
+        const auth = await requireStaffOrAdmin(pin);
+        if (!auth.authorized) {
+            return NextResponse.json({ error: auth.error || 'Unauthorized staff access' }, { status: 401 });
+        }
 
         if (!id) {
             return NextResponse.json({ error: 'Ticket ID is required' }, { status: 400 });
@@ -21,3 +28,4 @@ export async function POST(req: NextRequest) {
         );
     }
 }
+

@@ -2,8 +2,14 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 import { sendTicketEmail } from '@/lib/ticketing';
+import { requireAdmin } from '@/lib/auth';
 
 export async function POST(req: Request) {
+    const auth = await requireAdmin();
+    if (!auth.authorized) {
+        return NextResponse.json({ error: auth.error || 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         const { email, ticketId } = await req.json();
 

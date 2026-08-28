@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { requireAdmin } from '@/lib/auth';
 
 export async function GET() {
+    const auth = await requireAdmin();
+    if (!auth.authorized) {
+        return NextResponse.json({ error: auth.error || 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         const logPath = path.join(process.cwd(), 'email_logs.txt');
         if (fs.existsSync(logPath)) {
@@ -12,6 +18,7 @@ export async function GET() {
             return NextResponse.json({ logs: ['No logs found'] });
         }
     } catch (e: any) {
-        return NextResponse.json({ error: e.message });
+        return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }
+

@@ -1,15 +1,13 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { verifyCronAuth } from '@/lib/auth';
 import Stripe from 'stripe';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
     try {
-        const { searchParams } = new URL(req.url);
-        const key = searchParams.get('key');
-
-        if (key !== process.env.CRON_SECRET && process.env.NODE_ENV === 'production') {
+        if (!verifyCronAuth(req)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -132,7 +130,7 @@ export async function GET(req: Request) {
                         path: url.pathname + url.search,
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        rejectUnauthorized: false // Bypasses SSL cert validation
+                        rejectUnauthorized: true
                     }, (res) => {
                         res.on('data', () => {}); // Consume data to free memory
                         res.on('end', () => resolve(true));

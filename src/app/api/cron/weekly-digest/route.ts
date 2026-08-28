@@ -2,16 +2,13 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { sendWeeklyDigestEmail } from '@/lib/emails';
 import { getWeeklyGSCRankings } from '@/lib/gsc';
+import { verifyCronAuth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
     try {
-        const { searchParams } = new URL(req.url);
-        const key = searchParams.get('key');
-
-        // Basic security check
-        if (key !== process.env.CRON_SECRET && process.env.NODE_ENV === 'production') {
+        if (!verifyCronAuth(req)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 

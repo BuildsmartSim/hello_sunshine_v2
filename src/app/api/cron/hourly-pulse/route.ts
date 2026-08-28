@@ -1,23 +1,26 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { sendSystemAlertEmail } from '@/lib/emails';
+import { verifyCronAuth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
     try {
-        const { searchParams } = new URL(req.url);
-        const key = searchParams.get('key');
-
-        // Basic security check
-        if (key !== process.env.CRON_SECRET && process.env.NODE_ENV === 'production') {
+        if (!verifyCronAuth(req)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const errors: string[] = [];
 
-        // 1. Database Connection Check
-        const { data: dbCheck, error: dbError } = await supabaseAdmin.from('profiles').select('id').limit(1);
+        // 1. Database Connection Check (with 1 retry for transient clock skew / blips)
+        let dbError: any = null;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            const { error } = await supabaseAdmin.from('profiles').select('id').limit(1);
+            dbError = error;
+            if (!dbError) break;
+            if (attempt === 0) await new Promise((res) => setTimeout(res, 1000));
+        }
         if (dbError) {
             errors.push(`CRITICAL: Database connection failed. Error: ${dbError.message}`);
         }

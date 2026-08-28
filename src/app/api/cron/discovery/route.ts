@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { GoogleGenAI } from '@google/genai';
 import { searchSerper } from '@/utils/agents/serper';
 import { scrapeUrl } from '@/utils/agents/firecrawl';
+import { verifyCronAuth } from '@/lib/auth';
 
 const NEGATIVE_TERMS = " -site:timeout.com -site:the-independent.com -site:cntraveller.com -site:theguardian.com -site:gq-magazine.co.uk -site:countryandtownhouse.com -site:instagram.com -site:tiktok.com -site:facebook.com -inurl:blog -inurl:article -inurl:news";
 
@@ -55,14 +56,12 @@ async function geocodeLocation(locationName: string): Promise<{ lat: number, lng
 }
 
 export async function GET(request: Request) {
-    const authHeader = request.headers.get('authorization');
-    const searchParams = new URL(request.url).searchParams;
-    const isVercelCron = authHeader === `Bearer ${process.env.CRON_SECRET}`;
-    const isManual = searchParams.get('key') === process.env.CRON_SECRET;
-
-    if (!isVercelCron && !isManual && process.env.NODE_ENV !== 'development') {
+    if (!verifyCronAuth(request)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    const searchParams = new URL(request.url).searchParams;
+    const isManual = searchParams.get('key') === process.env.CRON_SECRET;
 
     try {
         const supabase = createClient(

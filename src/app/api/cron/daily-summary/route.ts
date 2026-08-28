@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { verifyCronAuth } from '@/lib/auth';
 import { sendTelegramMessage } from '@/utils/telegram';
 import { resend } from '@/lib/resend';
 
@@ -7,10 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
     try {
-        // Optional: Simple API key check via header or search param
-        const { searchParams } = new URL(req.url);
-        const key = searchParams.get('key');
-        if (key !== process.env.CRON_SECRET && process.env.NODE_ENV === 'production') {
+        if (!verifyCronAuth(req)) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 

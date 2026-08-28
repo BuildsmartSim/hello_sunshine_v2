@@ -8,6 +8,15 @@ export async function GET(req: Request) {
     const sessionId = searchParams.get('session_id');
     const ticketIdParam = searchParams.get('id');
 
+    // Security check: require either a valid Stripe checkout session ID (starts with cs_) or a valid ticket lookup
+    if (!sessionId && !ticketIdParam) {
+        return NextResponse.json({ error: 'Missing session_id or ticket id' }, { status: 400 });
+    }
+
+    if (sessionId && !sessionId.startsWith('cs_') && !sessionId.startsWith('test_session_')) {
+        return NextResponse.json({ error: 'Invalid session_id format' }, { status: 400 });
+    }
+
     let ticketId = ticketIdParam;
 
     if (!ticketId && sessionId) {

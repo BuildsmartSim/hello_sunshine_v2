@@ -39,10 +39,17 @@ export async function updateSession(request: NextRequest) {
 
     if (
         !user &&
+        request.nextUrl.pathname.startsWith('/api/admin')
+    ) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    if (
+        !user &&
         !request.nextUrl.pathname.startsWith('/admin/login') &&
         request.nextUrl.pathname.startsWith('/admin')
     ) {
-        // no user, potentially respond by redirecting the user to the login page
+        // no user, redirect to login page
         const url = request.nextUrl.clone()
         url.pathname = '/admin/login'
         return NextResponse.redirect(url)
