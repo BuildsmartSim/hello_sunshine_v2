@@ -99,90 +99,106 @@ export function UnifiedEventPanel({ event, selectedTierId, onSelect, inventory =
                     </div>
                 </div>
 
-                {/* 2. TIERS HEADER */}
-                <div className="hidden md:flex items-center justify-between py-4 border-b border-charcoal/60 text-charcoal font-mono text-[10px] uppercase tracking-[0.2em] font-bold lg:px-4 mb-2 gap-8 xl:gap-12">
-                    <div className="w-[260px] xl:w-[300px] shrink-0">Availability</div>
-                    <div className="flex-1 max-w-[400px]">Pass Type & Details</div>
-                    <div className="flex-1 text-right pr-4">Access</div>
-                </div>
-
-                {/* 3. TIERS LIST */}
-                {sortTiersByType(event.tiers).map((tier) => {
-                    const stock = inventory[tier.id];
-                    const isSoldOut = stock?.soldOut;
-                    const isLowStock = stock?.remaining !== undefined && stock.remaining < 5 && !isSoldOut;
-
-                    let availabilityText = "Available";
-                    let availabilityColorClass = "text-charcoal/80";
-                    if (isSoldOut) {
-                        availabilityText = "Sold Out";
-                        availabilityColorClass = "text-red-500/70";
-                    } else if (isLowStock) {
-                        availabilityText = `Only ${stock.remaining} Left`;
-                        availabilityColorClass = "text-yellow-600";
-                    } else if (stock?.remaining !== undefined && stock.remaining <= 10) {
-                        availabilityText = "Selling Fast";
-                        availabilityColorClass = "text-primary";
-                    }
-
-                    const isSelected = selectedTierId === tier.id;
-
-                    return (
-                        <div
-                            key={tier.id}
-                            className={`block border-b border-charcoal/10 transition-colors px-4 lg:px-6 py-10 relative ${isSelected ? 'border-primary bg-primary/5' : 'hover:bg-black/[0.02]'
-                                } ${isSoldOut ? 'opacity-50 grayscale' : 'cursor-pointer'}`}
-                            onClick={() => !isSoldOut && onSelect(tier)}
-                        >
-                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-8 xl:gap-12 lg:px-4">
-
-                                {/* Col 1: Availability */}
-                                <div className="flex flex-col gap-1 w-full lg:w-[150px] xl:w-[200px] shrink-0">
-                                    <h4 className={`text-[12px] sm:text-[13px] font-black uppercase tracking-widest ${availabilityColorClass}`}>
-                                        {availabilityText}
-                                    </h4>
-                                </div>
-
-                                {/* Col 2 & 3: Title & Description Blurb */}
-                                <div className="flex flex-col gap-1 flex-1 w-full lg:max-w-[460px]">
-                                    <div className="flex items-center gap-3">
-                                        <h3 className={`h3 transition-colors uppercase ${isSelected ? 'text-primary' : 'text-charcoal'}`}>
-                                            {tier.name}
-                                        </h3>
-                                        {isSelected && !isSoldOut && (
-                                            <motion.span
-                                                layoutId="selected-tier-dot"
-                                                className="w-2 h-2 rounded-full bg-primary"
-                                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                            ></motion.span>
-                                        )}
-                                    </div>
-                                    <p className="text-[12px] font-mono text-charcoal/80 mt-2 italic leading-relaxed max-w-xl">
-                                        {tier.description}
-                                    </p>
-                                </div>
-
-                                {/* Col 4: Price & Button */}
-                                <div className="flex items-center gap-6 md:gap-8 w-full lg:flex-1 justify-between lg:justify-end shrink-0 pt-4 lg:pt-0 lg:pr-4">
-                                    <span className={`text-2xl font-black ${isSoldOut ? 'text-charcoal/50 line-through' : 'text-charcoal'}`} style={{ fontFamily: fonts.body }}>
-                                        {formatTicketPrice(tier.price)}
-                                    </span>
-                                    <Button
-                                        variant={isSelected ? "primary" : "deepDry"}
-                                        className={`!px-6 !py-3 !text-[12px] uppercase font-bold tracking-[0.2em] w-auto ${isSoldOut ? 'opacity-50 pointer-events-none' : ''}`}
-                                    >
-                                        {isSelected ? 'Selected' : (isSoldOut ? 'Sold Out' : 'Select')}
-                                    </Button>
-                                </div>
-                            </div>
+                {/* 2. TIERS HEADER & LIST */}
+                {event.tiers && event.tiers.length > 0 ? (
+                    <>
+                        <div className="hidden md:flex items-center justify-between py-4 border-b border-charcoal/60 text-charcoal font-mono text-[10px] uppercase tracking-[0.2em] font-bold lg:px-4 mb-2 gap-8 xl:gap-12">
+                            <div className="w-[260px] xl:w-[300px] shrink-0">Availability</div>
+                            <div className="flex-1 max-w-[400px]">Pass Type & Details</div>
+                            <div className="flex-1 text-right pr-4">Access</div>
                         </div>
-                    );
-                })}
+
+                        {sortTiersByType(event.tiers).map((tier) => {
+                            const stock = inventory[tier.id];
+                            const isSoldOut = stock?.soldOut;
+                            const isLowStock = stock?.remaining !== undefined && stock.remaining < 5 && !isSoldOut;
+
+                            let availabilityText = "Available";
+                            let availabilityColorClass = "text-charcoal/80";
+                            if (isSoldOut) {
+                                availabilityText = "Sold Out";
+                                availabilityColorClass = "text-red-500/70";
+                            } else if (isLowStock) {
+                                availabilityText = `Only ${stock.remaining} Left`;
+                                availabilityColorClass = "text-yellow-600";
+                            } else if (stock?.remaining !== undefined && stock.remaining <= 10) {
+                                availabilityText = "Selling Fast";
+                                availabilityColorClass = "text-primary";
+                            }
+
+                            const isSelected = selectedTierId === tier.id;
+
+                            return (
+                                <div
+                                    key={tier.id}
+                                    className={`block border-b border-charcoal/10 transition-colors px-4 lg:px-6 py-10 relative ${isSelected ? 'border-primary bg-primary/5' : 'hover:bg-black/[0.02]'
+                                        } ${isSoldOut ? 'opacity-50 grayscale' : 'cursor-pointer'}`}
+                                    onClick={() => !isSoldOut && onSelect(tier)}
+                                >
+                                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-8 xl:gap-12 lg:px-4">
+
+                                        {/* Col 1: Availability */}
+                                        <div className="flex flex-col gap-1 w-full lg:w-[150px] xl:w-[200px] shrink-0">
+                                            <h4 className={`text-[12px] sm:text-[13px] font-black uppercase tracking-widest ${availabilityColorClass}`}>
+                                                {availabilityText}
+                                            </h4>
+                                        </div>
+
+                                        {/* Col 2 & 3: Title & Description Blurb */}
+                                        <div className="flex flex-col gap-1 flex-1 w-full lg:max-w-[460px]">
+                                            <div className="flex items-center gap-3">
+                                                <h3 className={`h3 transition-colors uppercase ${isSelected ? 'text-primary' : 'text-charcoal'}`}>
+                                                    {tier.name}
+                                                </h3>
+                                                {isSelected && !isSoldOut && (
+                                                    <motion.span
+                                                        layoutId="selected-tier-dot"
+                                                        className="w-2 h-2 rounded-full bg-primary"
+                                                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                                    ></motion.span>
+                                                )}
+                                            </div>
+                                            <p className="text-[12px] font-mono text-charcoal/80 mt-2 italic leading-relaxed max-w-xl">
+                                                {tier.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Col 4: Price & Button */}
+                                        <div className="flex items-center gap-6 md:gap-8 w-full lg:flex-1 justify-between lg:justify-end shrink-0 pt-4 lg:pt-0 lg:pr-4">
+                                            <span className={`text-2xl font-black ${isSoldOut ? 'text-charcoal/50 line-through' : 'text-charcoal'}`} style={{ fontFamily: fonts.body }}>
+                                                {formatTicketPrice(tier.price)}
+                                            </span>
+                                            <Button
+                                                variant={isSelected ? "primary" : "deepDry"}
+                                                className={`!px-6 !py-3 !text-[12px] uppercase font-bold tracking-[0.2em] w-auto ${isSoldOut ? 'opacity-50 pointer-events-none' : ''}`}
+                                            >
+                                                {isSelected ? 'Selected' : (isSoldOut ? 'Sold Out' : 'Select')}
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </>
+                ) : (
+                    <div className="my-12 p-8 rounded-3xl border border-charcoal/15 bg-charcoal/[0.02] text-center max-w-xl mx-auto space-y-4">
+                        <p className="text-xs font-mono uppercase tracking-[0.25em] font-bold text-charcoal/70">
+                            No Online Sauna Passes Currently Listed
+                        </p>
+                        <p className="text-sm font-serif italic text-charcoal/70 leading-relaxed">
+                            {event.externalUrl ? (
+                                <>Direct online booking for this event is currently paused or handled via the festival. Please visit the <a href={event.externalUrl} target="_blank" rel="noopener noreferrer" className="underline font-bold text-charcoal hover:text-[#E6C665]">Official Event Website ↗</a> for pass & entry details.</>
+                            ) : (
+                                "Sauna passes for this event are not listed online at this time. Please check back soon or visit our sanctuary on-site."
+                            )}
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className="mt-8 flex justify-center w-full">
                 <p className="text-[12px] uppercase font-bold tracking-[0.1em] text-charcoal/80">
-                    Secure payment & instant confirmation
+                    {event.tiers && event.tiers.length > 0 ? "Secure payment & instant confirmation" : "Hello Sunshine Sauna Experience"}
                 </p>
             </div>
         </div>
