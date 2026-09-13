@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { supabaseAdmin, createAdminClient, resetAdminClient } from '@/lib/supabaseAdmin';
 import { sendSystemAlertEmail } from '@/lib/emails';
 import { verifyCronAuth } from '@/lib/auth';
 
@@ -13,13 +13,17 @@ export async function GET(req: Request) {
 
         const errors: string[] = [];
 
-        // 1. Database Connection Check (with 1 retry for transient clock skew / blips)
+        // 1. Database Connection Check (with 1 retry with a fresh client instance)
         let dbError: any = null;
         for (let attempt = 0; attempt < 2; attempt++) {
-            const { error } = await supabaseAdmin.from('profiles').select('id').limit(1);
+            const client = attempt === 0 ? supabaseAdmin : createAdminClient();
+            const { error } = await client.from('profiles').select('id').limit(1);
             dbError = error;
             if (!dbError) break;
-            if (attempt === 0) await new Promise((res) => setTimeout(res, 1000));
+            if (attempt === 0) {
+                resetAdminClient();
+                await new Promise((res) => setTimeout(res, 1000));
+            }
         }
         if (dbError) {
             errors.push(`CRITICAL: Database connection failed. Error: ${dbError.message}`);
@@ -32,12 +36,20 @@ export async function GET(req: Request) {
         const twoHoursAgo = new Date(Date.now() - 120 * 60 * 1000).toISOString();
 
         // Find stuck pending tickets (likely dropped checkouts or webhook failures)
-        const { data: pendingTickets, error: pendingError } = await supabaseAdmin
-            .from('tickets')
-            .select('id, created_at, stripe_session_id')
-            .eq('status', 'pending')
-            .lte('created_at', fortyFiveMinutesAgo)
-            .gte('created_at', twoHoursAgo); // Look back 2 hours to cover the hourly run
+        let pendingTickets: any = null;
+        let pendingError: any = null;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            const res = await supabaseAdmin
+                .from('tickets')
+                .select('id, created_at, stripe_session_id')
+                .eq('status', 'pending')
+                .lte('created_at', fortyFiveMinutesAgo)
+                .gte('created_at', twoHoursAgo); // Look back 2 hours to cover the hourly run
+            pendingTickets = res.data;
+            pendingError = res.error;
+            if (!pendingError) break;
+            if (attempt === 0) await new Promise((r) => setTimeout(r, 1500));
+        }
 
         if (pendingError) {
             errors.push(`Failed to query pending tickets: ${pendingError.message}`);
@@ -46,13 +58,21 @@ export async function GET(req: Request) {
         }
 
         // Find active tickets that failed to send emails
-        const { data: unsentEmails, error: unsentError } = await supabaseAdmin
-            .from('tickets')
-            .select('id, profile:profiles(email)')
-            .eq('status', 'active')
-            .eq('email_sent', false)
-            .lte('created_at', fortyFiveMinutesAgo)
-            .gte('created_at', twoHoursAgo);
+        let unsentEmails: any = null;
+        let unsentError: any = null;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            const res = await supabaseAdmin
+                .from('tickets')
+                .select('id, profile:profiles(email)')
+                .eq('status', 'active')
+                .eq('email_sent', false)
+                .lte('created_at', fortyFiveMinutesAgo)
+                .gte('created_at', twoHoursAgo);
+            unsentEmails = res.data;
+            unsentError = res.error;
+            if (!unsentError) break;
+            if (attempt === 0) await new Promise((r) => setTimeout(r, 1500));
+        }
 
         if (unsentError) {
             errors.push(`Failed to query unsent ticket emails: ${unsentError.message}`);
