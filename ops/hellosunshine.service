@@ -21,7 +21,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectHome=true
 ProtectSystem=strict
-ReadWritePaths=/srv/hellosunshine/current/.next /srv/hellosunshine/current/images /srv/hellosunshine/current/public/optimized /srv/hellosunshine/current/scripts/.optimize-cache.json
+ReadWritePaths=/srv/hellosunshine/current/.next /srv/hellosunshine/current/images /srv/hellosunshine/current/public/optimized /srv/hellosunshine/current/scripts/.optimize-cache.json /srv/hellosunshine/current/email_logs.txt
 CapabilityBoundingSet=
 RestrictSUIDSGID=true
 

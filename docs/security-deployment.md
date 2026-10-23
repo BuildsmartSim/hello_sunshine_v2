@@ -13,7 +13,11 @@ Before deployment, run `npm run test:security`, `npm audit`, TypeScript checks a
 a local production build with patched Node 22.23.4 or a newer Node 22 release.
 Commit and push the reviewed changes when deployment is authorized. Install the
 locked dependencies and build a separate release on the server. Preserve shared
-images, optimized assets and the optimizer cache, then check the release on a
+images, optimized assets, the optimizer cache and the protected email log.
+Materialize image folders inside the release during the Turbopack build, then
+replace those copies with shared symlinks after the build. On the small droplet,
+allow a 3072 MB build heap with its existing swap for TypeScript checking.
+Check the release on a
 temporary loopback port before switching `current` and restarting the service.
 Code is root-owned; only the writable paths in the service unit belong to the
 service user. The release directory must not contain production credentials.
