@@ -14,44 +14,67 @@ function SuccessContent() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get('session_id');
     const directTicketId = searchParams.get('id');
-    const [ticketId, setTicketId] = useState<string | null>(directTicketId);
+    const [ticketId, setTicketId] = useState<string | null>(null);
     const [ticketsData, setTicketsData] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(!!sessionId && !directTicketId);
 
+    const [verificationMessage, setVerificationMessage] = useState('');
+    const confirmed = ticketsData.length > 0 && ticketsData.every(ticket => ['active', 'used'].includes(ticket.status));
+
     useEffect(() => {
-        if (sessionId || directTicketId) {
-            // Wait for webhook to process (poll a few times if needed, or just try once)
-            const resolveTicket = async () => {
-                try {
-                    const url = directTicketId
-                        ? `/api/tickets/from-session?id=${directTicketId}`
-                        : `/api/tickets/from-session?session_id=${sessionId}`;
-                    const response = await fetch(url);
-                    const data = await response.json();
-                    if (data.ticketId) {
-                        setTicketId(data.ticketId);
-                    }
-                    if (data.tickets && data.tickets.length > 0) {
-                        setTicketsData(data.tickets);
-                    } else if (data.ticket) {
-                        setTicketsData([data.ticket]);
-                    }
-                } catch (err) {
-                    console.error('Failed to resolve ticket from session:', err);
-                } finally {
-                    setIsLoading(false);
-                }
-            };
-
-            // Wait 2 seconds for webhook to likely finish
-            const timer = setTimeout(resolveTicket, 2000);
-            return () => clearTimeout(timer);
+        if (!sessionId && !directTicketId) {
+            setVerificationMessage('Open the ticket link from your confirmation email to verify your booking.');
+            return;
         }
-    }, [sessionId, directTicketId]);
+        const controller = new AbortController();
+        let timer: ReturnType<typeof setTimeout>;
+        let attempts = 0;
+        setIsLoading(true);
+        setVerificationMessage('');
+        setTicketsData([]);
+        setTicketId(null);
 
+        const resolveTicket = async () => {
+            attempts += 1;
+            try {
+                const url = directTicketId
+                    ? `/api/tickets/from-session?id=${encodeURIComponent(directTicketId)}`
+                    : `/api/tickets/from-session?session_id=${encodeURIComponent(sessionId!)}`;
+                const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+                const data = await response.json();
+                if (response.status === 202 || response.status === 503) {
+                    if (attempts < 15) {
+                        timer = setTimeout(resolveTicket, 2000);
+                        return;
+                    }
+                    setVerificationMessage(data.paymentStatus === 'unpaid'
+                        ? 'Payment has not been confirmed. Please complete checkout or contact us if you have already paid.'
+                        : 'Your ticket is still processing. Please check your confirmation email or refresh this page shortly.');
+                } else if (!response.ok) {
+                    setVerificationMessage(data.error || 'We could not verify this ticket.');
+                } else if (data.tickets?.length && data.tickets.every((ticket: { status: string }) => ['active', 'used'].includes(ticket.status))) {
+                    setTicketId(data.ticketId);
+                    setTicketsData(data.tickets);
+                } else {
+                    setVerificationMessage('Your ticket is still processing. Please refresh this page shortly.');
+                }
+                setIsLoading(false);
+            } catch (error) {
+                if (controller.signal.aborted) return;
+                console.error('Ticket verification failed:', error);
+                setVerificationMessage('Unable to verify your ticket right now. Please refresh this page shortly.');
+                setIsLoading(false);
+            }
+        };
+        timer = setTimeout(resolveTicket, 1000);
+        return () => {
+            controller.abort();
+            clearTimeout(timer);
+        };
+    }, [sessionId, directTicketId]);
     // GA4 Purchase Tracking
     useEffect(() => {
-        if (sessionId) {
+        if (sessionId && confirmed) {
             // Prevent duplicate tracking on page refresh
             const trackedKey = `ga_tracked_${sessionId}`;
             if (!sessionStorage.getItem(trackedKey)) {
@@ -63,7 +86,7 @@ function SuccessContent() {
                 sessionStorage.setItem(trackedKey, 'true');
             }
         }
-    }, [sessionId]);
+    }, [sessionId, confirmed]);
 
     return (
         <div className="flex flex-col items-center text-center max-w-lg mx-auto py-20">
@@ -72,17 +95,17 @@ function SuccessContent() {
             </div>
 
             <h1 className="text-5xl font-black text-charcoal uppercase mb-6" style={{ fontFamily: 'var(--font-accent)' }}>
-                {isLoading ? 'Verifying...' : 'See You Soon'}
+                {isLoading ? 'Verifying...' : confirmed ? 'See You Soon' : 'Ticket Verification'}
             </h1>
 
             <p className="font-handwriting text-3xl text-charcoal/60 mb-12">
-                {isLoading ? 'Hang tight while we prepare your ticket.' : 'Your place in the heat is secured.'}
+                {isLoading ? 'Hang tight while we verify your payment and prepare your ticket.' : confirmed ? 'Your place in the heat is secured.' : verificationMessage}
             </p>
 
             <div className="w-full p-8 border border-charcoal/10 rounded-3xl bg-white/50 mb-12 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "url('/textures/paper.png')" }}></div>
                 <p className="text-sm text-charcoal/60 leading-relaxed relative z-10">
-                    We&apos;ve sent your ticket and arrival instructions to your email. Please check your spam folder if you don&apos;t see it within 5 minutes.
+                    {confirmed ? <>Your ticket and arrival instructions are sent to your email. Please check your spam folder if you don&apos;t see them within 5 minutes.</> : <>A ticket is confirmed only after payment verification. Contact hello@hellosunshinesauna.com if you need help with your booking.</>}
                 </p>
             </div>
 
@@ -99,7 +122,7 @@ function SuccessContent() {
                             View Digital Ticket
                         </Button>
                     </Link>
-                ) : sessionId && !isLoading ? (
+                ) : sessionId && !isLoading && !verificationMessage ? (
                     <p className="text-xs text-charcoal/40 font-mono mb-4">
                         Webhook still processing... Your ticket will appear shortly in your email.
                     </p>

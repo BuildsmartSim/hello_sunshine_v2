@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   // Prevent Turbopack/Webpack from bundling native Node addons.
   serverExternalPackages: ["@resvg/resvg-js", "satori"],
 

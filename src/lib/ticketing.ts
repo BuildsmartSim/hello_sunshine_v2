@@ -121,18 +121,25 @@ export async function checkInTicket(id: string) {
     // 1. Get the ticket to find the profileId
     const ticket = await getTicketWithDetails(id);
     if (!ticket) throw new Error('Ticket not found');
-    if (ticket.status === 'used') throw new Error('Ticket already used');
+    if (ticket.status !== 'active' || ticket.check_in_at) {
+        throw new Error('Only an active, unused ticket can be checked in');
+    }
 
     // 2. Update ticket status
-    const { error: ticketError } = await supabaseAdmin
+    const { data: checkedIn, error: ticketError } = await supabaseAdmin
         .from('tickets')
         .update({
             status: 'used',
             check_in_at: new Date().toISOString()
         })
-        .eq('id', id);
+        .eq('id', id)
+        .eq('status', 'active')
+        .is('check_in_at', null)
+        .select('id')
+        .maybeSingle();
 
     if (ticketError) throw ticketError;
+    if (!checkedIn) throw new Error('Ticket is no longer available for check-in');
 
     // 3. Increment loyalty
     if (ticket.profile_id) {

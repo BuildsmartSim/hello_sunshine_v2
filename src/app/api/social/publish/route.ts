@@ -21,7 +21,9 @@
  */
 
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { getSiteOrigin } from '@/lib/site-origin';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,10 +31,10 @@ const META_API_BASE = 'https://graph.facebook.com/v19.0';
 
 /* ── Helpers ────────────────────────────────────────────────────────────────── */
 
-async function generateImage(postData: object, baseUrl: string): Promise<string> {
+async function generateImage(postData: object, baseUrl: string, cookie: string): Promise<string> {
     const res = await fetch(`${baseUrl}/api/social/generate-image`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Cookie: cookie },
         body: JSON.stringify(postData),
     });
     const json = await res.json();
@@ -92,6 +94,10 @@ async function postToInstagram(imageUrl: string, caption: string, token?: string
 /* ── Route handler ──────────────────────────────────────────────────────────── */
 
 export async function POST(req: Request) {
+    const auth = await requireAdmin();
+    if (!auth.authorized) {
+        return NextResponse.json({ error: 'Admin access required' }, { status: 401 });
+    }
     try {
         const body = await req.json();
         const { style, headline, body: templateBody, bgImageUrl, caption, targets = [], mediaType = 'image' } = body as {
@@ -109,9 +115,7 @@ export async function POST(req: Request) {
         }
 
         // Determine base URL for internal API calls
-        const host =
-            process.env.NEXT_PUBLIC_SITE_URL ||
-            (req.headers.get('host') ? `http://${req.headers.get('host')}` : 'http://localhost:3000');
+        const host = getSiteOrigin();
 
         // Fetch credentials from admin_settings
         const { data: settings } = await supabaseAdmin
@@ -132,7 +136,7 @@ export async function POST(req: Request) {
             finalMediaUrl = bgImageUrl;
         } else {
             /* 1. Generate image */
-            finalMediaUrl = await generateImage({ style, headline, body: templateBody, bgImageUrl }, host);
+            finalMediaUrl = await generateImage({ style, headline, body: templateBody, bgImageUrl }, host, req.headers.get('cookie') || '');
         }
 
         /* 2. Post to selected platforms in parallel */

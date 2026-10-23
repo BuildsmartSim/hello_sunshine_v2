@@ -129,3 +129,9 @@ export function verifyCronAuth(req: Request): boolean {
 }
 
 
+
+/** Fail closed for callers that need an exception instead of a result object. */
+export async function assertAdmin(): Promise<void> {
+    const auth = await requireAdmin();
+    if (!auth.authorized) throw new Error('Admin access required');
+}

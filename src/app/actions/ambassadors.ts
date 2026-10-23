@@ -2,9 +2,11 @@
 
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { revalidatePath } from 'next/cache';
+import { assertAdmin } from '@/lib/auth';
 
 export async function createAmbassadorAction(data: { name: string, email: string, referralCode: string }) {
     try {
+        await assertAdmin();
         const { error } = await supabaseAdmin
             .from('ambassadors')
             .insert({

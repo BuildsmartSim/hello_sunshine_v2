@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Sidebar } from './Sidebar';
 
-import { requireAdminOrPin } from '@/lib/auth';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -17,8 +18,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     // blocks unauthenticated access to all other /admin routes.
     // In this case, we just render the children (the login page) without the sidebar.
     if (!user) {
+        if ((await headers()).get('x-app-pathname') !== '/admin/login') redirect('/admin/login');
         return <>{children}</>;
     }
+    const { data: role } = await supabaseAdmin.from('user_roles').select('role').eq('user_id', user.id).single();
+    if (!role || !['admin', 'clerk'].includes(role.role)) redirect('/');
 
     return (
         <div className="min-h-screen bg-neutral-100 flex flex-col lg:flex-row text-neutral-900 font-sans">

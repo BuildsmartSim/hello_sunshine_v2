@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { StandardSection } from '@/components/StandardSection';
@@ -17,25 +16,12 @@ export default function CheckInPage() {
 
     useEffect(() => {
         async function fetchTicket() {
-            const { data, error } = await supabaseAdmin
-                .from('tickets')
-                .select(`
-          *,
-          profile:profiles(*),
-          slot:slots(
-            *,
-            product:products(
-              *,
-              location:locations(*)
-            )
-          )
-        `)
-                .eq('id', id)
-                .single();
-
-            if (error || !data) {
+            const response = await fetch(`/api/tickets/from-session?id=${encodeURIComponent(String(id))}`);
+            const result = await response.json();
+            const data = result.ticket;
+            if (!response.ok || !data) {
                 setStatus('error');
-                setErrorMessage('Invalid Ticket ID');
+                setErrorMessage('Ticket is unavailable or payment is still processing.');
                 return;
             }
 

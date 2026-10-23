@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { getFestivalData, createSlug } from '@/data/festivals';
+import { getFestivalData } from '@/data/festivals.server';
+import { createSlug } from '@/data/festivals';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hellosunshinesauna.com';

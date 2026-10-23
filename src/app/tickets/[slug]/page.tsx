@@ -1,13 +1,15 @@
-import { getFestivalData, createSlug } from '@/data/festivals';
+import { getFestivalData } from '@/data/festivals.server';
+import { createSlug } from '@/data/festivals';
 import SingleTicketClient from '@/components/Ticketing/SingleTicketClient';
 
 type Props = {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata({ params }: Props) {
+    const { slug } = await params;
     const data = await getFestivalData();
-    const event = data.find((e) => createSlug(e.title) === params.slug);
+    const event = data.find((e) => createSlug(e.title) === slug);
 
     if (!event) {
         return {
@@ -35,7 +37,7 @@ export async function generateMetadata({ params }: Props) {
                 }
             ],
             type: 'website',
-            url: `https://hellosunshinesauna.com/tickets/${params.slug}`
+            url: `https://hellosunshinesauna.com/tickets/${slug}`
         },
         twitter: {
             card: 'summary_large_image',

@@ -1,7 +1,7 @@
 'use server';
 
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
-import { requireAdminOrPin } from '@/lib/auth';
+import { assertAdmin } from '@/lib/auth';
 
 /**
  * Interface for KPI statistics
@@ -16,7 +16,7 @@ export interface DashboardKPIs {
 
 export async function getDashboardKPIsAction(): Promise<{ success: boolean; data?: DashboardKPIs; error?: string }> {
     try {
-        await requireAdminOrPin();
+        await assertAdmin();
 
         // 1. Total Tickets Sold & Valid
         const { count: ticketCount } = await supabaseAdmin
@@ -76,7 +76,7 @@ export async function getDashboardKPIsAction(): Promise<{ success: boolean; data
  */
 export async function getSalesVelocityAction(): Promise<{ success: boolean; data?: { date: string; sales: number }[]; error?: string }> {
     try {
-        await requireAdminOrPin();
+        await assertAdmin();
 
         // Fetch all non-refunded tickets with their creation date
         const { data: tickets, error } = await supabaseAdmin
@@ -128,7 +128,7 @@ export async function getSalesVelocityAction(): Promise<{ success: boolean; data
  */
 export async function getAllEventSalesVelocitiesAction(): Promise<{ success: boolean; data?: Record<string, { date: string; sales: number }[]>; error?: string }> {
     try {
-        await requireAdminOrPin();
+        await assertAdmin();
 
         // 1. Fetch all events and their tiers so we know which price_ids map to which event
         const { data: events, error: eventsError } = await supabaseAdmin
@@ -213,7 +213,7 @@ export async function getAllEventSalesVelocitiesAction(): Promise<{ success: boo
  */
 export async function getInventoryStatsAction(): Promise<{ success: boolean; data?: { name: string; sold: number; available: number }[]; error?: string }> {
     try {
-        await requireAdminOrPin();
+        await assertAdmin();
 
         const { data: inventory, error } = await supabaseAdmin
             .from('ticket_inventory')
@@ -250,7 +250,7 @@ export async function getInventoryStatsAction(): Promise<{ success: boolean; dat
  */
 export async function getRecentPurchasesAction(): Promise<{ success: boolean; data?: any[]; error?: string }> {
     try {
-        await requireAdminOrPin();
+        await assertAdmin();
 
         const { data: tickets, error } = await supabaseAdmin
             .from('tickets')
@@ -278,7 +278,7 @@ export async function getRecentPurchasesAction(): Promise<{ success: boolean; da
  */
 export async function getAmbassadorLeaderboardAction(): Promise<{ success: boolean; data?: { name: string; sales: number }[]; error?: string }> {
     try {
-        await requireAdminOrPin();
+        await assertAdmin();
 
         const { data: tickets, error } = await supabaseAdmin
             .from('tickets')

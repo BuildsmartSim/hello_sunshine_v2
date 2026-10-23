@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { inventory } from '@/lib/inventory';
 export const dynamic = 'force-dynamic';
 
-import { stripe } from '@/lib/stripe';
+import { getSiteOrigin } from '@/lib/site-origin';
+import { isIP } from 'node:net';
 
 // Simple in-memory rate limiter (10 requests per minute per IP)
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
@@ -11,6 +12,13 @@ const RATE_LIMIT_WINDOW_MS = 60000;
 
 function checkRateLimit(ip: string): boolean {
     const now = Date.now();
+    // Bound memory usage even when attackers send many distinct addresses.
+    if (rateLimitMap.size > 10_000) {
+        for (const [key, value] of rateLimitMap) {
+            if (now - value.timestamp > RATE_LIMIT_WINDOW_MS) rateLimitMap.delete(key);
+        }
+        if (rateLimitMap.size > 10_000) return false;
+    }
     const record = rateLimitMap.get(ip);
 
     if (!record) {
@@ -38,7 +46,7 @@ export async function POST(req: Request) {
         const forwardedFor = req.headers.get('x-forwarded-for');
         const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : 'unknown-ip';
 
-        if (ip !== 'unknown-ip' && !checkRateLimit(ip)) {
+        if (!checkRateLimit(ip)) {
             console.warn(`[SECURITY] Rate limit exceeded for IP: ${ip} on Checkout Route`);
             return NextResponse.json(
                 { error: "Too many checkout requests. Please wait a minute and try again." },
@@ -47,8 +55,42 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json();
-        const { priceId, email, name, quantity = 1, metadata, unitAmount: clientUnitAmount } = body;
-        const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        const { priceId, email, name, quantity = 1, metadata = {} } = body;
+        const origin = getSiteOrigin();
+        const requestOrigin = req.headers.get('origin');
+        if (requestOrigin && requestOrigin !== origin && requestOrigin !== origin.replace('://', '://www.')) {
+            return NextResponse.json({ error: 'Untrusted checkout origin' }, { status: 403 });
+        }
+        if (typeof priceId !== 'string' || priceId.length > 200 || typeof email !== 'string' ||
+            email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+            typeof name !== 'string' || !name.trim() || name.length > 200 ||
+            !Number.isInteger(quantity) || quantity < 1 || quantity > 8 ||
+            !metadata || typeof metadata !== 'object' || Array.isArray(metadata)) {
+            return NextResponse.json({ error: 'Invalid booking details' }, { status: 400 });
+        }
+        const allowedMetadata: Record<string, string> = {};
+        for (const key of ['event_id', 'age', 'gender', 'phone', 'waiver_accepted', 'waiver_accepted_at',
+            'terms_accepted', 'mailing_list_optin', 'guest_emails', 'guest_names', 'referral_code']) {
+            if (metadata[key] != null) {
+                if (typeof metadata[key] !== 'string' || metadata[key].length > 500) {
+                    return NextResponse.json({ error: 'Invalid booking metadata' }, { status: 400 });
+                }
+                allowedMetadata[key] = metadata[key];
+            }
+        }
+        if (allowedMetadata.waiver_accepted !== 'true' || allowedMetadata.terms_accepted !== 'true') {
+            return NextResponse.json({ error: 'Please accept the booking terms and sauna promises' }, { status: 400 });
+        }
+        for (const key of ['guest_emails', 'guest_names']) {
+            try {
+                const values = JSON.parse(allowedMetadata[key] || '[]');
+                if (!Array.isArray(values) || values.length > quantity - 1 || values.some((v: unknown) => typeof v !== 'string')) {
+                    return NextResponse.json({ error: 'Invalid guest details' }, { status: 400 });
+                }
+            } catch {
+                return NextResponse.json({ error: 'Invalid guest details' }, { status: 400 });
+            }
+        }
 
         console.log(`Checkout requested for: ${email}, ${priceId}, qty: ${quantity}`);
 
@@ -56,7 +98,7 @@ export async function POST(req: Request) {
         let location_city = req.headers.get('x-vercel-ip-city') ? decodeURIComponent(req.headers.get('x-vercel-ip-city')!) : null;
         let location_country = req.headers.get('x-vercel-ip-country') || null;
 
-        if (!location_city && ip !== 'unknown-ip' && ip !== '127.0.0.1' && ip !== '::1') {
+        if (!location_city && isIP(ip) && ip !== '127.0.0.1' && ip !== '::1') {
             try {
                 // Secure HTTPS fallback call to get location with a strict timeout
                 const controller = new AbortController();
@@ -84,7 +126,7 @@ export async function POST(req: Request) {
 
         // 1. Check Inventory
         const stock = await inventory.checkAvailability(priceId);
-        if (!stock.available || stock.remaining < quantity) {
+        if (!stock.available || !stock.productId || stock.remaining < quantity) {
             console.warn(`Blocked checkout for item due to stock: ${priceId}`);
             return NextResponse.json(
                 { error: `Sorry, we only have ${stock.remaining || 0} tickets remaining for this tier.` },
@@ -93,12 +135,7 @@ export async function POST(req: Request) {
         }
 
         if (!process.env.STRIPE_SECRET_KEY) {
-            console.warn('Stripe not configured. Redirecting to mock success for development.');
-            const mockSessionId = `test_session_${Date.now()}`;
-
-            return NextResponse.json({
-                url: `${origin}/tickets/success?session_id=${mockSessionId}&id=demo-ticket-id`
-            });
+            return NextResponse.json({ error: 'Payments are temporarily unavailable' }, { status: 503 });
         }
 
         const stripe = (await import('@/lib/stripe')).getStripe();
@@ -155,7 +192,7 @@ export async function POST(req: Request) {
                 location_city,
                 location_country,
                 quantity: quantity.toString(),
-                ...metadata
+                ...allowedMetadata
             },
         });
 
@@ -178,6 +215,6 @@ export async function POST(req: Request) {
         return NextResponse.json({ url: session.url });
     } catch (err: any) {
         console.error('Checkout API error:', err);
-        return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ error: 'Unable to start checkout. Please try again.' }, { status: 500 });
     }
 }

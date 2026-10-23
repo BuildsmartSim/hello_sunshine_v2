@@ -2,6 +2,8 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
+    // Overwrite caller input; the admin layout uses this only to identify the login page.
+    request.headers.set('x-app-pathname', request.nextUrl.pathname)
     let supabaseResponse = NextResponse.next({
         request,
     })

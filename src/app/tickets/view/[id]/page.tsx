@@ -5,6 +5,7 @@ import { StandardSection } from '@/components/StandardSection';
 import { getTicketWithDetails } from '@/lib/ticketing';
 import { notFound } from 'next/navigation';
 import { TicketClient } from '@/components/Ticketing/TicketClient';
+import { toPublicTicket } from '@/lib/public-ticket';
 
 interface TicketPageProps {
     params: Promise<{ id: string }>;
@@ -13,13 +14,13 @@ interface TicketPageProps {
 async function TicketContent({ id }: { id: string }) {
     const ticket = await getTicketWithDetails(id);
 
-    if (!ticket) {
+    if (!ticket || !['active', 'used'].includes(ticket.status)) {
         notFound();
     }
 
     const checkInUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://hellosunshinesauna.com'}/tickets/check-in/${ticket.id}`;
 
-    return <TicketClient ticket={ticket} checkInUrl={checkInUrl} />;
+    return <TicketClient ticket={toPublicTicket(ticket)} checkInUrl={checkInUrl} />;
 }
 
 export default async function TicketPage({ params }: TicketPageProps) {

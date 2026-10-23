@@ -1,10 +1,10 @@
 import React from 'react';
-import { requireAdminOrPin } from '@/lib/auth';
+import { assertAdmin } from '@/lib/auth';
 
 export const revalidate = 0; // Ensure fresh data
 
 export default async function AnalyticsPage() {
-    await requireAdminOrPin();
+    await assertAdmin();
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">

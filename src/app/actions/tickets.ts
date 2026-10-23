@@ -218,7 +218,7 @@ export async function checkInTicketAction(ticketId: string, notes?: string, pin?
             return { success: false, error: 'CANCELLED: This ticket has been refunded.' };
         }
 
-        if (ticket.check_in_at) {
+        if (ticket.status === 'used' || ticket.check_in_at) {
             return {
                 success: false,
                 error: `ALREADY SCANNED: This ticket was used at ${new Date(ticket.check_in_at).toLocaleTimeString()}.`,
@@ -235,17 +235,26 @@ export async function checkInTicketAction(ticketId: string, notes?: string, pin?
             };
         }
 
+        if (ticket.status !== 'active') {
+            return { success: false, error: 'This ticket is not active.' };
+        }
+
         // 3. Mark as Checked In
-        const { error: updateError } = await supabaseAdmin
+        const { data: checkedIn, error: updateError } = await supabaseAdmin
             .from('tickets')
             .update({
                 check_in_at: new Date().toISOString(),
                 // check_in_notes: notes || null,
                 status: 'used' // Mark as used
             })
-            .eq('id', ticketId);
+            .eq('id', ticketId)
+            .eq('status', 'active')
+            .is('check_in_at', null)
+            .select('id')
+            .maybeSingle();
 
         if (updateError) throw updateError;
+        if (!checkedIn) return { success: false, error: 'Ticket was already used or cancelled.' };
 
         revalidatePath('/admin');
         revalidatePath('/admin/scanner');
@@ -275,9 +284,8 @@ export async function getRoleAction() {
             .eq('user_id', user.id)
             .single();
 
-        if (error) {
-            // Default to clerk if no role record exists
-            return { success: true, role: 'clerk' };
+        if (error || !data || !['admin', 'clerk'].includes(data.role)) {
+            return { success: false, error: 'Staff role required' };
         }
 
         return { success: true, role: data.role };
@@ -413,7 +421,7 @@ export async function reconcileStripeAction(sessionId: string, pin?: string) {
 
         // 1. Fetch Session from Stripe
         const session = await stripe.checkout.sessions.retrieve(sessionId);
-        if (!session || session.status !== 'complete') {
+        if (!session || session.status !== 'complete' || session.payment_status !== 'paid' || session.mode !== 'payment') {
             return { success: false, error: 'Session not found or not completed in Stripe' };
         }
 
@@ -424,7 +432,7 @@ export async function reconcileStripeAction(sessionId: string, pin?: string) {
             .eq('stripe_session_id', sessionId)
             .single();
 
-        if (existingTicket && existingTicket.status === 'active') {
+        if (existingTicket && existingTicket.status !== 'pending') {
             return { success: false, error: 'A ticket already exists and is active for this session' };
         }
 

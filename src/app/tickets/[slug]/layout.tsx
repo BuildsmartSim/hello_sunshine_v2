@@ -5,7 +5,7 @@ type Props = {
     params: Promise<{ slug: string }>;
 };
 
-import { getFestivalData } from '@/data/festivals';
+import { getFestivalData } from '@/data/festivals.server';
 import { createSlug } from '@/data/festivals';
 
 export async function generateMetadata(

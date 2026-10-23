@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import { GoogleGenAI } from '@google/genai';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
+    const auth = await requireAdmin();
+    if (!auth.authorized) {
+        return NextResponse.json({ error: 'Admin access required' }, { status: 401 });
+    }
     try {
         const body = await req.json();
         const { text, type } = body as { text: string; type: 'image' | 'video' };

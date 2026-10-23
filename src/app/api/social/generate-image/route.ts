@@ -9,6 +9,8 @@
  */
 
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
+import { getSiteOrigin } from '@/lib/site-origin';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import { createClient } from '@supabase/supabase-js';
@@ -31,11 +33,8 @@ function getSupabase() {
 }
 
 /* ── Site base URL (used so Satori can resolve the /public logo) ─────────── */
-function getSiteUrl(req: Request): string {
-    if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-    const host = req.headers.get('host') ?? 'localhost:3000';
-    const proto = host.startsWith('localhost') ? 'http' : 'https';
-    return `${proto}://${host}`;
+function getSiteUrl(): string {
+    return getSiteOrigin();
 }
 
 /* ── Load Chicle from local TTF (fast, no network call) ──────────────────── */
@@ -69,6 +68,10 @@ async function loadFonts() {
 }
 
 export async function POST(req: Request) {
+    const auth = await requireAdmin();
+    if (!auth.authorized) {
+        return NextResponse.json({ error: 'Admin access required' }, { status: 401 });
+    }
     try {
         const body = await req.json();
         const { style = 'festival', headline = '', body: caption = '', bgImageUrl } = body as {
@@ -78,7 +81,7 @@ export async function POST(req: Request) {
             bgImageUrl?: string;
         };
 
-        const siteUrl = getSiteUrl(req);
+        const siteUrl = getSiteUrl();
 
         /* 1. Generate SVG via Satori ──────────────────────────────────────────── */
         const fonts = await loadFonts();

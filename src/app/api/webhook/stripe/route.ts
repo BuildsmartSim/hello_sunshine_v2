@@ -34,8 +34,11 @@ export async function POST(req: Request) {
     }
 
     // Handle the event
-    if (event.type === 'checkout.session.completed') {
+    if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
         const session = event.data.object as any;
+        if (session.payment_status !== 'paid' || session.status !== 'complete' || session.mode !== 'payment') {
+            return NextResponse.json({ received: true, fulfilled: false });
+        }
 
         try {
             const { customer_details, metadata } = session;
@@ -45,9 +48,7 @@ export async function POST(req: Request) {
             const guestNames = metadata.guest_names ? JSON.parse(metadata.guest_names) : [];
 
             // 2. Fetch all tickets for this session
-            // We NO LONGER filter by `status='pending'` here because the frontend `/api/tickets/from-session` 
-            // race-condition fallback might have already flipped the status to 'active' a split second before 
-            // the Stripe webhook arrives. If we filter by pending, the webhook aborts and emails never send!
+            // Read all reservations so Stripe retries can finish emails without reactivating used/refunded tickets.
             const { data: sessionTickets, error: fetchError } = await supabaseAdmin
                 .from('tickets')
                 .select('*')
@@ -122,19 +123,24 @@ export async function POST(req: Request) {
 
             // 5. Update Tickets to Active and Send Emails
             const postProcessingPromises = profilesAndTickets.map(async (item) => {
-                // Update Ticket
-                const { error: ticketUpdateError } = await supabaseAdmin
-                    .from('tickets')
-                    .update({
-                        profile_id: item.profile.id,
-                        status: 'active',
-                        ambassador_id: ambassadorId
-                    })
-                    .eq('id', item.ticket.id);
-
-                if (ticketUpdateError) {
-                    console.error(`Failed to activate ticket ${item.ticket.id}:`, ticketUpdateError);
-                    return; // Skip email if ticket activation fails
+                if (!['pending', 'active'].includes(item.ticket.status)) return;
+                let newlyActivated = false;
+                if (item.ticket.status === 'pending' || !item.ticket.profile_id) {
+                    const { data: activated, error: ticketUpdateError } = await supabaseAdmin
+                        .from('tickets')
+                        .update({
+                            profile_id: item.profile.id,
+                            status: 'active',
+                            ambassador_id: ambassadorId
+                        })
+                        .eq('id', item.ticket.id)
+                        .eq('status', item.ticket.status)
+                        .select('id')
+                        .maybeSingle();
+                    if (ticketUpdateError) throw ticketUpdateError;
+                    // Another delivery may already have fulfilled or cancelled this ticket.
+                    if (!activated) return;
+                    newlyActivated = item.ticket.status === 'pending';
                 }
 
                 // Send Email (only if it's not a placeholder AND we haven't already sent it)
@@ -154,6 +160,8 @@ export async function POST(req: Request) {
                 } else {
                     await remoteLog(`Skipping email for placeholder guest ${item.profile.email}`);
                 }
+
+                if (!newlyActivated) return;
 
                 // Update Loyalty for Primary Buyer ONLY for now, or for everyone? 
                 // Let's increment for the profile attached to the ticket.

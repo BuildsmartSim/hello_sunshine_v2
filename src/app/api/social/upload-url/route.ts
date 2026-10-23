@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
+    const auth = await requireAdmin();
+    if (!auth.authorized) {
+        return NextResponse.json({ error: 'Admin access required' }, { status: 401 });
+    }
     try {
         const body = await req.json();
         const { fileName } = body;

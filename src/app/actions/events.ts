@@ -1,6 +1,6 @@
 'use server';
 
-import { getFestivalData } from '@/data/festivals';
+import { getFestivalData } from '@/data/festivals.server';
 
 export async function getEventsAction() {
     try {
