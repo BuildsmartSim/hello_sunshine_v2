@@ -1,0 +1,11 @@
+[Unit]
+Description=Check Hello Sunshine security every six hours
+
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:15:00 UTC
+RandomizedDelaySec=10min
+Persistent=true
+Unit=hellosunshine-security.service
+
+[Install]
+WantedBy=timers.target
