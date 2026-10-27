@@ -8,6 +8,9 @@ release under `/srv/hellosunshine/releases/`. The service unit is maintained in
 Production credentials are stored in `/etc/hellosunshine/environment` (root mode
 0600) and injected by systemd. Never commit them or include them in public assets.
 Build releases with public configuration and the anonymous Supabase key only.
+Preserve all existing public build settings, including the map token, analytics
+measurement ID and Stripe publishable key. Pass an explicit allowlist to the
+build process rather than the full production environment.
 
 Before deployment, run `npm run test:security`, `npm audit`, TypeScript checks and
 a local production build with patched Node 22.23.4 or a newer Node 22 release.
@@ -21,6 +24,8 @@ Check the release on a
 temporary loopback port before switching `current` and restarting the service.
 Code is root-owned; only the writable paths in the service unit belong to the
 service user. The release directory must not contain production credentials.
+Ensure the service group cannot write source files, including files extracted
+with group-write permissions from a Git archive.
 
 The app must listen only on 127.0.0.1:3000. Nginx proxies to this address and
 must overwrite X-Forwarded-For with its actual remote address and set
@@ -29,6 +34,9 @@ connections. Keep the existing SSH and TLS certificate access intact.
 
 Verify homepage, tickets, event details, booking form, login, confirmation error
 states, API authentication, dependency audit, service ownership and startup.
+Warm and verify event metadata after restart: a build without privileged
+credentials can cache an empty event result until the 60-second event cache
+revalidates. Confirm the rendered event title as well as its HTTP status.
 Exercise successful and failed payment fulfillment using isolated regression
 fixtures or Stripe test credentials; do not charge real cards or create live
 reservations for deployment testing.

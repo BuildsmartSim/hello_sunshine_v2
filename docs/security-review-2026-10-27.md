@@ -1,6 +1,7 @@
 # Dependency security review — 27 October 2026
 
-Local changes prepared for review. Production has not been updated.
+Reviewed and deployed to production on 27 October 2026 at 23:08 UTC (London).
+Application release: `b49f3d9d9c0ea931710abd30df005d904a1e6e1c`.
 
 - Upgrade Satori from 0.19.2 to 0.33.5, the first release patched for
   [SVG escaping](https://github.com/advisories/GHSA-wx4j-mvgx-mqwp).
@@ -24,7 +25,8 @@ Local changes prepared for review. Production has not been updated.
 Validation:
 
 - Full npm audit, including build dependencies: zero known vulnerabilities.
-- Node 22.23.4: security, monitoring and rendering regression suites pass.
+- Node 22.23.4: all 34 security, monitoring and rendering regression tests pass
+  locally and on the production server.
 - Both social templates render 1080 × 1080 PNGs with the real local logo and
   Chicle font, with both gradient and photo backgrounds. Tests embed the logo
   locally and exercise the SVG-to-PNG pipeline without uploads.
@@ -37,6 +39,21 @@ Validation:
   `@typescript-eslint/no-require-imports` rule disabled, matching the existing
   test suite's Node CommonJS style.
 
-Deploy only after review, using [the release procedure](security-deployment.md).
-The six-hour server monitor and its notification behavior are unchanged.
-Production findings remain until a reviewed release is deployed and scanned.
+Deployment verification:
+
+- Built a separate release on the server and verified 164 source/configuration
+  hashes before activation. The full staged audit reported zero vulnerabilities.
+- Preserved the configured public map, analytics and Supabase settings; preserved
+  shared images, optimized assets, optimizer cache and protected email log.
+- Private preview and live checks pass for the homepage, tickets, event details,
+  login, confirmation error state and protected API responses. The browser shows
+  the correct event title and booking form; no booking or payment was submitted.
+- Source files are root-owned and read-only to the service user. The app runs as
+  `hellosunshine` on 127.0.0.1:3000; external port 3000 rejects connections.
+- At 23:08:45 UTC the production security monitor reported zero findings, all
+  five checks passed, and all three original findings resolved. Its resolution
+  notification was accepted by the email provider.
+- The six-hour timer remains active. The previous release and root-only rollback
+  snapshots remain available; the temporary preview service was stopped.
+
+Future releases should follow [the release procedure](security-deployment.md).
