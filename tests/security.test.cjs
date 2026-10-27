@@ -10,6 +10,84 @@ const root = path.resolve(__dirname, '..');
 const quiet = { log() {}, warn() {}, error() {} };
 const fixtureId = '11111111-1111-4111-8111-111111111111';
 
+function firecrawlFixture(fetch, env = { FIRECRAWL_API_KEY: 'fixture-key' }) {
+    return load('src/utils/agents/firecrawl.ts', {}, {
+        fetch,
+        process: { env },
+    });
+}
+
+test('discovery scraping sends authenticated v2 markdown requests and returns the document', async () => {
+    let calls = 0;
+    const api = firecrawlFixture(async (url, options) => {
+        calls++;
+        assert.equal(url, 'https://api.firecrawl.dev/v2/scrape');
+        assert.equal(options.method, 'POST');
+        assert.equal(options.headers.Authorization, 'Bearer fixture-key');
+        assert.equal(options.headers['Content-Type'], 'application/json');
+        assert.deepEqual(JSON.parse(options.body), { url: 'https://example.invalid', formats: ['markdown'] });
+        assert.equal(options.cache, 'no-store');
+        assert.ok(options.signal instanceof AbortSignal);
+        return Response.json({ success: true, data: { markdown: '# Festival' } });
+    });
+    assert.equal(await api.scrapeUrl(' https://example.invalid '), '# Festival');
+    assert.equal(calls, 1);
+});
+
+test('discovery scraping preserves configured API origins', async () => {
+    const api = firecrawlFixture(async url => {
+        assert.equal(url, 'https://firecrawl.example.invalid/v2/scrape');
+        return Response.json({ success: true, data: { markdown: '# Fixture' } });
+    }, { FIRECRAWL_API_KEY: 'fixture-key', FIRECRAWL_API_URL: 'https://firecrawl.example.invalid/' });
+    assert.equal(await api.scrapeUrl('https://example.invalid'), '# Fixture');
+});
+
+test('discovery scraping retries temporary gateway errors at most three times', async () => {
+    for (const recover of [true, false]) {
+        let calls = 0;
+        const delays = [];
+        const api = load('src/utils/agents/firecrawl.ts', {}, {
+            process: { env: { FIRECRAWL_API_KEY: 'fixture-key' } },
+            setTimeout(callback, delay) { delays.push(delay); callback(); },
+            fetch: async () => {
+                calls++;
+                return calls === 3 && recover
+                    ? Response.json({ success: true, data: { markdown: '# Recovered' } })
+                    : new Response('Bad gateway', { status: 502 });
+            },
+        });
+        assert.equal(await api.scrapeUrl('https://example.invalid'), recover ? '# Recovered' : null);
+        assert.equal(calls, 3);
+        assert.deepEqual(delays, [500, 1000]);
+    }
+});
+
+test('discovery scraping skips missing credentials and empty URLs before sending requests', async () => {
+    let calls = 0;
+    const fetch = async () => { calls++; throw new Error('Must not request'); };
+    assert.equal(await firecrawlFixture(fetch, {}).scrapeUrl('https://example.invalid'), null);
+    assert.equal(await firecrawlFixture(fetch).scrapeUrl('  '), null);
+    assert.equal(calls, 0);
+});
+
+test('discovery scraping returns null for API errors, bad responses, empty documents and timeouts', async () => {
+    const cases = [
+        () => new Response('Rate limited', { status: 429 }),
+        () => Response.json({ success: false, error: 'Failed' }),
+        () => Response.json(null),
+        () => Response.json({ success: true }),
+        () => Response.json({ success: true, data: { markdown: '' } }),
+        () => Response.json({ success: true, data: { markdown: ['Invalid document'] } }),
+        () => new Response('Not JSON'),
+        () => { throw new Error('Network unavailable'); },
+        () => { throw new DOMException('Timed out', 'TimeoutError'); },
+    ];
+    for (const response of cases) {
+        const api = firecrawlFixture(async () => response());
+        assert.equal(await api.scrapeUrl('https://example.invalid'), null);
+    }
+});
+
 function load(file, stubs = {}, overrides = {}) {
     const exports = {};
     const source = ts.transpileModule(fs.readFileSync(path.join(root, file), 'utf8'), {
