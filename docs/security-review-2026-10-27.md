@@ -16,6 +16,10 @@ Local changes prepared for review. Production has not been updated.
 - Resolve the remaining, build-only Zod dependency to 4.6.7 through the existing
   compatible ESLint peer range. This exceeds the 4.6.6
   [security fix](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5).
+- The complete authorized image-route check exposed an unsupported WOFF2 font
+  download. Bundle Google's Inter Regular TTF and its SIL Open Font License,
+  load both fonts locally as Buffers, and test the complete route with fixture
+  authentication and storage. Image generation no longer downloads fonts.
 
 Validation:
 

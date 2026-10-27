@@ -40,30 +40,19 @@ function getSiteUrl(): string {
 /* ── Load Chicle from local TTF (fast, no network call) ──────────────────── */
 async function loadFonts() {
     const chicleFile = path.join(process.cwd(), 'src', 'app', '_fonts', 'Chicle-Regular.ttf');
-    const chicleData = await readFile(chicleFile);
-
-    // Fallback: Inter for the body/UI text elements (Arial doesn't need a font file — Satori handles it)
-    let interData: ArrayBuffer | null = null;
-    try {
-        const interRes = await fetch(
-            'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2',
-            { signal: AbortSignal.timeout(5000) }
-        );
-        interData = await interRes.arrayBuffer();
-    } catch {
-        // Non-fatal — Satori will fall back gracefully
-    }
+    const [chicleData, interData] = await Promise.all([
+        readFile(chicleFile),
+        readFile(path.join(process.cwd(), 'src', 'app', '_fonts', 'Inter-Regular.ttf')),
+    ]);
 
     return [
         {
             name: 'Chicle',
-            data: chicleData.buffer as ArrayBuffer,
+            data: chicleData,
             weight: 400 as const,
             style: 'normal' as const,
         },
-        ...(interData
-            ? [{ name: 'Inter', data: interData, weight: 400 as const, style: 'normal' as const }]
-            : []),
+        { name: 'Inter', data: interData, weight: 400 as const, style: 'normal' as const },
     ];
 }
 

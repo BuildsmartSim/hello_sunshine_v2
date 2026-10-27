@@ -50,3 +50,44 @@ for (const style of ['festival', 'announcement']) {
         });
     }
 }
+
+for (const style of ['festival', 'announcement']) {
+    test(`authorized ${style} image route renders with local fonts and fixture storage`, async () => {
+        let storedPng;
+        const route = { exports: {} };
+        const compiled = ts.transpileModule(fs.readFileSync(path.join(root, 'src/app/api/social/generate-image/route.ts'), 'utf8'), {
+            compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.CommonJS, esModuleInterop: true },
+        }).outputText;
+        const stubs = {
+            '@/lib/auth': { requireAdmin: async () => ({ authorized: true }) },
+            '@/lib/site-origin': { getSiteOrigin: () => 'https://fixture.invalid' },
+            '@/components/social/SunshineTemplate': template.exports,
+            satori: async (element, options) => {
+                assert.deepEqual(Array.from(options.fonts, font => font.name), ['Chicle', 'Inter']);
+                for (const font of options.fonts) assert.ok(Buffer.isBuffer(font.data));
+                return satori(localAssets(element.type(element.props)), options);
+            },
+            '@supabase/supabase-js': { createClient: () => ({ storage: { from: bucket => {
+                assert.equal(bucket, 'social-images');
+                return {
+                    upload: async (_name, png, options) => { storedPng = png; assert.equal(options.contentType, 'image/png'); return { error: null }; },
+                    getPublicUrl: () => ({ data: { publicUrl: 'https://fixture.invalid/image.png' } }),
+                };
+            } } }) },
+        };
+        vm.runInNewContext(compiled, {
+            exports: route.exports, console,
+            require: name => name in stubs ? stubs[name] : require(name),
+            process: { cwd: () => root, env: { NEXT_PUBLIC_SUPABASE_URL: 'https://fixture.invalid', SUPABASE_SERVICE_ROLE_KEY: 'fixture-only' } },
+            fetch: async () => { throw new Error('Fonts must be loaded locally'); },
+        });
+        const response = await route.exports.POST(new Request('https://fixture.invalid/api/social/generate-image', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ style, headline: 'Hello Sunshine', body: 'Sauna & community' }),
+        }));
+        assert.equal(response.status, 200);
+        assert.equal((await response.json()).url, 'https://fixture.invalid/image.png');
+        assert.equal(storedPng.readUInt32BE(16), 1080);
+        assert.equal(storedPng.readUInt32BE(20), 1080);
+    });
+}

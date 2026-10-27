@@ -1,0 +1,5 @@
+Inter Regular (weight 400), retrieved 27 October 2026 from Google Fonts.
+CSS: https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap
+TTF: https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZg.ttf
+License source: https://github.com/google/fonts/blob/main/ofl/inter/OFL.txt
+Redistributed under the accompanying SIL Open Font License in Inter-OFL.txt.
